@@ -1,0 +1,50 @@
+{
+  "expo": {
+    "name": "IndeksFrontEnd",
+    "slug": "IndeksFrontEnd",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./app/assets/images/icon.png",
+    "newArchEnabled": true,
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./app/assets/images/logo-2.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#538FB1"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.indeks.aplikacija.IndeksFrontEnd"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./app/assets/images/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.indeks.aplikacija.IndeksFrontEnd",
+      "googleServicesFile": "./android/app/google-services.json"
+    },
+    "web": {
+      "favicon": "./app/assets/images/favicon.png"
+    },
+    "plugins": [
+      "expo-font",
+      "expo-secure-store",
+      [
+        "expo-notifications",
+        {
+          "icon": "./app/assets/images/push-icon.png",
+          "color": "#ffffff",
+          "defaultChannel": "default",
+          "enableBackgroundRemoteNotifications": false
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "38e1ad20-eda9-4cb6-89fc-c66fc5b276c7"
+      }
+    },
+    "owner": "indeks.aplikacija"
+  }
+}

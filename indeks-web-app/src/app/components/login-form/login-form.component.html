@@ -1,0 +1,48 @@
+<form [formGroup]="loginForm" novalidate (ngSubmit)="onSubmit()">
+  <mat-card class="shipping-card">
+    <mat-card-header>
+      <mat-card-title>Prijava</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Email" formControlName="email" />
+            @if (loginForm.controls['email'].hasError('required')) {
+            <mat-error>Email je <strong>obavezan</strong></mat-error>
+            } @else if (loginForm.controls['email'].hasError('email')) {
+            <mat-error>Email je <strong>neispravan</strong></mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input
+              matInput
+              type="password"
+              placeholder="Lozinka"
+              formControlName="password"
+            />
+            @if (loginForm.controls['password'].hasError('required')) {
+            <mat-error>Lozinka je <strong>obavezna</strong></mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+      @if (errorMessage) {
+      <mat-error class="error-message">
+        {{ errorMessage }}
+      </mat-error>
+      }
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" type="submit">
+        @if (!isLoading) { Prijava } @else {
+        <mat-spinner diameter="20"></mat-spinner>
+        }
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</form>

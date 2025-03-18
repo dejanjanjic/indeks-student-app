@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "701994893910",
+    "project_id": "indeks-96716",
+    "storage_bucket": "indeks-96716.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:701994893910:android:6310130489991b7e49b1f7",
+        "android_client_info": {
+          "package_name": "com.indeks.aplikacija.IndeksFrontEnd"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6XqvR2rRiClGBroqo2CGmLrbclCIaEmo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:701994893910:android:68e894cde2697b8b49b1f7",
+        "android_client_info": {
+          "package_name": "org.unibl.etf.indeks"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6XqvR2rRiClGBroqo2CGmLrbclCIaEmo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
