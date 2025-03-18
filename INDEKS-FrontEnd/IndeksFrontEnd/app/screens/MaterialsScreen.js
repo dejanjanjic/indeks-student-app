@@ -1,4 +1,4 @@
-import React, { useState,useEffect,useContext} from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   Text,
@@ -6,7 +6,6 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import Sidebar from "../components/SidebarComponent";
 import { useNavigation } from "@react-navigation/native";
 import HeaderComponent from "../components/HeaderComponent";
 import AdminSidebarComponent from "../components/AdminSideBarComponent";
@@ -26,10 +25,10 @@ const MaterialsScreen = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const navigation = useNavigation();
   useEffect(() => {
-      if (user) {
-        setIsAdmin(user.accountType === "ADMIN");
-      }
-    }, [user]);
+    if (user) {
+      setIsAdmin(user.accountType === "ADMIN");
+    }
+  }, [user]);
   const toggleSidebar = () => {
     setSidebarVisible(!isSidebarVisible);
   };
@@ -71,7 +70,10 @@ const MaterialsScreen = () => {
         keyExtractor={(item) => item.id}
       />
       {isAdmin ? (
-        <AdminSidebarComponent visible={isSidebarVisible} onClose={toggleSidebar} />
+        <AdminSidebarComponent
+          visible={isSidebarVisible}
+          onClose={toggleSidebar}
+        />
       ) : (
         <SidebarComponent visible={isSidebarVisible} onClose={toggleSidebar} />
       )}

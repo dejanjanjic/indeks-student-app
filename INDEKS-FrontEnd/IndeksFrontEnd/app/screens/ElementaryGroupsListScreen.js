@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   ActivityIndicator,
+  Modal,
+  Button,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { BlurView } from "expo-blur";
@@ -26,10 +28,14 @@ const ElementaryGroupsListScreen = ({ navigation }) => {
   const [blurredItem, setBlurredItem] = useState(null);
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { setUser } = useContext(AuthContext);
 
   const [isModalVisible, setModalVisible] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState(null);
   const [isAddModalVisible, setAddModalVisible] = useState(false);
+  const [selectedChat, setSelectedChat] = useState(null);
+  const [showJoinModal, setShowJoinModal] = useState(false);
+
   useEffect(() => {
     if (user) {
       setIsAdmin(user.accountType === "ADMIN");
@@ -126,23 +132,38 @@ const ElementaryGroupsListScreen = ({ navigation }) => {
   const handleOutsidePress = () => {
     setBlurredItem(null);
   };
-  
-  const handleChatPress = (chat) => {
-    console.log(chat);
-    if(user.accountType === "ADMIN")
-      return
-     navigation.navigate("Chat", {
-       chatId: chat.id,
-       name: chat.title,
-       group : true,
-       elementary : true,
-       fromElementary : true
-     });
+
+  const handleChatPress = async (item) => {
+    console.log("CHAT", item.id);
+    if (user.accountType === "ADMIN") return;
+    if (user.accountType === "STUDENT") {
+      console.log("SELECTED CHAT ID: ", item.id);
+      const isMember = await checkMembership(item.id);
+      console.log("IS MEMBER: ", isMember);
+
+      if (isMember) {
+        navigation.navigate("Chat", {
+          chatId: item.id,
+          name: item.title,
+          group: true,
+          elementary: true,
+          fromElementary: true,
+        });
+      } else {
+        setSelectedChat(item);
+        setShowJoinModal(true);
+      }
+    }
   };
 
   const renderItem = ({ item }) => {
     return (
-      <TouchableOpacity onLongPress={() => handleLongPress(item)} onPress={() => {handleChatPress(item)}}>
+      <TouchableOpacity
+        onLongPress={() => handleLongPress(item)}
+        onPress={() => {
+          handleChatPress(item);
+        }}
+      >
         <View style={styles.cardContainer}>
           {blurredItem === item.id
             ? isAdmin && (
@@ -200,6 +221,64 @@ const ElementaryGroupsListScreen = ({ navigation }) => {
       );
     }
   };
+
+  const checkMembership = async (elementaryGroupChatId) => {
+    if (!selectedChat || !selectedChat.id) {
+      console.error("Error: selectedChat is null or undefined");
+      return false;
+    }
+
+    if (!user || !user.accountId) {
+      console.error("User nije autentifikovan");
+      return false;
+    }
+    console.log("EGID", elementaryGroupChatId);
+    console.log("UCID", user.accountId);
+    const test = `elementaryGroupChatMember/${user.accountId}/elementaryGroup/${elementaryGroupChatId}`;
+    console.log(test);
+    try {
+      const response = await HttpService.get(
+        `elementaryGroupChatMember/${user.accountId}/elementaryGroup/${elementaryGroupChatId}`,
+        setUser
+      );
+
+      return response;
+    } catch (error) {
+      console.error("Error checking membership:", error);
+      return false;
+    }
+  };
+
+  const joinGroup = async () => {
+    if (!selectedChat) return;
+
+    try {
+      const requestData = {
+        elementaryGroupChatId: selectedChat.id,
+        studentAccountId: user.accountId,
+      };
+
+      const response = await HttpService.create(
+        "elementaryGroupChatMember",
+        requestData
+      );
+
+      if (response) {
+        navigation.navigate("Chat", {
+          chatId: selectedChat.id,
+          name: selectedChat.title,
+          group: true,
+          elementary: true,
+          fromElementary: true,
+        });
+      }
+    } catch (error) {
+      console.error("Error joining group:", error);
+    } finally {
+      setShowJoinModal(false);
+    }
+  };
+
   return (
     <TouchableWithoutFeedback onPress={handleOutsidePress}>
       <View style={styles.container}>
@@ -239,6 +318,27 @@ const ElementaryGroupsListScreen = ({ navigation }) => {
           onConfirm={handleModalConfirm}
           groupName={selectedGroup?.title}
         />
+        {
+          <Modal
+            visible={showJoinModal}
+            onRequestClose={() => setShowJoinModal(false)}
+          >
+            <View style={styles.modalBackground}>
+              <View style={styles.modalContainer}>
+                <Text>
+                  Želite li se učlaniti u grupu {selectedChat?.title}?
+                </Text>
+                <View style={styles.modalButtons}>
+                  <Button
+                    title="Odustani"
+                    onPress={() => setShowJoinModal(false)}
+                  />
+                  <Button title="Pridruži se" onPress={joinGroup} />
+                </View>
+              </View>
+            </View>
+          </Modal>
+        }
       </View>
     </TouchableWithoutFeedback>
   );
@@ -361,6 +461,29 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 30,
     fontWeight: "bold",
+  },
+  modalBackground: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(17, 63, 201, 0)",
+  },
+  modalContainer: {
+    width: "80%",
+    padding: 20,
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  modalText: {
+    fontSize: 20,
+
+    textAlign: "center",
+  },
+  modalButtons: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
   },
 });
 

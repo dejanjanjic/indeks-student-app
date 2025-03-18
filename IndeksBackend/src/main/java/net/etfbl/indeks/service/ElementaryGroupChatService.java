@@ -56,7 +56,7 @@ public class ElementaryGroupChatService {
     public ElementaryGroupChat addNewElementaryGroupChat(AddElementaryGroupChatDTO group) {
         GroupChat savedGroupChat = groupRepository.save(new GroupChat(group.getName()));
         ElementaryGroupChat newElementaryGroupChat = elementaryGroupChatRepository.save(new ElementaryGroupChat(savedGroupChat));
-        addAllUsersToGroup(newElementaryGroupChat); // Add all UserAccounts to the group
+        //addAllUsersToGroup(newElementaryGroupChat); // Add all UserAccounts to the group
         return newElementaryGroupChat;
     }
 

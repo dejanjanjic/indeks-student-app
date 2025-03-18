@@ -7,7 +7,6 @@ import net.etfbl.indeks.model.StudentAccount;
 import net.etfbl.indeks.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,9 +29,17 @@ public class ElementaryGroupChatMemberService {
         return elementaryGroupChatMemberRepository.findAll();
     }
 
-    public Optional<ElementaryGroupChatMember> getElementaryGroupChatMember(Long id) {
-        return elementaryGroupChatMemberRepository.findById(id);
+    public Optional<ElementaryGroupChatMember> getElementaryGroupChatMember(Long memberId) {
+        return elementaryGroupChatMemberRepository.findById(memberId);
     }
+    public Optional<ElementaryGroupChat> getElementaryGroupChat(Long elementaryGroupChatId) {
+        return elementaryGroupChatRepository.findById(elementaryGroupChatId);
+    }
+
+    public boolean isStudentElementaryGroupChatMember(Long accountId, Long elementaryGroupChatId) {
+        return elementaryGroupChatMemberRepository.existsByElementaryGroupChat_IdAndStudentAccount_Id(elementaryGroupChatId, accountId);
+    }
+
 
     public boolean addNewElementaryGroupChatMember(AddElementaryGroupChatMemberDTO addDTO) {
         Optional<ElementaryGroupChat> groupChatOptional = elementaryGroupChatRepository.findById(addDTO.getElementaryGroupChatId());

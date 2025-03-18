@@ -11,16 +11,12 @@ import {
 import Icon from "react-native-vector-icons/FontAwesome";
 import HeaderComponent from "../components/HeaderComponent";
 import Sidebar from "../components/SidebarComponent";
-import ModalReportMaterial from "../components/ModalReportMaterial";
-import * as DocumentPicker from "expo-document-picker";
 import * as FileSystem from "expo-file-system";
 import { useUser } from "../hooks/useUser";
 import HttpService from "../services/HttpService";
 import * as Sharing from "expo-sharing";
-import ModalDeleteMaterial from "../components/ModalDeleteMaterial";
 
-const MaterialsSubjectItemsScreen = ({ route, navigation }) => {
-  const { id, subjectTitle } = route.params;
+const MyMaterialScreen = ({ route, navigation }) => {
   const [isSidebarVisible, setSidebarVisible] = useState(false);
   const [materials, setMaterials] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -37,10 +33,10 @@ const MaterialsSubjectItemsScreen = ({ route, navigation }) => {
     try {
       setLoading(true);
       console.log(id);
-      console.log(subjectTitle);
-      const response = await HttpService.get(
-        `material/materials/subject/${id}`
-      );
+
+      const id = user.accountId;
+
+      const response = await HttpService.get(`material/owner/${id}`);
       console.log(response);
       if (response.error) {
         console.error("Failed to fetch materials:", response.message);
@@ -51,42 +47,6 @@ const MaterialsSubjectItemsScreen = ({ route, navigation }) => {
       console.error("Error fetching materials:", error);
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handlePlusClick = async () => {
-    try {
-      const result = await DocumentPicker.getDocumentAsync({ type: "*/*" });
-
-      if (result.canceled) {
-        console.log("File selection canceled");
-        return;
-      }
-
-      const file = result.assets[0];
-      const fileUri = file.uri;
-
-      const base64 = await FileSystem.readAsStringAsync(fileUri, {
-        encoding: FileSystem.EncodingType.Base64,
-      });
-
-      const payload = {
-        base64: base64,
-        name: file.name,
-        subjectId: id,
-        ownerAccountId: user.accountId,
-      };
-
-      const response = await HttpService.create("material/upload", payload);
-
-      if (response.error) {
-        console.error("Failed to upload file:", response.message);
-      } else {
-        console.log("File uploaded successfully:", response);
-        fetchMaterials();
-      }
-    } catch (error) {
-      console.error("Error handling file upload:", error);
     }
   };
 
@@ -193,9 +153,12 @@ const MaterialsSubjectItemsScreen = ({ route, navigation }) => {
       <Text style={styles.itemTitle}>{item.name}</Text>
       <TouchableOpacity
         style={styles.downloadButton}
-        onPress={() => handleDownload(item)}
+        onPress={() => {
+          setSelectedMaterial(item);
+          setModalVisible(true);
+        }}
       >
-        <Icon name="download" size={20} color="#013868" />
+        <Icon name="trash" size={30} color="#013868" />
       </TouchableOpacity>
     </TouchableOpacity>
   );
@@ -203,12 +166,12 @@ const MaterialsSubjectItemsScreen = ({ route, navigation }) => {
   return (
     <View style={styles.container}>
       <HeaderComponent
-        leftIcon="arrow-left"
-        leftAction={() => navigation.goBack()}
+        leftIcon="bars"
+        leftAction={() => toggleSidebar()}
         centerLogo={require("../assets/images/logo.png")}
         centerText="Indeks"
       />
-      <Text style={styles.title}>{subjectTitle}</Text>
+      <Text style={styles.title}>Moji materijali</Text>
       {loading ? (
         <ActivityIndicator size="large" color="#013868" />
       ) : (
@@ -219,32 +182,7 @@ const MaterialsSubjectItemsScreen = ({ route, navigation }) => {
           contentContainerStyle={styles.cardList}
         />
       )}
-      {user.accountType === "STUDENT" && (
-        <TouchableOpacity
-          style={styles.floatingButton}
-          onPress={handlePlusClick}
-        >
-          <Text style={styles.floatingButtonText}>+</Text>
-        </TouchableOpacity>
-      )}
       <Sidebar visible={isSidebarVisible} onClose={toggleSidebar} />
-      {user.accountType === "STUDENT" ? (
-        <ModalReportMaterial
-          visible={isModalVisible}
-          onClose={() => setModalVisible(false)}
-          onSubmit={handleSubmitReport}
-          selectedMaterial={selectedMaterial}
-          reportDescription={reportDescription}
-          setReportDescription={setReportDescription}
-        />
-      ) : user.accountType === "ADMIN" ? (
-        <ModalDeleteMaterial
-          visible={isModalVisible}
-          onClose={() => setModalVisible(false)}
-          onSubmit={handleSubmitDelete}
-          selectedMaterial={selectedMaterial}
-        />
-      ) : null}
     </View>
   );
 };
@@ -332,4 +270,4 @@ const styles = StyleSheet.create({
   cancelButton: { backgroundColor: "#999" },
 });
 
-export default MaterialsSubjectItemsScreen;
+export default MyMaterialScreen;

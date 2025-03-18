@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   ActivityIndicator,
+  Platform,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import Sidebar from "../components/SidebarComponent";
@@ -159,7 +160,7 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   picker: {
-    height: 55,
+    height: Platform.OS == "android" ? 55 : 180,
     color: "#013868",
   },
   input: {
@@ -192,7 +193,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   disabledButton: {
-    opacity: 0.7, 
+    opacity: 0.7,
   },
 });
 

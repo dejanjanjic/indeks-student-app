@@ -17,6 +17,12 @@ const SidebarComponent = ({ visible, onClose }) => {
       iconType: "FontAwesome",
     },
     {
+      label: "Moji Materijali",
+      icon: "folder-open",
+      route: "MyMaterialScreen",
+      iconType: "FontAwesome",
+    },
+    {
       label: "Raspored",
       icon: "calendar",
       route: "Schedule",

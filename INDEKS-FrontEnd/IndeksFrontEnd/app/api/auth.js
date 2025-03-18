@@ -7,7 +7,7 @@ const login = (email, password) =>
   });
 
 const register = (firstName, lastName, email, password, type) =>
-  HttpService.create("auth/register", {
+  HttpService.login("auth/register", {
     firstName,
     lastName,
     email,

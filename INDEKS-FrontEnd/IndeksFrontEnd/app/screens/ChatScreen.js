@@ -6,11 +6,9 @@ import {
   FlatList,
   TextInput,
   TouchableOpacity,
-  Image,
   ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
-  Keyboard,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -19,7 +17,7 @@ import { useUser } from "../hooks/useUser";
 import ModalBlockingUserFromChat from "../components/ModalBlockingUserFromChat";
 import ModalOptionsForUserChat from "../components/ModalOptionsForUserChat";
 import ModalReportingUserFromChat from "../components/ModalReportingUserFromChat";
-import authStorage from "../auth/storage";
+import ModalLeaveGroup from "../components/ModalLeaveGroup";
 
 const ChatScreen = () => {
   const navigation = useNavigation();
@@ -37,6 +35,9 @@ const ChatScreen = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isBlockingUserModalVisible, setIsBlockingUserModalVisible] =
     useState(false);
+  const [isLeavingGroupModalVisible, setIsLeavingGroupModalVisible] =
+    useState(false);
+
   const [isReportingUserModalVisible, setIsReportingUserModalVisible] =
     useState(false);
 
@@ -85,10 +86,9 @@ const ChatScreen = () => {
   };
 
   useEffect(() => {
-   
     const fetchMessages = async () => {
       let response;
-      
+
       try {
         if (elementary) {
           response = await HttpService.get(
@@ -107,45 +107,38 @@ const ChatScreen = () => {
             `singleChat/${chatId}/messages?userId=${userId}`
           );
         }
-  
+
         let sortedMessages;
         if (response.error) sortedMessages = [];
         else
           sortedMessages = response.sort(
             (a, b) => new Date(b.time) - new Date(a.time)
           );
-  
+
         setMessages((prevMessages) => {
           const existingIds = new Set(prevMessages.map((msg) => msg.id));
           const newMessages = sortedMessages.filter(
             (msg) => !existingIds.has(msg.id)
           );
           const updatedMessages = [...prevMessages, ...newMessages];
-  
+
           return updatedMessages.sort(
             (a, b) => new Date(b.time) - new Date(a.time)
           );
         });
-      } catch (error) {
-        
-      }
+      } catch (error) {}
     };
-  
-    
+
     const intervalId = setInterval(fetchMessages, 5000);
-      const focusListener = navigation.addListener('focus', () => {
-      
+    const focusListener = navigation.addListener("focus", () => {
       fetchMessages();
     });
-  
-  
+
     return () => {
       clearInterval(intervalId);
       focusListener();
-     
     };
   }, [chatId, userId, elementary, group, navigation]);
-  
 
   useEffect(() => {
     userId = user.accountId;
@@ -158,11 +151,11 @@ const ChatScreen = () => {
         );
         if (block === true) {
           setBlocked(true);
-          setLoad(true)
+          setLoad(true);
           console.log("true");
         } else {
           setBlocked(false);
-          setLoad(true)
+          setLoad(true);
           console.log(chatId);
         }
         let response;
@@ -170,12 +163,12 @@ const ChatScreen = () => {
           var id = await HttpService.get(
             `singleChat/exists?firstParticipantId=${userId}&secondParticipantId=${route.params.otherUserId[0]}`
           );
-          console.log("AAAAAAAAAAAAAAAA")
+          console.log("AAAAAAAAAAAAAAAA");
           console.log(id);
         } catch (error) {}
-       
+
         if (id && !group) chatId = id;
-        console.log(chatId)
+        console.log(chatId);
         if (elementary) {
           response = await HttpService.get(
             `elementaryGroup/${chatId}/messages?userId=${userId}`
@@ -193,7 +186,7 @@ const ChatScreen = () => {
             `singleChat/${chatId}/messages?userId=${userId}`
           );
         }
-        
+
         if (response.error) {
           console.log("Chat ne postoji. Kreiram novi chat...");
 
@@ -222,12 +215,16 @@ const ChatScreen = () => {
               firstParticipantId: userId,
               secondParticipantId: otherUserId[0],
             });
-            chatId = resp.id;
+
+            chatId = resp.chatId;
+
             console.log(resp);
+
+            console.log(resp.chatId);
             navigation.navigate("Chat", {
               chatId: chatId,
               otherUserId: otherUserId,
-              name: resp.secondParticipant.firstName,
+              name: resp.otherUserName,
               group: false,
             });
           }
@@ -330,7 +327,7 @@ const ChatScreen = () => {
 
       setMessages(sortedMessages);
     } catch (error) {
-      console.error("Error sending message:", error);
+      // console.error("Error sending message:", error);
     }
   };
 
@@ -377,11 +374,12 @@ const ChatScreen = () => {
         <Text style={styles.headerTitle}>{name}</Text>
         <TouchableOpacity
           onPress={() => {
-            setIsModalVisible(true);
+            if (!group) setIsModalVisible(true);
+            else setIsLeavingGroupModalVisible(true);
             console.log("Proba, test, test");
           }}
         >
-          {!group && !blocked && (
+          {!blocked && (
             <Ionicons
               name="ellipsis-vertical-outline"
               size={24}
@@ -436,6 +434,13 @@ const ChatScreen = () => {
             chatId={chatId}
           />
         )}
+        {isLeavingGroupModalVisible && (
+          <ModalLeaveGroup
+            visible={isLeavingGroupModalVisible}
+            onClose={() => setIsLeavingGroupModalVisible(false)}
+            chatId={chatId}
+          />
+        )}
       </View>
       {loading ? (
         <ActivityIndicator size="large" color="#007aff" style={styles.loader} />
@@ -448,34 +453,34 @@ const ChatScreen = () => {
           contentContainerStyle={styles.chatContainer}
         />
       )}
-     <View style={styles.inputContainer}>
-  {blocked && load ? (
-    <Text style={styles.blockedMessage}>
-      Ne možete pristupiti ovom časkanju.
-    </Text>
-  ) : load ? (
-    <>
-      <TextInput
-        style={styles.input}
-        placeholder="Poruka..."
-        value={messageText}
-        onChangeText={setMessageText}
-        editable={!blocked}
-      />
-      <TouchableOpacity
-        style={styles.sendButton}
-        onPress={() => sendMessage(chatId)}
-        disabled={blocked}
-      >
-        <Ionicons
-          name="send-outline"
-          size={24}
-          color={blocked ? "#ccc" : "#007aff"}
-        />
-      </TouchableOpacity>
-    </>
-  ) : null}
-</View>
+      <View style={styles.inputContainer}>
+        {blocked && load ? (
+          <Text style={styles.blockedMessage}>
+            Ne možete pristupiti ovom časkanju.
+          </Text>
+        ) : load ? (
+          <>
+            <TextInput
+              style={styles.input}
+              placeholder="Poruka..."
+              value={messageText}
+              onChangeText={setMessageText}
+              editable={!blocked}
+            />
+            <TouchableOpacity
+              style={styles.sendButton}
+              onPress={() => sendMessage(chatId)}
+              disabled={blocked}
+            >
+              <Ionicons
+                name="send-outline"
+                size={24}
+                color={blocked ? "#ccc" : "#007aff"}
+              />
+            </TouchableOpacity>
+          </>
+        ) : null}
+      </View>
     </KeyboardAvoidingView>
   );
 };

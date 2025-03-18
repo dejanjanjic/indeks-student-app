@@ -1,6 +1,7 @@
 package net.etfbl.indeks.controller;
 
 import net.etfbl.indeks.dto.AddElementaryGroupChatMemberDTO;
+import net.etfbl.indeks.model.ElementaryGroupChat;
 import net.etfbl.indeks.model.ElementaryGroupChatMember;
 import net.etfbl.indeks.service.ElementaryGroupChatMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,15 +22,16 @@ public class ElementaryGroupChatMemberController {
         this.elementaryGroupChatMemberService = elementaryGroupChatMemberService;
     }
 
-    @GetMapping(path = "{elementaryGroupChatMemberId}")
-    public ResponseEntity<Optional<ElementaryGroupChatMember>> getElementaryGroupChatMember(@PathVariable("elementaryGroupChatMemberId") Long elementaryGroupChatMemberId) {
-        Optional<ElementaryGroupChatMember> elementaryGroupChatMember = elementaryGroupChatMemberService.getElementaryGroupChatMember(elementaryGroupChatMemberId);
-        if (elementaryGroupChatMember.isPresent()) {
-            return new ResponseEntity<>(elementaryGroupChatMember, HttpStatus.OK);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    @GetMapping(path = "{accountId}/elementaryGroup/{elementaryGroupChatId}")
+    public ResponseEntity<Boolean> isAccountIdMemberOfElementaryGroupChat(
+            @PathVariable("accountId") Long accountId,
+            @PathVariable("elementaryGroupChatId") Long elementaryGroupChatId) {
+
+        boolean isMember = elementaryGroupChatMemberService.isStudentElementaryGroupChatMember(accountId, elementaryGroupChatId);
+
+        return ResponseEntity.ok(isMember);
     }
+
 
     @GetMapping
     public ResponseEntity<List<ElementaryGroupChatMember>> getElementaryGroupChatMembers() {

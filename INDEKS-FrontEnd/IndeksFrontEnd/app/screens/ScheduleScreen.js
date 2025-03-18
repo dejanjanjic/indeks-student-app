@@ -8,6 +8,7 @@ import {
   Dimensions,
   TouchableWithoutFeedback,
   TouchableOpacity,
+  Platform,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import Sidebar from "../components/SidebarComponent";
@@ -75,7 +76,7 @@ const ScheduleScreen = () => {
   const [dimensions, setDimensions] = useState(Dimensions.get("window"));
   const [selectedOption, setSelectedOption] = useState("1");
   const [isEditable, setIsEditable] = useState(false);
-  const user = useUser()
+  const user = useUser();
   useEffect(() => {
     const handleResize = () => {
       setDimensions(Dimensions.get("window"));
@@ -90,9 +91,8 @@ const ScheduleScreen = () => {
 
   const fetchScheduleData = async (scheduleId) => {
     try {
-      
       const data = await HttpService.get(`schedule/${scheduleId}/items`);
-      console.log(data)
+      console.log(data);
       const initialSchedule = Array(times.length)
         .fill(null)
         .map(() => Array(days.length).fill(""));
@@ -116,7 +116,7 @@ const ScheduleScreen = () => {
   };
 
   useEffect(() => {
-    const scheduleId = user.accountId; 
+    const scheduleId = user.accountId;
     fetchScheduleData(scheduleId);
   }, []);
 
@@ -180,6 +180,7 @@ const ScheduleScreen = () => {
             onValueChange={(itemValue) => setSelectedOption(itemValue)}
             style={[styles.picker, !isEditable && styles.disabledPicker]}
             enabled={isEditable}
+            itemStyle={{ fontSize: 12 }}
             dropdownIconColor={isEditable ? "#013868" : "#aaa"}
           >
             {options.map((option, index) => (
@@ -207,7 +208,7 @@ const ScheduleScreen = () => {
           onPress={async () => {
             if (isEditable) {
               try {
-                const scheduleId = user.accountId
+                const scheduleId = user.accountId;
                 await HttpService.update(`schedule`, {
                   id: scheduleId,
                   num: selectedOption,
@@ -329,8 +330,9 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   picker: {
-    height: 54,
+    height: Platform.OS === "android" ? 54 : 200,
     color: "#013868",
+    marginVertical: Platform.OS === "android" ? 0 : -45,
   },
   disabledPicker: {
     backgroundColor: "#e0e0e0",
