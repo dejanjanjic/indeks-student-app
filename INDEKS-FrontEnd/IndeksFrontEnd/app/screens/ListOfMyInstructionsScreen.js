@@ -1,4 +1,4 @@
-import React, { useState, useCallback  } from "react";
+import React, { useState, useCallback } from "react";
 import {
   View,
   Text,
@@ -8,6 +8,7 @@ import {
   Image,
 } from "react-native";
 import Sidebar from "../components/SidebarComponent";
+import TutorSidebar from "../components/TutorSideBarComponent";
 import HeaderComponent from "../components/HeaderComponent";
 import InstructionItemComponent from "../components/InstructionItemComponent";
 import { useNavigation } from "@react-navigation/native";
@@ -49,7 +50,7 @@ const ListOfMyInstructionsScreen = () => {
       };
 
       fetchInstructions();
-    }, [user?.accountId]) 
+    }, [user?.accountId])
   );
   const handleModalClose = () => {
     setModalVisible(false);
@@ -93,7 +94,6 @@ const ListOfMyInstructionsScreen = () => {
 
   const handlePlusPress = () => {
     navigation.navigate("AddingNewInstructionOfferScreen");
-    
   };
 
   const handleLongPressDelete = (item) => {
@@ -166,7 +166,12 @@ const ListOfMyInstructionsScreen = () => {
         tutoringOfferId={selectedTutoringOffer?.tutoringOfferId}
         subjectName={selectedTutoringOffer?.subjectName}
       />
-      <Sidebar visible={isSidebarVisible} onClose={toggleSidebar} />
+      {/* Prikaz odgovarajućeg Sidebar-a na osnovu uloge korisnika */}
+      {user.type === "STUDENT" ? (
+        <Sidebar visible={isSidebarVisible} onClose={toggleSidebar} />
+      ) : (
+        <TutorSidebar visible={isSidebarVisible} onClose={toggleSidebar} />
+      )}
     </View>
   );
 };

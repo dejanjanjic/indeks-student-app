@@ -1,6 +1,7 @@
 package net.etfbl.indeks.controller;
 
 import net.etfbl.indeks.dto.AddUserAccountDTO;
+import net.etfbl.indeks.model.StudentAccount;
 import net.etfbl.indeks.util.Encryption;
 import net.etfbl.indeks.model.TutorAccount;
 import net.etfbl.indeks.service.TutorAccountService;
@@ -34,6 +35,16 @@ public class TutorAccountController {
             return ResponseEntity.ok(tutorAccount.get());
         } else {
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping
+    public ResponseEntity<TutorAccount> registerNewTutorAccount(@RequestBody AddUserAccountDTO addUserAccountDTO) {
+        TutorAccount newAccount = tutorAccountService.addNewTutorAccount(addUserAccountDTO);
+        if (newAccount != null) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(newAccount);
+        } else {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
     }
 
