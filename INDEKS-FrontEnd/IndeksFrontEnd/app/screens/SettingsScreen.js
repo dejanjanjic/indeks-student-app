@@ -94,7 +94,7 @@ const SettingsScreen = () => {
         keyExtractor={(item) => item.id}
       />
 
-      {user.type === "STUDENT" ? (
+      {user.accountType === "STUDENT" ? (
         <Sidebar visible={isSidebarVisible} onClose={toggleSidebar} />
       ) : (
         <TutorSidebar visible={isSidebarVisible} onClose={toggleSidebar} />

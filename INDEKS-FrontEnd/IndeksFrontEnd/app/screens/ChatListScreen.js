@@ -162,8 +162,7 @@ const ChatListScreen = () => {
       <TouchableOpacity style={styles.floatingButton} onPress={handlePlusPress}>
         <Text style={styles.floatingButtonText}>+</Text>
       </TouchableOpacity>
-      {/* Prikaz odgovarajućeg Sidebar-a na osnovu uloge korisnika */}
-      {user.type === "STUDENT" ? (
+      {user.accountType === "STUDENT" ? (
         <Sidebar visible={isSidebarVisible} onClose={toggleSidebar} />
       ) : (
         <TutorSidebar visible={isSidebarVisible} onClose={toggleSidebar} />

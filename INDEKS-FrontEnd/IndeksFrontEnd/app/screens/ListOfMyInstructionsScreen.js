@@ -166,8 +166,7 @@ const ListOfMyInstructionsScreen = () => {
         tutoringOfferId={selectedTutoringOffer?.tutoringOfferId}
         subjectName={selectedTutoringOffer?.subjectName}
       />
-      {/* Prikaz odgovarajućeg Sidebar-a na osnovu uloge korisnika */}
-      {user.type === "STUDENT" ? (
+      {user.accountType === "STUDENT" ? (
         <Sidebar visible={isSidebarVisible} onClose={toggleSidebar} />
       ) : (
         <TutorSidebar visible={isSidebarVisible} onClose={toggleSidebar} />

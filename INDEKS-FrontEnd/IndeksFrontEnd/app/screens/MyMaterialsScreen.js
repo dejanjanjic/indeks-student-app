@@ -184,7 +184,7 @@ const MyMaterialScreen = ({ route, navigation }) => {
         />
       )}
 
-      {user.type === "STUDENT" ? (
+      {user.accountType === "STUDENT" ? (
         <Sidebar visible={isSidebarVisible} onClose={toggleSidebar} />
       ) : (
         <TutorSidebar visible={isSidebarVisible} onClose={toggleSidebar} />
