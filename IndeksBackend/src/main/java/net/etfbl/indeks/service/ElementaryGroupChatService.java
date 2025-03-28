@@ -4,10 +4,7 @@ package net.etfbl.indeks.service;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
-import net.etfbl.indeks.dto.AddElementaryGroupChatDTO;
-import net.etfbl.indeks.dto.AddElementaryGroupChatMemberDTO;
-import net.etfbl.indeks.dto.GetMessageDTO;
-import net.etfbl.indeks.dto.MessageWithSenderDTO;
+import net.etfbl.indeks.dto.*;
 import net.etfbl.indeks.model.*;
 
 import net.etfbl.indeks.repository.ElementaryGroupChatRepository;
@@ -120,5 +117,15 @@ public class ElementaryGroupChatService {
         }
         group.get().setName(groupName);
         return true;
+    }
+
+    public List<ElementaryGroupChatBasicInfoDTO> getAllInfo() {
+        List<ElementaryGroupChatBasicInfoDTO> temp = elementaryGroupChatRepository
+                .findAll()
+                .stream()
+                .map(ElementaryGroupChatBasicInfoDTO::new)
+                .toList();
+        temp.forEach(e -> e.setSize(elementaryGroupChatMemberService.getElementaryGroupChatSize()));
+        return temp;
     }
 }

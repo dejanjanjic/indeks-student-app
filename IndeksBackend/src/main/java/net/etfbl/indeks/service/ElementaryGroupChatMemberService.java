@@ -28,6 +28,9 @@ public class ElementaryGroupChatMemberService {
     public List<ElementaryGroupChatMember> getElementaryGroupChatMembers() {
         return elementaryGroupChatMemberRepository.findAll();
     }
+    public Integer getElementaryGroupChatSize() {
+        return elementaryGroupChatMemberRepository.findAll().size();
+    }
 
     public Optional<ElementaryGroupChatMember> getElementaryGroupChatMember(Long memberId) {
         return elementaryGroupChatMemberRepository.findById(memberId);

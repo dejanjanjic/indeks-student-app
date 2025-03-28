@@ -1,0 +1,7 @@
+<app-base-table
+  [displayedColumns]="['id', 'name', 'size', 'actions']"
+  [service]="elementaryGroupService"
+  [headerMap]="headerMap"
+  [actionButtons]="['delete', 'update', 'add']"
+  [retrieveDataFunction]="this.retrieveDataFunction"
+/>
