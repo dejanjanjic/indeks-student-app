@@ -38,4 +38,5 @@ public class ModeratorAccountController {
         moderatorAccountService.deleteModerator(id);
         return ResponseEntity.noContent().build();
     }
+
 }
