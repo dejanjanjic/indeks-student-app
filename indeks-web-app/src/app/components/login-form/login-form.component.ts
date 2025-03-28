@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 
 import {
   ReactiveFormsModule,
@@ -24,7 +24,7 @@ import { AuthService } from '../../services/auth.service';
     MatProgressSpinnerModule,
   ],
 })
-export class LoginFormComponent {
+export class LoginFormComponent implements OnInit {
   private formBuilder = inject(FormBuilder);
   private authService = inject(AuthService);
 
@@ -35,6 +35,12 @@ export class LoginFormComponent {
     email: [null, [Validators.required, Validators.email]],
     password: [null, [Validators.required]],
   });
+
+  ngOnInit(): void {
+    if (this.authService.isAuthenticated()) {
+      this.authService.handleRedirection();
+    }
+  }
 
   onSubmit(): void {
     this.login();

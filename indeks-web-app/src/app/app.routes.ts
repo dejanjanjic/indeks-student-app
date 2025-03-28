@@ -2,8 +2,9 @@ import { Routes } from '@angular/router';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { authGuard } from './guards/auth.guard';
 import { roleGuard } from './guards/role.guard';
-import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
+import { AdminDashboardComponent } from './components/admin/admin-dashboard/admin-dashboard.component';
 import { StudentProfileComponent } from './components/student-profile/student-profile.component';
+import { SchedulePageComponent } from './components/schedule-page/schedule-page.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginFormComponent },
@@ -22,6 +23,7 @@ export const routes: Routes = [
     data: { roles: ['STUDENT'] },
     children: [
       { path: 'profile', component: StudentProfileComponent },
+      { path: 'schedule', component: SchedulePageComponent },
       { path: '', redirectTo: 'profile', pathMatch: 'full' },
     ],
   },
