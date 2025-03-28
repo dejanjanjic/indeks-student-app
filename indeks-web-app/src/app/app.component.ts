@@ -9,16 +9,4 @@ import { AuthService } from './services/auth.service';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
-export class AppComponent implements OnInit {
-  private authService = inject(AuthService);
-
-  ngOnInit() {
-    this.checkInitialLogin();
-  }
-
-  private checkInitialLogin(): void {
-    if (this.authService.isAuthenticated()) {
-      this.authService.handleRedirection();
-    }
-  }
-}
+export class AppComponent {}
