@@ -1,18 +1,18 @@
-package net.etfbl.indeks.security.dto;
+package net.etfbl.indeks.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Setter
 @Getter
-@AllArgsConstructor
+@Setter
 @NoArgsConstructor
-public class RegisterAccountDTO {
+@AllArgsConstructor
+public class AddModeratorDTO {
     private String firstName;
     private String lastName;
     private String email;
     private String password;
-    private String type;
+    private String materialPath;
 }
