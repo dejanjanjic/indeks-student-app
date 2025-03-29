@@ -51,10 +51,12 @@ public class ElementaryGroupChatService {
 
     @Transactional
     public ElementaryGroupChat addNewElementaryGroupChat(AddElementaryGroupChatDTO group) {
+        if(groupRepository.existsGroupChatByName(group.getName())){
+            return null;
+        }
         GroupChat savedGroupChat = groupRepository.save(new GroupChat(group.getName()));
-        ElementaryGroupChat newElementaryGroupChat = elementaryGroupChatRepository.save(new ElementaryGroupChat(savedGroupChat));
         //addAllUsersToGroup(newElementaryGroupChat); // Add all UserAccounts to the group
-        return newElementaryGroupChat;
+        return elementaryGroupChatRepository.save(new ElementaryGroupChat(savedGroupChat));
     }
 
     private void addAllUsersToGroup(ElementaryGroupChat elementaryGroupChat) {
@@ -125,7 +127,17 @@ public class ElementaryGroupChatService {
                 .stream()
                 .map(ElementaryGroupChatBasicInfoDTO::new)
                 .toList();
-        temp.forEach(e -> e.setSize(elementaryGroupChatMemberService.getElementaryGroupChatSize()));
+        temp.forEach(e -> e.setSize(elementaryGroupChatMemberService.getElementaryGroupChatSize(e.getId())));
+        return temp;
+    }
+
+    public List<ElementaryGroupChatBasicInfoDTO> getByKeyword(String keyword) {
+        List<ElementaryGroupChatBasicInfoDTO> temp = elementaryGroupChatRepository
+                .findAllByGroupChat_NameContains(keyword)
+                .stream()
+                .map(ElementaryGroupChatBasicInfoDTO::new)
+                .toList();
+        temp.forEach(e -> e.setSize(elementaryGroupChatMemberService.getElementaryGroupChatSize(e.getId())));
         return temp;
     }
 }

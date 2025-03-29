@@ -1,0 +1,30 @@
+<div class="form-container">
+  <mat-card class="form-card" appearance="outlined">
+    <mat-card-header class="form-header">
+      <mat-card-title class="title">Add Elementary Group</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="elementaryGroupForm">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Name</mat-label>
+          <input matInput formControlName="name" />
+        </mat-form-field>
+
+        @if(conflict) {
+        <p class="error">Elementary group with given name already exists!</p>
+        }
+
+        <div class="button-container">
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="submitForm()"
+            [disabled]="elementaryGroupForm.invalid"
+          >
+            Save
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
