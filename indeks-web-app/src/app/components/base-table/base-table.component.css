@@ -61,3 +61,10 @@ th {
 .refresh-button:hover {
   background-color: rgba(0, 0, 0, 0.04);
 }
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}

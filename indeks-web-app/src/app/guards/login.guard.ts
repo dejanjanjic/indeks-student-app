@@ -10,10 +10,10 @@ export const loginGuard: CanActivateFn = () => {
     const role = authService.getUserRole()?.toUpperCase();
     switch (role) {
       case 'ADMIN':
-        router.navigate(['/admin/dashboard']);
+        router.navigate(['/admin']);
         break;
       case 'STUDENT':
-        router.navigate(['/student/profile']);
+        router.navigate(['/student']);
         break;
       default:
         authService.logout();

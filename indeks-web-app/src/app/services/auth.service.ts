@@ -63,7 +63,7 @@ export class AuthService {
 
   public getUsername(): string | null {
     const decodedToken = this.getDecodedToken();
-    return decodedToken?.firstName + ' ' + decodedToken?.lastName || null;
+    return `${decodedToken?.firstName} ${decodedToken?.lastName}` || null;
   }
 
   public handleRedirection(token?: string): void {

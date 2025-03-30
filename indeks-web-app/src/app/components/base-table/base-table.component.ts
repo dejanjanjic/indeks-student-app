@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-base-table',
@@ -20,6 +21,7 @@ import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component'
     MatButtonModule,
     MatPaginatorModule,
     MatSlideToggleModule,
+    MatProgressSpinnerModule,
     FormsModule,
     MatInputModule,
     RouterModule,
@@ -39,6 +41,7 @@ export class BaseTableComponent<T extends { id: number }>
   @Input() dateFormat: string = 'dd.MM.yyyy.';
   @Input() retrieveDataFunction: any;
   @Input() addDataFunction: any;
+  @Input() deleteDataFunction: any;
   @Input() updateDataFunction: any;
   @Input() filterDataFunction: any;
   @Input() viewDetailsFunction: any;
@@ -48,6 +51,7 @@ export class BaseTableComponent<T extends { id: number }>
   resultsLength = 0;
 
   searchTerm = '';
+  isLoading = false;
 
   constructor(private dialog: MatDialog) {}
 
@@ -66,13 +70,19 @@ export class BaseTableComponent<T extends { id: number }>
   }
 
   filter(keyword: string) {
+    this.dataSource.data = [];
+    this.resultsLength = 0;
+    this.isLoading = true;
     this.filterDataFunction(keyword).subscribe({
       next: (result: T[]) => {
         this.dataSource.data = result;
         this.resultsLength = result.length;
+        this.isLoading = false;
       },
-      error: (err: any) =>
-        console.error('Greška prilikom učitavanja podataka:', err),
+      error: (err: any) => {
+        console.error('Greška prilikom učitavanja podataka:', err);
+        this.isLoading = false;
+      },
     });
   }
 
@@ -83,29 +93,45 @@ export class BaseTableComponent<T extends { id: number }>
   }
 
   loadData(): void {
+    this.dataSource.data = [];
+    this.resultsLength = 0;
+    this.isLoading = true;
     this.retrieveDataFunction().subscribe({
       next: (result: T[]) => {
         this.dataSource.data = result;
         this.resultsLength = result.length;
+        this.isLoading = false;
       },
-      error: (err: any) =>
-        console.error('Greška prilikom učitavanja podataka:', err),
+      error: (err: any) => {
+        console.error('Greška prilikom učitavanja podataka:', err);
+        this.isLoading = false;
+      },
     });
   }
 
   deleteItem(id: string): void {
-    const dialogRef = this.dialog.open(DeleteDialogComponent, {
-      data: { name: `${this.headerMap['entityName']} ${id}` },
-    });
+    if (this.deleteDataFunction) {
+      this.deleteDataFunction(id);
+    } else {
+      const dialogRef = this.dialog.open(DeleteDialogComponent, {
+        data: { name: `${this.headerMap['entityName']} ${id}` },
+      });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.service.deleteById(id).subscribe({
-          next: () => this.refreshTable(),
-          error: (err: any) => console.error('Greška prilikom brisanja:', err),
-        });
-      }
-    });
+      dialogRef.afterClosed().subscribe((result) => {
+        this.dataSource.data = [];
+        this.resultsLength = 0;
+        this.isLoading = true;
+        if (result) {
+          this.service.deleteById(id).subscribe({
+            next: () => this.refreshTable(),
+            error: (err: any) => {
+              this.isLoading = false;
+              console.error('Greška prilikom brisanja:', err);
+            },
+          });
+        }
+      });
+    }
   }
 
   getHeader(col: string): string {
