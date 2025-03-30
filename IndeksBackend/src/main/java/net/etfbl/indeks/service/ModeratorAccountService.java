@@ -52,3 +52,4 @@ public class ModeratorAccountService {
         moderatorAccountRepository.deleteById(id);
     }
 }
+
