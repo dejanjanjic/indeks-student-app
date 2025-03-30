@@ -61,6 +61,11 @@ export class AuthService {
     return decodedToken?.accountId || null;
   }
 
+  public getUsername(): string | null {
+    const decodedToken = this.getDecodedToken();
+    return decodedToken?.firstName + ' ' + decodedToken?.lastName || null;
+  }
+
   public handleRedirection(token?: string): void {
     let decodedToken: any = null;
     if (typeof token === 'undefined') {

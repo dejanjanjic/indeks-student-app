@@ -15,9 +15,14 @@ export const routes: Routes = [
     path: 'admin',
     canActivate: [authGuard, roleGuard],
     data: { roles: ['ADMIN'] },
+
     children: [
-      { path: 'dashboard', component: AdminDashboardComponent },
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      { path: 'elementary-groups', component: ElementaryGroupTableComponent },
+      {
+        path: 'elementary-groups/add-elementary-group',
+        component: AddElementayGroupComponent,
+      },
+      { path: '', redirectTo: 'elementary-groups', pathMatch: 'full' },
     ],
   },
   {
@@ -27,11 +32,6 @@ export const routes: Routes = [
     children: [
       { path: 'profile', component: StudentProfileComponent },
       { path: 'schedule', component: SchedulePageComponent },
-      { path: 'elementary-groups', component: ElementaryGroupTableComponent },
-      {
-        path: 'elementary-groups/add-elementary-group',
-        component: AddElementayGroupComponent,
-      },
       { path: '', redirectTo: 'profile', pathMatch: 'full' },
     ],
   },
