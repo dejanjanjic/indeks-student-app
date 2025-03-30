@@ -23,7 +23,8 @@ import java.util.stream.Collectors;
 @Service
 public class MaterialService {
     private final MaterialRepository materialRepository;
-
+    @Autowired
+    private MinioService minioService;
     @Autowired
     public MaterialService(MaterialRepository materialRepository){
         this.materialRepository = materialRepository;
@@ -81,37 +82,61 @@ public class MaterialService {
         return true;
     }
 
+//    public MaterialResponseDTO getMaterialAsDTO(Long materialId) {
+//        // Fetch the material from the database
+//        Optional<Material> materialOptional = materialRepository.findById(materialId);
+//
+//        if (materialOptional.isEmpty()) {
+//            return null; // or throw a custom exception if you prefer
+//        }
+//
+//        Material material = materialOptional.get();
+//        String filePath = material.getContent(); // Path from the 'content' column in database
+//        File file = new File(filePath);
+//
+//        if (!file.exists()) {
+//            return null; // or handle file not found scenario
+//        }
+//
+//        try {
+//            // Read file content and encode it to Base64
+//            byte[] fileBytes = new byte[(int) file.length()];
+//            try (FileInputStream fis = new FileInputStream(file)) {
+//                fis.read(fileBytes);
+//            }
+//
+//            String base64Encoded = Base64.getEncoder().encodeToString(fileBytes);
+//
+//            // Return a DTO with the name and Base64 content
+//            return new MaterialResponseDTO(material.getName(), base64Encoded);
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return null; // Handle the error, return null or custom error response
+//        }
+//    }
     public MaterialResponseDTO getMaterialAsDTO(Long materialId) {
-        // Fetch the material from the database
+
         Optional<Material> materialOptional = materialRepository.findById(materialId);
-
         if (materialOptional.isEmpty()) {
-            return null; // or throw a custom exception if you prefer
+            return null;
         }
-
         Material material = materialOptional.get();
-        String filePath = material.getContent(); // Path from the 'content' column in database
-        File file = new File(filePath);
-
-        if (!file.exists()) {
-            return null; // or handle file not found scenario
-        }
+        String objectName = material.getContent();
 
         try {
-            // Read file content and encode it to Base64
-            byte[] fileBytes = new byte[(int) file.length()];
-            try (FileInputStream fis = new FileInputStream(file)) {
-                fis.read(fileBytes);
-            }
+
+            byte[] fileBytes = minioService.downloadFile(objectName);
+
 
             String base64Encoded = Base64.getEncoder().encodeToString(fileBytes);
 
-            // Return a DTO with the name and Base64 content
+
             return new MaterialResponseDTO(material.getName(), base64Encoded);
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-            return null; // Handle the error, return null or custom error response
+            return null;
         }
     }
 
