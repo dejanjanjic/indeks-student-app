@@ -3,7 +3,6 @@ import { inject, Injectable } from '@angular/core';
 import { LoginDTO } from '../model/login.model';
 import { Observable, tap } from 'rxjs';
 import { Router } from '@angular/router';
-
 import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
@@ -55,6 +54,16 @@ export class AuthService {
   public getUserRole(): string | null {
     const decodedToken = this.getDecodedToken();
     return decodedToken?.accountType || null;
+  }
+
+  public getUserId(): number | null {
+    const decodedToken = this.getDecodedToken();
+    return decodedToken?.accountId || null;
+  }
+
+  public getUsername(): string | null {
+    const decodedToken = this.getDecodedToken();
+    return `${decodedToken?.firstName} ${decodedToken?.lastName}` || null;
   }
 
   public handleRedirection(token?: string): void {

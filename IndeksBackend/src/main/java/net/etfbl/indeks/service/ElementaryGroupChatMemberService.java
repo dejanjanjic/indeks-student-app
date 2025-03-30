@@ -28,8 +28,8 @@ public class ElementaryGroupChatMemberService {
     public List<ElementaryGroupChatMember> getElementaryGroupChatMembers() {
         return elementaryGroupChatMemberRepository.findAll();
     }
-    public Integer getElementaryGroupChatSize() {
-        return elementaryGroupChatMemberRepository.findAll().size();
+    public Integer getElementaryGroupChatSize(Long id) {
+        return elementaryGroupChatMemberRepository.findByElementaryGroupChat_Id(id).size();
     }
 
     public Optional<ElementaryGroupChatMember> getElementaryGroupChatMember(Long memberId) {

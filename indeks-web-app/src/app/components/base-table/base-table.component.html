@@ -79,6 +79,12 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
+  @if(isLoading){
+  <div class="spinner-container">
+    <mat-progress-spinner mode="indeterminate" diameter="50" strokeWidth="5">
+    </mat-progress-spinner>
+  </div>
+  }
   <mat-paginator
     [length]="resultsLength"
     [pageSize]="5"
