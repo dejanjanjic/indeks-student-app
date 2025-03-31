@@ -7,12 +7,14 @@ import {
   TouchableOpacity,
 } from "react-native";
 import Sidebar from "../components/SidebarComponent";
+import TutorSidebar from "../components/TutorSideBarComponent";
 import Icon from "react-native-vector-icons/FontAwesome";
 import Icon5 from "react-native-vector-icons/FontAwesome5";
 import Icon6 from "react-native-vector-icons/FontAwesome6";
 import IconFeather from "react-native-vector-icons/Feather";
 import HeaderComponent from "../components/HeaderComponent";
 import { useNavigation } from "@react-navigation/native";
+import { useUser } from "../hooks/useUser";
 
 const data = [
   {
@@ -42,6 +44,7 @@ const SettingsScreen = () => {
   const toggleSidebar = () => {
     setSidebarVisible(!isSidebarVisible);
   };
+  const user = useUser();
 
   const navigation = useNavigation();
 
@@ -90,7 +93,12 @@ const SettingsScreen = () => {
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
       />
-      <Sidebar visible={isSidebarVisible} onClose={toggleSidebar} />
+
+      {user.accountType === "STUDENT" ? (
+        <Sidebar visible={isSidebarVisible} onClose={toggleSidebar} />
+      ) : (
+        <TutorSidebar visible={isSidebarVisible} onClose={toggleSidebar} />
+      )}
     </View>
   );
 };

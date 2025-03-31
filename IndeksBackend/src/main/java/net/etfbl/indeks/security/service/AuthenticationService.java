@@ -82,9 +82,9 @@ public class AuthenticationService {
                 if (studentCheck.isPresent())
                     return RegistrationStatus.ACCOUNT_ALREADY_EXISTS;
 
-                if(!input.getEmail().endsWith("etf.unibl.org")) {
-                    return RegistrationStatus.INVALID_STUDENT_EMAIL;
-                }
+//                if(!input.getEmail().endsWith("etf.unibl.org")) {
+//                    return RegistrationStatus.INVALID_STUDENT_EMAIL;
+//                }
 
                 Schedule schedule = new Schedule();
                 scheduleRepository.save(schedule);
@@ -128,6 +128,16 @@ public class AuthenticationService {
                 tutorAccountRepository.save(tutorAccount);
                 System.out.println("New tutor registered!");
             }
+            case "MODERATOR" -> {
+
+
+
+
+
+            }
+
+
+
             default -> {
                 System.out.println("WRONG USER TYPE FLAG!");
                 return RegistrationStatus.INVALID_FLAG;

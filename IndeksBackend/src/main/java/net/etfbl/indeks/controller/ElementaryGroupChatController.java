@@ -1,9 +1,6 @@
 package net.etfbl.indeks.controller;
 
-import net.etfbl.indeks.dto.AddElementaryGroupChatDTO;
-import net.etfbl.indeks.dto.GetMessageDTO;
-import net.etfbl.indeks.dto.GroupMessageDTO;
-import net.etfbl.indeks.dto.MessageWithSenderDTO;
+import net.etfbl.indeks.dto.*;
 import net.etfbl.indeks.model.ElementaryGroupChat;
 import net.etfbl.indeks.service.ElementaryGroupChatService;
 import net.etfbl.indeks.service.MessageService;
@@ -41,6 +38,14 @@ public class ElementaryGroupChatController {
         return new ResponseEntity<>(chats, HttpStatus.OK);
     }
 
+    @GetMapping("info")
+    public ResponseEntity<List<ElementaryGroupChatBasicInfoDTO>> getAllInfo(){
+        return ResponseEntity.ok(elementaryGroupChatService.getAllInfo());
+    }
+    @GetMapping("filter/{keyword}")
+    public ResponseEntity<List<ElementaryGroupChatBasicInfoDTO>> getByKeyword(@PathVariable("keyword") String keyword){
+        return ResponseEntity.ok(elementaryGroupChatService.getByKeyword(keyword));
+    }
     @GetMapping(path = "{groupId}")
     public ResponseEntity<Optional<ElementaryGroupChat>> getElementaryGroupChat(@PathVariable("groupId") Long groupId) {
         Optional<ElementaryGroupChat> chat = elementaryGroupChatService.getGroup(groupId);
@@ -54,7 +59,7 @@ public class ElementaryGroupChatController {
     @PostMapping
     public ResponseEntity<ElementaryGroupChat> registerNewElementaryGroupChat(@RequestBody AddElementaryGroupChatDTO group) {
         ElementaryGroupChat ElGroup = elementaryGroupChatService.addNewElementaryGroupChat(group);
-        return new ResponseEntity<>(ElGroup, HttpStatus.OK);
+        return ElGroup == null ? ResponseEntity.notFound().build() : new ResponseEntity<>(ElGroup, HttpStatus.OK);
     }
 
     @DeleteMapping(path = "{groupId}")

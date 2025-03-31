@@ -4,10 +4,7 @@ package net.etfbl.indeks.service;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
-import net.etfbl.indeks.dto.AddElementaryGroupChatDTO;
-import net.etfbl.indeks.dto.AddElementaryGroupChatMemberDTO;
-import net.etfbl.indeks.dto.GetMessageDTO;
-import net.etfbl.indeks.dto.MessageWithSenderDTO;
+import net.etfbl.indeks.dto.*;
 import net.etfbl.indeks.model.*;
 
 import net.etfbl.indeks.repository.ElementaryGroupChatRepository;
@@ -54,10 +51,12 @@ public class ElementaryGroupChatService {
 
     @Transactional
     public ElementaryGroupChat addNewElementaryGroupChat(AddElementaryGroupChatDTO group) {
+        if(groupRepository.existsGroupChatByName(group.getName())){
+            return null;
+        }
         GroupChat savedGroupChat = groupRepository.save(new GroupChat(group.getName()));
-        ElementaryGroupChat newElementaryGroupChat = elementaryGroupChatRepository.save(new ElementaryGroupChat(savedGroupChat));
         //addAllUsersToGroup(newElementaryGroupChat); // Add all UserAccounts to the group
-        return newElementaryGroupChat;
+        return elementaryGroupChatRepository.save(new ElementaryGroupChat(savedGroupChat));
     }
 
     private void addAllUsersToGroup(ElementaryGroupChat elementaryGroupChat) {
@@ -120,5 +119,25 @@ public class ElementaryGroupChatService {
         }
         group.get().setName(groupName);
         return true;
+    }
+
+    public List<ElementaryGroupChatBasicInfoDTO> getAllInfo() {
+        List<ElementaryGroupChatBasicInfoDTO> temp = elementaryGroupChatRepository
+                .findAll()
+                .stream()
+                .map(ElementaryGroupChatBasicInfoDTO::new)
+                .toList();
+        temp.forEach(e -> e.setSize(elementaryGroupChatMemberService.getElementaryGroupChatSize(e.getId())));
+        return temp;
+    }
+
+    public List<ElementaryGroupChatBasicInfoDTO> getByKeyword(String keyword) {
+        List<ElementaryGroupChatBasicInfoDTO> temp = elementaryGroupChatRepository
+                .findAllByGroupChat_NameContains(keyword)
+                .stream()
+                .map(ElementaryGroupChatBasicInfoDTO::new)
+                .toList();
+        temp.forEach(e -> e.setSize(elementaryGroupChatMemberService.getElementaryGroupChatSize(e.getId())));
+        return temp;
     }
 }

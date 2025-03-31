@@ -1,7 +1,6 @@
 package net.etfbl.indeks.controller;
 
 import net.etfbl.indeks.dto.AddUserAccountDTO;
-import net.etfbl.indeks.model.Account;
 import net.etfbl.indeks.model.StudentAccount;
 import net.etfbl.indeks.service.StudentAccountService;
 import org.springframework.beans.factory.annotation.Autowired;

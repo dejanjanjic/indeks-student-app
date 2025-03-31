@@ -51,7 +51,7 @@ public class SecurityConfiguration {
 //                .requestMatchers("/api/v1/auth/logout")
 //                .hasAnyAuthority("ROLE_STUDENT", "ROLE_ADMIN") // Specifične role
                 .requestMatchers("/**")
-                .hasAnyAuthority("ROLE_STUDENT", "ROLE_TUTOR", "ROLE_ADMIN") // Svi ostali zahtevi za STUDENT i ADMIN
+                .hasAnyAuthority("ROLE_STUDENT", "ROLE_TUTOR", "ROLE_ADMIN", "ROLE_MODERATOR") // Svi ostali zahtevi za STUDENT i ADMIN
                 .anyRequest()
                 .authenticated() // Sve ostalo zahteva autentifikaciju
                 .and()

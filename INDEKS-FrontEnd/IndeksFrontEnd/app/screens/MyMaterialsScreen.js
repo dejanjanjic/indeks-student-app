@@ -11,6 +11,7 @@ import {
 import Icon from "react-native-vector-icons/FontAwesome";
 import HeaderComponent from "../components/HeaderComponent";
 import Sidebar from "../components/SidebarComponent";
+import TutorSidebar from "../components/TutorSideBarComponent";
 import * as FileSystem from "expo-file-system";
 import { useUser } from "../hooks/useUser";
 import HttpService from "../services/HttpService";
@@ -182,7 +183,12 @@ const MyMaterialScreen = ({ route, navigation }) => {
           contentContainerStyle={styles.cardList}
         />
       )}
-      <Sidebar visible={isSidebarVisible} onClose={toggleSidebar} />
+
+      {user.accountType === "STUDENT" ? (
+        <Sidebar visible={isSidebarVisible} onClose={toggleSidebar} />
+      ) : (
+        <TutorSidebar visible={isSidebarVisible} onClose={toggleSidebar} />
+      )}
     </View>
   );
 };

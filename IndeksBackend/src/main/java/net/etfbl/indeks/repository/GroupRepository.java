@@ -9,4 +9,6 @@ import java.util.Optional;
 @Repository
 public interface GroupRepository extends JpaRepository<GroupChat, Long> {
     Optional<GroupChat> findByName(String GroupName);
+
+    boolean existsGroupChatByName(String name);
 }

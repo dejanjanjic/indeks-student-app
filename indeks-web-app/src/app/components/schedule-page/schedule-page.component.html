@@ -1,0 +1,50 @@
+<div class="schedule-wrapper">
+  <div class="top-section">
+    <mat-form-field class="mat-label">
+      <mat-label>Odaberite grupu</mat-label>
+      <mat-select [(value)]="selectedOption">
+        @for (item of options; track $index) {
+        <mat-option [value]="item.value">{{ item.label }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <button mat-button color="primary">Odaberi</button>
+    <button mat-button color="primary">Izmijeni raspored</button>
+  </div>
+
+  @if (isLoading) {
+  <div class="loading-spinner">
+    <mat-progress-spinner
+      diameter="50"
+      mode="indeterminate"
+    ></mat-progress-spinner>
+  </div>
+  } @if (errorMessage) {
+  <div class="error-message">
+    {{ errorMessage }}
+  </div>
+  } @if (!isLoading && !errorMessage) {
+  <div class="schedule-container">
+    <table class="schedule-table">
+      <thead>
+        <tr>
+          <th class="time-column">Vrijeme</th>
+          @for (day of days; track $index) {
+          <th>{{ day }}</th>
+          }
+        </tr>
+      </thead>
+      <tbody>
+        @for (time of times; track $index; let timeIndex = $index) {
+        <tr>
+          <td class="time-column">{{ time }}</td>
+          @for (day of days; track $index; let dayIndex = $index) {
+          <td>{{ scheduleData[timeIndex][dayIndex] || "" }}</td>
+          }
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  }
+</div>
