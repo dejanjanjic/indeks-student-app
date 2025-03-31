@@ -80,7 +80,7 @@ export class BaseTableComponent<T extends { id: number }>
         this.isLoading = false;
       },
       error: (err: any) => {
-        console.error('Greška prilikom učitavanja podataka:', err);
+        console.error(err);
         this.isLoading = false;
       },
     });
@@ -103,7 +103,7 @@ export class BaseTableComponent<T extends { id: number }>
         this.isLoading = false;
       },
       error: (err: any) => {
-        console.error('Greška prilikom učitavanja podataka:', err);
+        console.error(err);
         this.isLoading = false;
       },
     });
@@ -126,7 +126,7 @@ export class BaseTableComponent<T extends { id: number }>
             next: () => this.refreshTable(),
             error: (err: any) => {
               this.isLoading = false;
-              console.error('Greška prilikom brisanja:', err);
+              console.error(err);
             },
           });
         }

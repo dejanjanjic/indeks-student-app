@@ -43,7 +43,7 @@ const AnnouncementsListScreen = () => {
       );
       setAdsData((prevData) => ({ ...prevData, [year]: formattedData })); // ovde imamo kao 1 : pa oglasi njegovi 2: pa oglsi njegovi da bi mogli lakse dole parsirat to
     } catch (error) {
-      console.error("Problemmm ", error);
+      console.error(error);
     } finally {
       setIsLoading(false);
     }

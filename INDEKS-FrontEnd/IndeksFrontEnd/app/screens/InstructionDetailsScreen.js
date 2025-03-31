@@ -50,7 +50,7 @@ const InstructionDetailsScreen = ({ route }) => {
           setEditableDescription(data.description || description);
         }
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error(error);
       } finally {
         setLoading(false);
       }

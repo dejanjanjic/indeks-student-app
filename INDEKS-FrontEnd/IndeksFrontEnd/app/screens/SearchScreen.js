@@ -36,7 +36,7 @@ const SearchScreen = ({ navigation }) => {
         setFilteredUsers(resp); 
         console.log(response);
       } catch (error) {
-        console.error("Error fetching users:", error);
+        console.error(error);
       } finally {
         setLoading(false);
       }

@@ -32,12 +32,12 @@ const BlockedUsersScreen = () => {
       const data = await HttpService.get(`blocked-accounts/${user.accountId}`);
       if (data.error) {
         console.log(data);
-        console.error(`Error fetching blocked users: ${data.message}`);
+        console.error();
       } else {
         setBlockedUsers(data);
       }
     } catch (error) {
-      console.error("Error fetching blocked users:", error);
+      console.error(error);
     } finally {
       setLoading(false);
     }

@@ -57,6 +57,6 @@ export class AddElementayGroupComponent {
 
   private handleError(err: any): void {
     this.conflict = true;
-    console.error('Error:', err.message);
+    console.error(err.message);
   }
 }

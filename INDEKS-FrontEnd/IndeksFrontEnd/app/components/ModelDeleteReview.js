@@ -23,7 +23,7 @@ const ModalDeleteReview = ({
       setIsLoading(false);
       onClose(); 
     } catch (error) {
-      console.error(error);
+      console.error();
       setIsLoading(false); 
     }
   };

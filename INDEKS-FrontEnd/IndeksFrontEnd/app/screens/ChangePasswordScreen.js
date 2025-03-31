@@ -54,7 +54,7 @@ const ChangePasswordScreen = () => {
       ]);
     } catch (error) {
       setLoading(false);
-      console.error("Greška pri izmjeni lozinke:", error);
+      console.error(error);
       Alert.alert("Greška", "Došlo je do greške. Pokušajte ponovo.");
     }
   };

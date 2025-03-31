@@ -31,7 +31,7 @@ const ModalBlockingUserFromChat = ({
       console.log(`Korisnik ${chatId} uspješno blokiran:`, response.data);
       onConfirm();
     } catch (error) {
-      console.error("Greška prilikom blokiranja korisnika:", error);
+      console.error(error);
       Alert.alert(
         "Greška",
         "Došlo je do greške prilikom blokiranja korisnika."
