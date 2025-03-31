@@ -22,7 +22,7 @@ import { AuthService } from '../../services/auth.service';
     MatCardModule,
     ReactiveFormsModule,
     MatProgressSpinnerModule,
-  ],
+  ]
 })
 export class LoginFormComponent {
   private formBuilder = inject(FormBuilder);
