@@ -1,0 +1,13 @@
+.spacer {
+  flex: 1 1 auto;
+}
+.logout-icon {
+  color: crimson;
+  margin-left: 10px;
+}
+.mat-toolbar {
+  --mat-toolbar-container-background-color: #a6b1e1;
+}
+.font-color-blue {
+  color: #424874;
+}

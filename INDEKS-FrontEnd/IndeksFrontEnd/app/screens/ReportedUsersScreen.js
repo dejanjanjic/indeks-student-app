@@ -45,7 +45,7 @@ const ReportedUsersScreen = () => {
           setData(response); 
           console.log(response)
         } catch (error) {
-          console.error("Error fetching reported materials:", error);
+          console.error(error);
         } finally {
           setLoading(false); 
         }

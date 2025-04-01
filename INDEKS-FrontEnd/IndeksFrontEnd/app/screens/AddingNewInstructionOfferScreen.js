@@ -36,10 +36,10 @@ const AddingNewInstructionOfferScreen = () => {
         if (response) {
           setData(response);
         } else {
-          console.error("Nema dostupnih podataka za predmete.");
+          console.error();
         }
       } catch (error) {
-        console.error("Greška prilikom učitavanja predmeta:", error);
+        console.error(error);
       }
     };
 
@@ -48,11 +48,11 @@ const AddingNewInstructionOfferScreen = () => {
 
   const handleAdd = async () => {
     if (!selectedSubject || !description) {
-      console.error("Popunite sve podatke pre dodavanja.");
+      console.error();
       return;
     }
     if (!studentAccountId) {
-      console.error("Korisnički ID nije pronađen. Proverite autentifikaciju.");
+      console.error();
       return;
     }
 
@@ -64,7 +64,7 @@ const AddingNewInstructionOfferScreen = () => {
       )?.id;
 
       if (!subjectId) {
-        console.error("Predmet nije pronađen.");
+        console.error();
         setLoading(false); // Stop loader
         return;
       }
@@ -79,7 +79,7 @@ const AddingNewInstructionOfferScreen = () => {
 
       navigation.goBack();
     } catch (error) {
-      console.error("Greška pri dodavanju ponude:", error);
+      console.error(error);
     } finally {
       setLoading(false); // Stop loader
     }

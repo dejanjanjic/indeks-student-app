@@ -25,7 +25,7 @@ export class AuthService {
           }
         },
         error: (error) => {
-          console.error('Login error:', error);
+          console.error(error);
           throw error;
         },
       })
@@ -59,6 +59,11 @@ export class AuthService {
   public getUserId(): number | null {
     const decodedToken = this.getDecodedToken();
     return decodedToken?.accountId || null;
+  }
+
+  public getUsername(): string | null {
+    const decodedToken = this.getDecodedToken();
+    return `${decodedToken?.firstName} ${decodedToken?.lastName}` || null;
   }
 
   public handleRedirection(token?: string): void {

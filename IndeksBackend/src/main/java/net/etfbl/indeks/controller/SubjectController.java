@@ -39,6 +39,7 @@ public class SubjectController {
     // Get subjects by year
     @GetMapping(path = "/year/{year}")
     public ResponseEntity<List<GetSubjectDTO>> getSubjectsByYear(@PathVariable int year) {
+        System.out.println("sxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
         List<GetSubjectDTO> subjects = subjectService.getSubjectsByYear(year);
         return ResponseEntity.ok(subjects);
     }

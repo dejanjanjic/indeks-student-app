@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { authGuard } from './guards/auth.guard';
 import { roleGuard } from './guards/role.guard';
-import { AdminDashboardComponent } from './components/admin/admin-dashboard/admin-dashboard.component';
+import { MaterialPageComponent } from './components/material-page/material-page.component';
 import { StudentProfileComponent } from './components/student-profile/student-profile.component';
 import { SchedulePageComponent } from './components/schedule-page/schedule-page.component';
 import { ElementaryGroupTableComponent } from './components/elementary-group-table/elementary-group-table.component';
@@ -13,11 +13,20 @@ export const routes: Routes = [
   { path: 'login', canActivate: [loginGuard], component: LoginFormComponent },
   {
     path: 'admin',
+    loadComponent: () =>
+      import(
+        './components/admin/admin-dashboard/admin-dashboard.component'
+      ).then((m) => m.AdminDashboardComponent),
     canActivate: [authGuard, roleGuard],
     data: { roles: ['ADMIN'] },
+
     children: [
-      { path: 'dashboard', component: AdminDashboardComponent },
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      { path: 'elementary-groups', component: ElementaryGroupTableComponent },
+      {
+        path: 'elementary-groups/add-elementary-group',
+        component: AddElementayGroupComponent,
+      },
+      { path: '', redirectTo: 'elementary-groups', pathMatch: 'full' },
     ],
   },
   {
@@ -27,14 +36,11 @@ export const routes: Routes = [
     children: [
       { path: 'profile', component: StudentProfileComponent },
       { path: 'schedule', component: SchedulePageComponent },
-      { path: 'elementary-groups', component: ElementaryGroupTableComponent },
-      {
-        path: 'elementary-groups/add-elementary-group',
-        component: AddElementayGroupComponent,
-      },
+      { path: 'material', component: MaterialPageComponent },
       { path: '', redirectTo: 'profile', pathMatch: 'full' },
     ],
   },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', redirectTo: '/login' },
+
 ];

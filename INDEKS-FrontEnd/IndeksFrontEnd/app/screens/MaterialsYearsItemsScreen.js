@@ -24,7 +24,7 @@ const MaterialsYearsItemsScreen = ({ route, navigation }) => {
         console.log(response);
         setData(response);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error(error);
       } finally {
         setIsLoading(false);
       }

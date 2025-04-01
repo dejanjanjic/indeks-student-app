@@ -101,7 +101,7 @@ export class SchedulePageComponent implements OnInit {
         this.isLoading = false;
       },
       error: (error) => {
-        console.error('Greška pri učitavanju rasporeda:', error);
+        console.error(error);
 
         if (error.status === 200) {
           this.handleError(
@@ -138,7 +138,7 @@ export class SchedulePageComponent implements OnInit {
   private handleError(message: string, error?: any): void {
     this.errorMessage = message;
     this.isLoading = false;
-    if (error) console.error(error);
+    if (error) console.error();
   }
 
   private updateScheduleItem(scheduleItemId: number, updatedData: any) {

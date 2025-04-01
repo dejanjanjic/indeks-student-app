@@ -22,7 +22,7 @@ import { AuthService } from '../../services/auth.service';
     MatCardModule,
     ReactiveFormsModule,
     MatProgressSpinnerModule,
-  ],
+  ]
 })
 export class LoginFormComponent {
   private formBuilder = inject(FormBuilder);
@@ -53,7 +53,7 @@ export class LoginFormComponent {
       error: (error: any) => {
         this.isLoading = false;
         this.errorMessage = 'Neispravni kredencijali ili greška u prijavi';
-        console.error('Login error:', error);
+        console.error(error);
       },
     });
   }

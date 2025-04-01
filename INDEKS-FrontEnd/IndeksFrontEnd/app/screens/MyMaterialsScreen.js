@@ -40,12 +40,12 @@ const MyMaterialScreen = ({ route, navigation }) => {
       const response = await HttpService.get(`material/owner/${id}`);
       console.log(response);
       if (response.error) {
-        console.error("Failed to fetch materials:", response.message);
+        console.error(response.message);
       } else {
         setMaterials(response);
       }
     } catch (error) {
-      console.error("Error fetching materials:", error);
+      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -87,7 +87,7 @@ const MyMaterialScreen = ({ route, navigation }) => {
       await Sharing.shareAsync(tempUri);
       //Alert.alert("Success", `${material.name} has been shared successfully.`);
     } catch (error) {
-      console.error("Error during file handling:", error);
+      console.error(error);
       Alert.alert("Error", error.message || "An unexpected error occurred.");
     }
   };

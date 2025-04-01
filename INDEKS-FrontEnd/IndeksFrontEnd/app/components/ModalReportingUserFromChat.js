@@ -45,7 +45,7 @@ const ModalReportingUserFromChat = ({
       setReportDescription(""); 
       onClose(); 
     } catch (error) {
-      console.error("Greška prilikom slanja prijave:", error);
+      console.error(error);
       Alert.alert("Greška", "Došlo je do greške prilikom prijave.");
     } finally {
       setIsLoading(false);
