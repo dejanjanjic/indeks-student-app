@@ -8,12 +8,17 @@ import { ScheduleItem } from '../model/scheduleItem.model';
   providedIn: 'root',
 })
 export class ScheduleService {
-  private apiUrl = 'http://localhost:8080/api/v1/schedule';
+  private scheduleUrl = 'http://localhost:8080/api/v1/schedule';
+  private scheduleItemUrl = 'http://localhost:8080/api/v1/scheduleItem';
   constructor(private http: HttpClient) {}
 
   getScheduleData(studentId: number): Observable<ScheduleItem[]> {
-    return this.http.get<ScheduleItem[]>(`${this.apiUrl}/${studentId}/items`, {
-      headers: { Accept: 'application/json' },
-    });
+    return this.http.get<ScheduleItem[]>(
+      `${this.scheduleUrl}/${studentId}/items`
+    );
+  }
+
+  updateScheduleData(scheduleItemId: number, data: any): Observable<any> {
+    return this.http.put(`${this.scheduleItemUrl}/${scheduleItemId}`, data);
   }
 }

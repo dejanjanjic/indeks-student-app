@@ -9,7 +9,9 @@
       </mat-select>
     </mat-form-field>
     <button mat-button color="primary">Odaberi</button>
-    <button mat-button color="primary">Izmijeni raspored</button>
+    <button mat-button color="primary" (click)="toggleEditMode()">
+      {{ isEditable ? "Spremi promene" : "Izmeni raspored" }}
+    </button>
   </div>
 
   @if (isLoading) {
@@ -39,7 +41,9 @@
         <tr>
           <td class="time-column">{{ time }}</td>
           @for (day of days; track $index; let dayIndex = $index) {
-          <td>{{ scheduleData[timeIndex][dayIndex] || "" }}</td>
+          <td onclick="onCellEdit(timeIndex,dayIndex,toggleEditMode())">
+            {{ scheduleData[timeIndex][dayIndex] || "" }}
+          </td>
           }
         </tr>
         }
