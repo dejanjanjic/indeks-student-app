@@ -1,0 +1,108 @@
+<!-- material-page.component.html -->
+<div class="container">
+  <!-- Loading Spinner -->
+  <div class="loading-spinner" *ngIf="isLoading">
+    <i class="fas fa-spinner"></i>
+    <span>Učitavanje...</span>
+  </div>
+
+  <!-- Godine studija -->
+  <div class="godine-wrapper">
+    <div class="godine-header">
+      <h2><i class="fas fa-calendar-alt"></i> Godine studija</h2>
+    </div>
+    <div class="godine-scroll">
+      <div *ngFor="let year of years"
+           [class.selected]="year === selectedYear"
+           class="godina-item"
+           (click)="loadSubjects(year)">
+        {{ year }}. godina
+      </div>
+    </div>
+  </div>
+
+  <!-- Predmeti -->
+  <div class="predmeti-section">
+    <div class="section-title">
+      <i class="fas fa-book-open"></i>
+      <h3>Predmeti {{ selectedYear }}. godine</h3>
+    </div>
+    <div class="predmeti-grid">
+      <div *ngFor="let subject of subjects"
+           class="predmet-card"
+           [class.selected]="subject === selectedSubject"
+           (click)="selectSubject(subject)">
+        <div class="predmet-content">
+          <h4>{{ subject.name }}</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Materijali -->
+  <div class="materijali-section" *ngIf="selectedSubject">
+    <div class="materijali-header">
+      <h3>
+        <i class="fas fa-file-alt"></i>
+        Materijali za: {{ selectedSubject.name }}
+      </h3>
+      <div class="header-controls">
+        <div class="search-box">
+          <i class="fas fa-search"></i>
+          <input type="text"
+                 [(ngModel)]="searchQuery"
+                 (input)="filterMaterials()"
+                 placeholder="Pretraži materijale...">
+        </div>
+        <button class="toggle-upload-btn" (click)="toggleUploadArea()">
+          <i class="fas" [class.fa-plus]="!showUploadArea" [class.fa-minus]="showUploadArea"></i>
+          {{ showUploadArea ? 'Zatvori' : 'Dodaj materijal' }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Upload Zone -->
+    <!-- Upload Zone -->
+    <!-- Upload Zone -->
+    <!-- Upload Zone -->
+    <div class="upload-zone"
+         *ngIf="showUploadArea"
+         (drop)="onFileDropped($event)"
+         (dragover)="onDragOver($event)"
+         (dragleave)="onDragLeave($event)"
+         [class.dragging]="isDragging"
+         (click)="fileInput.click()" #uploadZone>
+      <input type="file"
+             #fileInput
+             hidden
+             (change)="handleFileUpload($any($event.target).files)">
+      <div class="upload-content">
+        <i class="fas fa-cloud-upload-alt"></i>
+        <p>Prevuci i sposti fajlove ovdje</p>
+        <small>Maksimalna veličina: 10MB</small>
+      </div>
+    </div>
+
+    <!-- Materijali Lista -->
+    <div class="materijali-list" *ngIf="filteredMaterials.length > 0">
+      <div class="materijal-item" *ngFor="let material of filteredMaterials">
+        <div class="file-info">
+          <span class="file-type-badge" [style.background]="getFileType(material).color">
+            {{ getFileType(material).extension }}
+          </span>
+          <span class="file-name">{{ material.name }}</span>
+        </div>
+        <button class="download-btn" (click)="downloadMaterial(material.id)">
+          <i class="fas fa-download"></i>
+          Preuzmi
+        </button>
+      </div>
+    </div>
+
+    <!-- Prazna lista -->
+    <div class="prazna-lista" *ngIf="filteredMaterials.length === 0">
+      <i class="fas fa-folder-open"></i>
+      <p>Trenutno nema materijala za ovaj predmet</p>
+    </div>
+  </div>
+</div>

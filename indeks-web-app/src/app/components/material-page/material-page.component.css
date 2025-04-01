@@ -1,0 +1,332 @@
+/* material-page.component.css */
+/* Base Styles */
+.container {
+  font-family: 'Inter', sans-serif;
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  color: #2d3436;
+}
+
+/* Godine Section */
+.godine-scroll {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding-bottom: 1rem;
+}
+
+.godina-item {
+  padding: 0.8rem 2rem;
+  border-radius: 8px;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.godina-item.selected {
+  background: #2F80ED;
+  color: white;
+  border-color: transparent;
+}
+
+/* Predmeti Grid */
+.predmeti-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 120px;
+  gap: 1.5rem;
+  overflow-x: auto;
+  padding-bottom: 1rem;
+  min-width: 1000px;
+}
+
+.predmet-card {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  border: 1px solid #e9ecef;
+  transition: transform 0.2s ease;
+}
+
+.predmet-card.selected {
+  border-color: #2F80ED;
+  box-shadow: 0 2px 8px rgba(47, 128, 237, 0.1);
+}
+
+/* Upload Zone */
+.upload-zone {
+  border: 2px dashed #adb5bd;
+  border-radius: 8px;
+  padding: 3rem 1rem;
+  margin: 2rem 0;
+  text-align: center;
+  background: #f8f9fa;
+  transition: all 0.2s ease;
+}
+
+.upload-zone:hover {
+  border-color: #2F80ED;
+  background: #fff;
+}
+
+.upload-content i {
+  font-size: 2rem;
+  color: #2F80ED;
+  margin-bottom: 1rem;
+}
+
+/* Materijali List */
+.materijali-list {
+  max-height: 500px;
+  overflow-y: auto;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+}
+
+.materijal-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid #e9ecef;
+  background: #fff;
+}
+
+.file-type-badge {
+  padding: 0.3rem 0.8rem;
+  border-radius: 4px;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.file-name {
+  margin-left: 1rem;
+  flex-grow: 1;
+}
+
+.download-btn {
+  background: none;
+  border: 1px solid #2F80ED;
+  color: #2F80ED;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.download-btn:hover {
+  background: #2F80ED;
+  color: white;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ced4da;
+  border-radius: 4px;
+}
+
+/* Loading Spinner */
+.loading-spinner {
+  position: fixed;
+  top: 5%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #2F80ED;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: white;
+}
+
+.fa-spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.download-btn {
+  margin-left: auto; /* Pushes button to the right */
+  /* ... (keep existing styles) */
+}
+
+/* Enhanced Search Box */
+.search-box {
+  position: relative;
+  width: 300px;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 8px 16px 8px 40px;
+  transition: all 0.3s ease;
+}
+
+.search-box:hover,
+.search-box:focus-within {
+  border-color: #2F80ED;
+  box-shadow: 0 2px 8px rgba(47, 128, 237, 0.1);
+}
+
+.search-box i {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #adb5bd;
+}
+
+.search-box input {
+  border: none;
+  outline: none;
+  width: 100%;
+  background: transparent;
+}
+
+/* Hover Effects */
+.godina-item:hover {
+  background: #e9ecef;
+  transform: translateY(-2px);
+}
+
+.predmet-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.godina-item,
+.predmet-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Subjects Grid */
+.predmeti-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 120px;
+  gap: 1.5rem;
+  overflow-x: auto;
+  padding-bottom: 1rem;
+  min-width: 100%;
+}
+
+/* For 2x3 matrix scroll */
+@media (min-width: 768px) {
+  .predmeti-grid {
+    grid-template-columns: repeat(3, minmax(250px, 1fr));
+    grid-auto-rows: 140px;
+    max-height: 300px; /* 2 rows * 140px + gap */
+    overflow-y: hidden;
+  }
+}
+
+/* Scroll arrows hint */
+.predmeti-grid::-webkit-scrollbar-thumb {
+  background: #2F80ED;
+}
+
+.predmeti-grid {
+  scrollbar-color: #2F80ED transparent;
+}
+
+/* Predmeti Grid */
+.predmeti-grid {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 1.5rem;
+  padding-bottom: 1rem;
+  scrollbar-color: #2F80ED #f1f1f1;
+  scrollbar-width: thin;
+}
+
+.predmet-card {
+  flex: 0 0 280px; /* Fixed width for cards */
+  height: 60px;
+  /* Keep existing styles */
+}
+
+/* Enhanced Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2F80ED;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2567c0;
+}
+
+/* Header controls */
+.header-controls {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.toggle-upload-btn {
+  background: #2F80ED;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.toggle-upload-btn:hover {
+  background: #2567c0;
+}
+
+.toggle-upload-btn i {
+  font-size: 0.9rem;
+}
+
+/* Adjust search box width */
+.search-box {
+  width: 250px;
+}
+/* Add margin above the materials list */
+.materijali-list {
+  margin-top: 1.5rem;
+}
+
+/* Optional: Add spacing between upload zone and materials list */
+.upload-zone {
+  margin-bottom: 1rem;
+}
+
+/* Drag and drop visual feedback */
+.upload-zone.dragging {
+  border-color: #2F80ED;
+  background-color: rgba(47, 128, 237, 0.1);
+}
+
+.upload-zone {
+  min-height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: all 0.3s ease;
+}
