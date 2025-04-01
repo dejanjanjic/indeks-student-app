@@ -10,6 +10,7 @@ import {
   ActivityIndicator,
   Modal,
   Alert,
+  Button,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { useNavigation } from "@react-navigation/native";
@@ -39,7 +40,7 @@ const InstructionDetailsScreen = ({ route }) => {
   //const [selectedReview, setSelectedReview] = useState(null);
   const [addReviewDescription, setAddReviewDescription] = useState("");
   const [selectedRating, setSelectedRating] = useState(0);
-  const user = useUser()
+  const user = useUser();
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -67,22 +68,23 @@ const InstructionDetailsScreen = ({ route }) => {
 
     console.log(selectedReview);
     console.log("Opis:", reportDescription);
-    
-    const payload = 
-        {
-          reason: reportDescription,
-          time: new Date().toISOString(),
-          type: 0,
-          reviewId: selectedReview.id,
-          materialId: 0,
-          reporterId: user.accountId,
-          reportedId : 0
-        }
-        const response =await  HttpService.create("problemReport/newReport", payload)
-        console.log(response)
-        console.log(payload)
+
+    const payload = {
+      reason: reportDescription,
+      time: new Date().toISOString(),
+      type: 0,
+      reviewId: selectedReview.id,
+      materialId: 0,
+      reporterId: user.accountId,
+      reportedId: 0,
+    };
+    const response = await HttpService.create(
+      "problemReport/newReport",
+      payload
+    );
+    console.log(response);
+    console.log(payload);
     setReportReviewModalVisible(false);
-    
 
     setReportDescription("");
     setSelectedReview(null);
@@ -90,10 +92,7 @@ const InstructionDetailsScreen = ({ route }) => {
     Alert.alert("Uspješno", "Vaša prijava je poslata.");
   };
 
-
-  
   const handleAddReview = async () => {
-
     if (!addReviewDescription.trim()) {
       Alert.alert("Greška", "Opis recenzije ne može biti prazan.");
       return;
@@ -107,21 +106,19 @@ const InstructionDetailsScreen = ({ route }) => {
     setAddReviewModalVisible(false);
     setReportDescription("");
     setSelectedReview(null);
-    const payload = 
-    {
+    const payload = {
       comment: addReviewDescription,
       dateTime: new Date().toISOString(),
       tutoringOfferId: id,
       studentAccountId: user.accountId,
-      rating : selectedRating
-    }
-    
-    const response = await HttpService.create('review',payload)
+      rating: selectedRating,
+    };
+
+    const response = await HttpService.create("review", payload);
     console.log(payload);
     console.log(response);
-    reviews.push(response)
+    reviews.push(response);
     Alert.alert("Uspješno", "Vaša recenzija je dodata.");
-    
   };
 
   const back = () => {
@@ -143,12 +140,11 @@ const InstructionDetailsScreen = ({ route }) => {
     }
     return stars;
   };
-  const handleDelete = async () =>
-    {
-          await httpService.delete(`review/${selectedReview.id}`);
-          const updatedData = reviews.filter(item => item.id !== selectedReview.id);
-          setReviews(updatedData); 
-    }
+  const handleDelete = async () => {
+    await httpService.delete(`review/${selectedReview.id}`);
+    const updatedData = reviews.filter((item) => item.id !== selectedReview.id);
+    setReviews(updatedData);
+  };
   const handleLongPress = (review) => {
     setSelectedReview(review);
     setReportDescription("");
@@ -163,7 +159,7 @@ const InstructionDetailsScreen = ({ route }) => {
           <Icon
             name={i <= selectedRating ? "star" : "star-border"}
             size={32}
-            color={i <= selectedRating ? "#ccc" : "#ccc"} 
+            color={i <= selectedRating ? "#ccc" : "#ccc"}
             style={styles.starIcon}
           />
         </TouchableOpacity>
@@ -240,6 +236,21 @@ const InstructionDetailsScreen = ({ route }) => {
               <Text style={styles.description}>{editableDescription}</Text>
             </TouchableOpacity>
           )}
+
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              style={styles.customButton}
+              onPress={() => console.log("Prijava")}
+            >
+              <Text style={styles.buttonText}>Prijava</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.customButton}
+              onPress={() => console.log("Razgovor")}
+            >
+              <Text style={styles.buttonText}>Razgovor</Text>
+            </TouchableOpacity>
+          </View>
         </View>
 
         <Text style={styles.sectionTitle}>Recenzije</Text>
@@ -253,23 +264,21 @@ const InstructionDetailsScreen = ({ route }) => {
         <Text style={styles.floatingButtonText}>+</Text>
       </TouchableOpacity>
       {user.accountType === "STUDENT" ? (
-      <ModalReportReview
-        visible={isReportReviewModalVisible}
-        onClose={() => setReportReviewModalVisible(false)}
-        onSubmit={handleSubmitReport}
-        reportDescription={reportDescription}
-        setReportDescription={setReportDescription}
-      />
-    ) : user.accountType === "ADMIN" ? (
-      <ModalDeleteReview
-        visible={isReportReviewModalVisible}
-        onClose={() => setReportReviewModalVisible(false)}
-        onSubmit={handleDelete}
-    
-      />
-    ) : null}
+        <ModalReportReview
+          visible={isReportReviewModalVisible}
+          onClose={() => setReportReviewModalVisible(false)}
+          onSubmit={handleSubmitReport}
+          reportDescription={reportDescription}
+          setReportDescription={setReportDescription}
+        />
+      ) : user.accountType === "ADMIN" ? (
+        <ModalDeleteReview
+          visible={isReportReviewModalVisible}
+          onClose={() => setReportReviewModalVisible(false)}
+          onSubmit={handleDelete}
+        />
+      ) : null}
 
-     
       <ModalAddReview
         visible={isAddReviewModalVisible}
         onClose={() => setAddReviewModalVisible(false)}
@@ -280,7 +289,6 @@ const InstructionDetailsScreen = ({ route }) => {
         addReviewDescription={addReviewDescription}
         setAddReviewDescription={setAddReviewDescription}
         selectedRating={selectedRating}
-   
       />
     </View>
   );
@@ -460,6 +468,26 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginVertical: 10,
     color: "#fff",
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 10,
+  },
+
+  customButton: {
+    flex: 1,
+    backgroundColor: "#013868",
+    paddingVertical: 7,
+    marginHorizontal: 5,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });
 

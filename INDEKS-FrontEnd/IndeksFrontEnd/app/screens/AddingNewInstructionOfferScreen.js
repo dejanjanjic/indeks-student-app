@@ -17,7 +17,7 @@ import { useUser } from "../hooks/useUser";
 
 const AddingNewInstructionOfferScreen = () => {
   const user = useUser();
-  const studentAccountId = user?.accountId;
+  const tutorAccountId = user?.accountId;
   const [data, setData] = useState([]);
   const [isSidebarVisible, setSidebarVisible] = useState(false);
   const [selectedSubject, setSelectedSubject] = useState("");
@@ -51,37 +51,43 @@ const AddingNewInstructionOfferScreen = () => {
       console.error();
       return;
     }
-    if (!studentAccountId) {
-      console.error();
+
+    if (!tutorAccountId) {
+      console.error("Korisnički ID nije pronađen. Proverite autentifikaciju.");
       return;
     }
 
-    setLoading(true); // Start loader
+    const subjectId = data.find(
+      (subject) => subject.name === selectedSubject
+    )?.id;
+
+    if (!subjectId) {
+      console.error("Predmet nije pronađen.");
+      setLoading(false); // Stop loader
+      return;
+    }
+
+    const body = { description, subjectId, tutorAccountId };
+
+    console.log("Sending data:", body);
+
+    setLoading(true);
 
     try {
-      const subjectId = data.find(
-        (subject) => subject.name === selectedSubject
-      )?.id;
+      const response = await HttpService.create("tutoringOffer", body);
+      console.log();
+      console.log("RAW RESPONSEEE: ", response);
 
-      if (!subjectId) {
-        console.error();
-        setLoading(false); // Stop loader
+      if (!response || response.error) {
+        console.error("Greska pri kreiranju ponude:", response?.message);
         return;
       }
-
-      const body = {
-        description,
-        subjectId,
-        studentAccountId,
-      };
-
-      const response = await HttpService.create("tutoringOffer", body);
 
       navigation.goBack();
     } catch (error) {
       console.error(error);
     } finally {
-      setLoading(false); // Stop loader
+      setLoading(false);
     }
   };
 
