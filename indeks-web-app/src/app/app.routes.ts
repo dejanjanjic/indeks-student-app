@@ -8,6 +8,9 @@ import { SchedulePageComponent } from './components/schedule-page/schedule-page.
 import { ElementaryGroupTableComponent } from './components/elementary-group-table/elementary-group-table.component';
 import { AddElementayGroupComponent } from './components/add-elementay-group/add-elementay-group.component';
 import { loginGuard } from './guards/login.guard';
+import {SubjectPageComponent} from './components/subject-page/subject-page.component';
+import {AddSubjectComponent} from './components/add-subject/add-subject.component';
+import {UpdateSubjectComponent} from './components/update-subject/update-subject.component';
 
 export const routes: Routes = [
   { path: 'login', canActivate: [loginGuard], component: LoginFormComponent },
@@ -22,9 +25,18 @@ export const routes: Routes = [
 
     children: [
       { path: 'elementary-groups', component: ElementaryGroupTableComponent },
+      { path: 'subject-page', component: SubjectPageComponent },
       {
         path: 'elementary-groups/add-elementary-group',
         component: AddElementayGroupComponent,
+      },
+      {
+        path: 'subject-page/add-subject',
+        component: AddSubjectComponent,
+      },
+      {
+        path: 'subject-page/update-subject/:id',
+        component: UpdateSubjectComponent,
       },
       { path: '', redirectTo: 'elementary-groups', pathMatch: 'full' },
     ],

@@ -1,0 +1,33 @@
+/* add-subject.component.css */
+/* Reuse the same CSS as elementary group component */
+.form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  background-color: #f5f5f5;
+}
+.form-card {
+  width: 400px;
+  padding: 0 20px;
+}
+.form-header {
+  padding-bottom: 30px;
+}
+.title {
+  font-size: 25px;
+}
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+}
+.full-width {
+  width: 100%;
+}
+.error {
+  color: rgb(186, 26, 26);
+  font-size: 12px;
+  letter-spacing: 0.4px;
+  padding-left: 16px;
+  margin: 0;
+}

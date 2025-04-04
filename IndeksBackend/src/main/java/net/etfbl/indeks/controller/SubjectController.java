@@ -2,6 +2,7 @@ package net.etfbl.indeks.controller;
 
 import net.etfbl.indeks.dto.AddSubjectDTO;
 import net.etfbl.indeks.dto.GetSubjectDTO;
+import net.etfbl.indeks.dto.UpdateSubjectDTO;
 import net.etfbl.indeks.model.Subject;
 import net.etfbl.indeks.service.SubjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +55,7 @@ public class SubjectController {
     // Delete subject
     @DeleteMapping(path = "{id}")
     public ResponseEntity<Void> deleteSubject(@PathVariable Long id) {
+        System.out.println("brisi");
         boolean deleted = subjectService.deleteSubject(id);
         if (deleted) {
             return ResponseEntity.noContent().build();
@@ -63,9 +65,10 @@ public class SubjectController {
     }
 
     // Update subject
+// SubjectController.java
     @PutMapping
-    public ResponseEntity<Void> updateSubject(@RequestBody Subject subject) {
-        boolean updated = subjectService.updateSubject(subject);
+    public ResponseEntity<Void> updateSubject(@RequestBody UpdateSubjectDTO updateSubjectDTO) {
+        boolean updated = subjectService.updateSubject(updateSubjectDTO);
         if (updated) {
             return ResponseEntity.noContent().build();
         } else {

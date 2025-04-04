@@ -2,6 +2,7 @@ package net.etfbl.indeks.service;
 
 import net.etfbl.indeks.dto.AddSubjectDTO;
 import net.etfbl.indeks.dto.GetSubjectDTO;
+import net.etfbl.indeks.dto.UpdateSubjectDTO;
 import net.etfbl.indeks.model.Subject;
 import net.etfbl.indeks.repository.SubjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,13 +59,18 @@ public class SubjectService {
     }
 
     // Update subject
-    public boolean updateSubject(Subject subject) {
-        Optional<Subject> temp = subjectRepository.findById(subject.getId());
-        if (temp.isEmpty()) {
+// SubjectService.java
+    public boolean updateSubject(UpdateSubjectDTO updateSubjectDTO) {
+        Optional<Subject> subjectOptional = subjectRepository.findById(updateSubjectDTO.getId());
+        if (subjectOptional.isEmpty()) {
             return false;
         }
-        temp.get().setName(subject.getName());
-        temp.get().setYear(subject.getYear());
+
+        Subject subject = subjectOptional.get();
+        subject.setName(updateSubjectDTO.getName());
+        subject.setYear(updateSubjectDTO.getYear());
+
+        subjectRepository.save(subject);
         return true;
     }
 }
