@@ -19,8 +19,8 @@ export class ElementaryGroupTableComponent {
   headerMap = {
     id: 'Id',
     name: 'Name',
-    size: 'Size',
-    entityName: 'elementary group',
+    size: 'Members',
+    entityName: 'elementary group', //ostaviti ovo polje promijeniti vrijednost
   };
 
   retrieveDataFunction = () => this.elementaryGroupService.getAllInfo();

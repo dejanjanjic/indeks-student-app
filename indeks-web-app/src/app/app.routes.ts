@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { authGuard } from './guards/auth.guard';
 import { roleGuard } from './guards/role.guard';
-//import { MaterialPageComponent } from './components/material-page/material-page.component';
+import { MaterialPageComponent } from './components/material-page/material-page.component';
 import { StudentProfileComponent } from './components/student-profile/student-profile.component';
 import { SchedulePageComponent } from './components/schedule-page/schedule-page.component';
 import { ElementaryGroupTableComponent } from './components/elementary-group-table/elementary-group-table.component';
@@ -36,7 +36,7 @@ export const routes: Routes = [
     children: [
       { path: 'profile', component: StudentProfileComponent },
       { path: 'schedule', component: SchedulePageComponent },
-      //   { path: 'material', component: MaterialPageComponent },
+      { path: 'material', component: MaterialPageComponent },
       { path: '', redirectTo: 'profile', pathMatch: 'full' },
     ],
   },
