@@ -139,13 +139,14 @@ public class TutoringOfferService
 
     public List<TutoringOfferDetailsDTO> getTutoringOfferDetails() {
         List<TutoringOffer> tutoringOffers = tutoringOfferRepository.findAll();  // Retrieve all tutoring offers
-
         List<TutoringOfferDetailsDTO> offerDetailsDTOList = new ArrayList<>();
 
         for (TutoringOffer offer : tutoringOffers) {
-            // Fetch related user (acting as instructor)
-            UserAccount instructor = userAccountRepository.findById(offer.getTutorAccount().getId()).orElse(null);
-            // Fetch related subject
+            UserAccount instructor = null;
+            if(offer.getTutorAccount() != null){
+                instructor = userAccountRepository.findById(offer.getTutorAccount().getId()).orElse(null);
+            }
+
             Subject subject = subjectRepository.findById(offer.getSubject().getId()).orElse(null);
 
             // Calculate the average rating from reviews for the tutoring offer
@@ -156,7 +157,6 @@ public class TutoringOfferService
                 offerDetailsDTOList.add(new TutoringOfferDetailsDTO(instructorName, subject.getName(), offer.getId(), averageRating));
             }
         }
-
         return offerDetailsDTOList;
     }
 

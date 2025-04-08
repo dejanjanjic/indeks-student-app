@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common'; // Add this
 import { HttpClientModule } from '@angular/common/http';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import {FormsModule} from '@angular/forms';
+import {AuthService} from '../../services/auth.service';
 
 declare var URL: {
   createObjectURL(blob: Blob): string;
@@ -39,15 +40,22 @@ export class MaterialPageComponent implements OnInit {
   searchQuery: string = '';
   isLoading = false;
   MAX_FILE_SIZE = 10 * 1024 * 1024;
+  currentUserId: number | null = null;
+
   constructor(
     private subjectService: SubjectService,
-    private materialService: MaterialService
-  ) { }
+    private materialService: MaterialService,
+    private authService: AuthService // Add AuthService
+  ) {
+    this.currentUserId = this.authService.getUserId();
+  }
+
+  userMaterials: Material[] = [];
 
   ngOnInit(): void {
     this.loadSubjects(this.selectedYear);
+    this.loadUserMaterials();
   }
-
 
 
 // In your component
@@ -176,6 +184,7 @@ export class MaterialPageComponent implements OnInit {
 
 // Update handleFileUpload signature
   // Modify the handleFileUpload method
+  // material-page.component.ts (update handleFileUpload)
   handleFileUpload(files: FileList | null): void {
     this.fileError = '';
 
@@ -185,14 +194,29 @@ export class MaterialPageComponent implements OnInit {
     }
 
     const file = files[0];
-    // Rest of your existing upload logic
     if (this.selectedSubject) {
       this.isLoading = true;
       this.materialService.uploadMaterial(this.selectedSubject.id, file).subscribe({
-        next: () => {
+        next: (uploadedMaterial) => {
           this.isLoading = false;
           this.showUploadArea = false;
-          this.selectSubject(this.selectedSubject!);
+
+          // If the API returns the complete material object
+          if (uploadedMaterial) {
+            // Add to user materials list
+            this.userMaterials.push(uploadedMaterial);
+
+            // If currently viewing the subject this was uploaded to
+            if (this.selectedSubject && this.selectedSubject.id === uploadedMaterial.subjectId) {
+              this.materials.push(uploadedMaterial);
+              this.filterMaterials(); // Re-apply any active filters
+            } else {
+              this.selectSubject(this.selectedSubject!);
+            }
+          } else {
+            // Fallback to refreshing the subject
+            this.selectSubject(this.selectedSubject!);
+          }
         },
         error: (err) => {
           this.isLoading = false;
@@ -216,4 +240,110 @@ export class MaterialPageComponent implements OnInit {
   }
 
   protected readonly HTMLInputElement = HTMLInputElement;
+
+
+
+  // Update the ownership check
+  isMaterialOwner(material: Material): boolean {
+    return this.userMaterials.some(m => m.id === material.id);
+  }
+
+  // Update the delete method
+  deleteMaterial(materialId: number): void {
+    if (confirm('Da li ste sigurni da želite obrisati ovaj materijal?')) {
+      this.materialService.deleteMaterial(materialId).subscribe({
+        next: () => {
+          // Remove from all lists
+          this.materials = this.materials.filter(m => m.id !== materialId);
+          this.filteredMaterials = this.filteredMaterials.filter(m => m.id !== materialId);
+          this.userMaterials = this.userMaterials.filter(m => m.id !== materialId);
+        },
+        error: (err) => {
+          console.error('Delete failed:', err);
+          this.fileError = 'Brisanje nije uspjelo';
+        }
+      });
+    }
+  }
+
+  // material-page.component.ts (add these new properties)
+  showingUserMaterials: boolean = false;
+  userMaterialsTitle: string = 'Moji materijali';
+
+// Add these new methods
+  showUserMaterials(): void {
+    this.showingUserMaterials = true;
+    this.selectedSubject = null;
+    this.isLoading = true;
+
+    this.materialService.getUserMaterials(this.currentUserId!).subscribe({
+      next: (materials) => {
+        this.userMaterials = materials;
+        this.materials = materials;
+        this.filteredMaterials = [...materials];
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Failed to load user materials:', err);
+        this.isLoading = false;
+      }
+    });
+  }
+
+  // Add/modify these methods in your MaterialPageComponent class
+
+// Replace the existing toggleViewMode or add it if it doesn't exist
+  toggleViewMode(): void {
+    if (this.showingUserMaterials) {
+      // User just switched to "My Materials" view
+      this.loadUserMaterials();
+    } else {
+      // User just switched to "By Subject" view
+      // Reset the selected subject if needed and load subjects
+      if (this.selectedSubject) {
+        this.selectSubject(this.selectedSubject);
+      } else {
+        this.loadSubjects(this.selectedYear);
+      }
+    }
+  }
+
+// Update the loadUserMaterials method
+  loadUserMaterials(): void {
+    if (this.currentUserId) {
+      this.isLoading = true;
+      this.materialService.getUserMaterials(this.currentUserId).subscribe({
+        next: (materials) => {
+          this.userMaterials = materials;
+          this.materials = materials;
+          this.filteredMaterials = [...materials];
+          this.isLoading = false;
+        },
+        error: (err) => {
+          console.error('Failed to load user materials:', err);
+          this.isLoading = false;
+          this.filteredMaterials = [];
+        }
+      });
+    } else {
+      this.materials = [];
+      this.filteredMaterials = [];
+    }
+  }
+
+// You can remove or keep these methods as they won't be used with the toggle
+// showUserMaterials(): void {...}
+// showSubjectMaterials(): void {...}
+
+  showSubjectMaterials(): void {
+    this.showingUserMaterials = false;
+    // If we had a selected subject previously, reload it
+    if (this.selectedSubject) {
+      this.selectSubject(this.selectedSubject);
+    } else {
+      // Otherwise just clear the materials list
+      this.materials = [];
+      this.filteredMaterials = [];
+    }
+  }
 }

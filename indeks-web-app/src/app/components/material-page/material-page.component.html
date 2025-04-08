@@ -1,108 +1,137 @@
 <!-- material-page.component.html -->
 <div class="container">
-  <!-- Loading Spinner -->
-  <div class="loading-spinner" *ngIf="isLoading">
-    <i class="fas fa-spinner"></i>
-    <span>Učitavanje...</span>
-  </div>
-
-  <!-- Godine studija -->
-  <div class="godine-wrapper">
-    <div class="godine-header">
-      <h2><i class="fas fa-calendar-alt"></i> Godine studija</h2>
-    </div>
-    <div class="godine-scroll">
-      <div *ngFor="let year of years"
-           [class.selected]="year === selectedYear"
-           class="godina-item"
-           (click)="loadSubjects(year)">
-        {{ year }}. godina
-      </div>
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" *ngIf="isLoading">
+    <div class="loading-spinner">
+      <svg class="spinner" viewBox="0 0 50 50">
+        <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+      </svg>
+      <span>Učitavanje...</span>
     </div>
   </div>
 
-  <!-- Predmeti -->
-  <div class="predmeti-section">
-    <div class="section-title">
-      <i class="fas fa-book-open"></i>
-      <h3>Predmeti {{ selectedYear }}. godine</h3>
-    </div>
-    <div class="predmeti-grid">
-      <div *ngFor="let subject of subjects"
-           class="predmet-card"
-           [class.selected]="subject === selectedSubject"
-           (click)="selectSubject(subject)">
-        <div class="predmet-content">
-          <h4>{{ subject.name }}</h4>
+  <!-- Toggle Switch for View Mode -->
+
+
+  <!-- Main Content -->
+  <div class="content-wrapper">
+    <!-- Content shown when viewing by subjects -->
+    <div *ngIf="!showingUserMaterials">
+      <!-- Study Years Navigation -->
+      <div class="years-nav">
+        <div class="section-title">
+          <span class="year-icon"></span>
+          <h2>Godine studija</h2>
         </div>
+        <div class="years-list">
+          <div *ngFor="let year of years"
+               [class.active]="year === selectedYear"
+               class="year-pill"
+               (click)="loadSubjects(year)">
+            {{ year }}. godina
+          </div>
+        </div>
+      </div>
+
+      <!-- Subjects Section -->
+      <div class="subjects-section">
+        <div class="section-title">
+          <span class="subject-icon"></span>
+          <h3>Predmeti {{ selectedYear }}. godine</h3>
+        </div>
+        <div class="subjects-carousel">
+          <div *ngFor="let subject of subjects"
+               class="subject-card"
+               [class.active]="subject === selectedSubject"
+               (click)="selectSubject(subject)">
+            <h4>{{ subject.name }}</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Materials Section -->
+    <div class="materials-section" *ngIf="selectedSubject || showingUserMaterials">
+      <div class="section-header">
+        <div class="title-area">
+          <span class="material-icon"></span>
+          <h3>{{ showingUserMaterials ? 'Moji materijali' : selectedSubject?.name }}</h3>
+        </div>
+        <div class="action-area">
+          <div class="search-container">
+            <input type="text"
+                   [(ngModel)]="searchQuery"
+                   (input)="filterMaterials()"
+                   placeholder="Pretraži materijale...">
+            <span class="search-icon"></span>
+          </div>
+          <button class="upload-button"
+                  (click)="toggleUploadArea()"
+                  *ngIf="!showingUserMaterials && selectedSubject">
+            <span [class]="showUploadArea ? 'minus-icon' : 'plus-icon'"></span>
+            {{ showUploadArea ? 'Zatvori' : 'Dodaj materijal' }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Upload Area -->
+      <div class="upload-area"
+           *ngIf="showUploadArea"
+           (drop)="onFileDropped($event)"
+           (dragover)="onDragOver($event)"
+           (dragleave)="onDragLeave($event)"
+           [class.dragging]="isDragging"
+           (click)="fileInput.click()" #uploadZone>
+        <input type="file"
+               #fileInput
+               hidden
+               (change)="handleFileUpload($any($event.target).files)">
+        <div class="upload-content">
+          <span class="upload-icon"></span>
+          <p>Prevuci i spusti fajlove ovdje</p>
+          <small>Maksimalna veličina: 10MB</small>
+        </div>
+      </div>
+
+      <!-- Materials List -->
+      <div class="materials-list" *ngIf="filteredMaterials.length > 0">
+        <div class="material-item" *ngFor="let material of filteredMaterials"
+             [class.owned]="isMaterialOwner(material)">
+          <div class="file-info">
+            <span class="file-badge" [attr.data-type]="getFileType(material).extension">
+              {{ getFileType(material).extension }}
+            </span>
+            <span class="file-name">{{ material.name }}</span>
+            <span *ngIf="isMaterialOwner(material)" class="owner-indicator">
+              <span class="owner-dot"></span>
+            </span>
+          </div>
+          <div class="item-actions">
+            <button *ngIf="isMaterialOwner(material)"
+                    class="delete-button"
+                    (click)="deleteMaterial(material.id); $event.stopPropagation()">
+              <span class="delete-icon"></span>
+            </button>
+            <button class="download-button" (click)="downloadMaterial(material.id)">
+              <span class="download-icon"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div class="empty-state" *ngIf="filteredMaterials.length === 0">
+        <span class="empty-icon"></span>
+        <p>{{ showingUserMaterials ? 'Nemate materijala' : 'Trenutno nema materijala za ovaj predmet' }}</p>
       </div>
     </div>
   </div>
 
-  <!-- Materijali -->
-  <div class="materijali-section" *ngIf="selectedSubject">
-    <div class="materijali-header">
-      <h3>
-        <i class="fas fa-file-alt"></i>
-        Materijali za: {{ selectedSubject.name }}
-      </h3>
-      <div class="header-controls">
-        <div class="search-box">
-          <i class="fas fa-search"></i>
-          <input type="text"
-                 [(ngModel)]="searchQuery"
-                 (input)="filterMaterials()"
-                 placeholder="Pretraži materijale...">
-        </div>
-        <button class="toggle-upload-btn" (click)="toggleUploadArea()">
-          <i class="fas" [class.fa-plus]="!showUploadArea" [class.fa-minus]="showUploadArea"></i>
-          {{ showUploadArea ? 'Zatvori' : 'Dodaj materijal' }}
-        </button>
-      </div>
-    </div>
-
-    <!-- Upload Zone -->
-    <!-- Upload Zone -->
-    <!-- Upload Zone -->
-    <!-- Upload Zone -->
-    <div class="upload-zone"
-         *ngIf="showUploadArea"
-         (drop)="onFileDropped($event)"
-         (dragover)="onDragOver($event)"
-         (dragleave)="onDragLeave($event)"
-         [class.dragging]="isDragging"
-         (click)="fileInput.click()" #uploadZone>
-      <input type="file"
-             #fileInput
-             hidden
-             (change)="handleFileUpload($any($event.target).files)">
-      <div class="upload-content">
-        <i class="fas fa-cloud-upload-alt"></i>
-        <p>Prevuci i sposti fajlove ovdje</p>
-        <small>Maksimalna veličina: 10MB</small>
-      </div>
-    </div>
-
-    <!-- Materijali Lista -->
-    <div class="materijali-list" *ngIf="filteredMaterials.length > 0">
-      <div class="materijal-item" *ngFor="let material of filteredMaterials">
-        <div class="file-info">
-          <span class="file-type-badge" [style.background]="getFileType(material).color">
-            {{ getFileType(material).extension }}
-          </span>
-          <span class="file-name">{{ material.name }}</span>
-        </div>
-        <button class="download-btn" (click)="downloadMaterial(material.id)">
-          <i class="fas fa-download"></i>
-          Preuzmi
-        </button>
-      </div>
-    </div>
-
-    <!-- Prazna lista -->
-    <div class="prazna-lista" *ngIf="filteredMaterials.length === 0">
-      <i class="fas fa-folder-open"></i>
-      <p>Trenutno nema materijala za ovaj predmet</p>
-    </div>
+  <div class="view-mode-toggle">
+    <label class="switch">
+      <input type="checkbox" [(ngModel)]="showingUserMaterials" (change)="toggleViewMode()">
+      <span class="slider round"></span>
+    </label>
+    <span class="toggle-label">{{ showingUserMaterials ? 'Prikaži samo moje materijale' : 'Prikaži samo moje materijale' }}</span>
   </div>
 </div>

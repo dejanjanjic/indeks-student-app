@@ -54,9 +54,15 @@ export class MaterialService {
     });
   }
 
-// material.service.ts
   downloadMaterial(materialId: number): Observable<Material> {
     return this.http.get<Material>(`${this.apiUrl}/material/${materialId}`);
   }
 
+  getUserMaterials(ownerId: number): Observable<Material[]> {
+    return this.http.get<Material[]>(`${this.apiUrl}/owner/${ownerId}`);
+  }
+
+  deleteMaterial(materialId: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${materialId}`);
+  }
 }

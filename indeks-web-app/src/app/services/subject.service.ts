@@ -15,4 +15,25 @@ export class SubjectService {
   getSubjectsByYear(year: number): Observable<Subject[]> {
     return this.http.get<Subject[]>(`${this.apiUrl}/year/${year}`);
   }
+
+  getAllSubjects(): Observable<Subject[]> {
+    return this.http.get<Subject[]>(this.apiUrl);
+  }
+
+  getSubjectById(id: number): Observable<Subject> {
+    return this.http.get<Subject>(`${this.apiUrl}/${id}`);
+  }
+
+
+  addSubject(subject: Omit<Subject, 'id'>): Observable<Subject> {
+    return this.http.post<Subject>(this.apiUrl, subject);
+  }
+
+  updateSubject(subject: Subject): Observable<Subject> {
+    return this.http.put<Subject>(this.apiUrl, subject);
+  }
+
+  deleteSubject(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
 }
