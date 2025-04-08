@@ -1,0 +1,12 @@
+
+<app-base-table
+[displayedColumns]="['id', 'name', 'subject', 'owner', 'actions']"
+[service]="materialService"
+[headerMap]="headerMap"
+[actionButtons]="['delete']"
+[retrieveDataFunction]="retrieveDataFunction"
+
+[filterDataFunction]="filterDataFunction"
+[deleteDataFunction]="deleteDataFunction"
+
+/>

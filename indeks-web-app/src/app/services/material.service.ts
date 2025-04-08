@@ -16,6 +16,9 @@ export class MaterialService {
     private authService: AuthService
   ) { }
 
+  getAllMaterials(): Observable<Material[]> {
+    return this.http.get<Material[]>(`${this.apiUrl}/DTOs`);
+  }
   getMaterialsBySubject(subjectId: number): Observable<Material[]> {
     return this.http.get<Material[]>(`${this.apiUrl}/materials/subject/${subjectId}`);
   }

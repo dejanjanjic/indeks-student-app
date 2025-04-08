@@ -11,6 +11,7 @@ import { loginGuard } from './guards/login.guard';
 import {SubjectPageComponent} from './components/subject-page/subject-page.component';
 import {AddSubjectComponent} from './components/add-subject/add-subject.component';
 import {UpdateSubjectComponent} from './components/update-subject/update-subject.component';
+import { AdminMaterialPageComponent } from './components/admin-material-page/admin-material-page.component';
 
 export const routes: Routes = [
   { path: 'login', canActivate: [loginGuard], component: LoginFormComponent },
@@ -26,6 +27,7 @@ export const routes: Routes = [
     children: [
       { path: 'elementary-groups', component: ElementaryGroupTableComponent },
       { path: 'subject-page', component: SubjectPageComponent },
+      { path: 'materials-page', component: AdminMaterialPageComponent },
       {
         path: 'elementary-groups/add-elementary-group',
         component: AddElementayGroupComponent,
