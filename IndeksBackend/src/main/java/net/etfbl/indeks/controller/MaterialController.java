@@ -3,6 +3,7 @@ package net.etfbl.indeks.controller;
         import jakarta.persistence.EntityManager;
         import jakarta.persistence.PersistenceContext;
         import net.etfbl.indeks.dto.MaterialDTO;
+        import net.etfbl.indeks.dto.MaterialWebDTO;
         import net.etfbl.indeks.dto.MaterialResponseDTO;
         import net.etfbl.indeks.dto.MaterialSummaryDTO;
         import net.etfbl.indeks.model.Material;
@@ -15,9 +16,6 @@ package net.etfbl.indeks.controller;
         import org.springframework.http.ResponseEntity;
         import org.springframework.web.bind.annotation.*;
 
-        import java.io.File;
-        import java.io.FileOutputStream;
-        import java.io.IOException;
         import java.util.Base64;
         import java.util.List;
         import java.util.Optional;
@@ -37,6 +35,10 @@ public class MaterialController {
     @GetMapping
     public ResponseEntity<List<Material>> getMaterials() {
         return ResponseEntity.ok(materialService.getMaterials());
+    }
+    @GetMapping("/DTOs")
+    public ResponseEntity<List<MaterialWebDTO>> getMaterialDTOs() {
+        return ResponseEntity.ok(materialService.getMaterialDTOs());
     }
 
     @GetMapping(path = "{materialId}")

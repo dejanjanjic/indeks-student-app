@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import net.etfbl.indeks.dto.MaterialResponseDTO;
 import net.etfbl.indeks.dto.MaterialSummaryDTO;
+import net.etfbl.indeks.dto.MaterialWebDTO;
 import net.etfbl.indeks.model.Account;
 import net.etfbl.indeks.model.Material;
 import net.etfbl.indeks.repository.AccountRepository;
@@ -32,6 +33,20 @@ public class MaterialService {
 
     public List<Material> getMaterials() {
         return materialRepository.findAll();
+    }
+    public List<MaterialWebDTO> getMaterialDTOs() {
+        return materialRepository.findAll().stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    private MaterialWebDTO convertToDTO(Material material) {
+        MaterialWebDTO dto = new MaterialWebDTO();
+        dto.setId(material.getId());
+        dto.setName(material.getName());
+        dto.setSubject(material.getSubject().getName());
+        dto.setOwner(material.getOwnerAccount().getFirstName()+" "+material.getOwnerAccount().getLastName());
+        return dto;
     }
     public Optional<Material> getMaterialById(Long materialId) {
         return materialRepository.findById(materialId);
