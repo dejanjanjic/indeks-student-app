@@ -24,7 +24,7 @@ const ModalReportMaterial = ({
     try {
       await onSubmit(); // Poziv funkcije `onSubmit`
     } catch (error) {
-      console.error("Greška prilikom prijave:", error);
+      console.error(error);
     } finally {
       setIsLoading(false); // Sakrij loader
     }

@@ -43,12 +43,12 @@ const MaterialsSubjectItemsScreen = ({ route, navigation }) => {
       );
       console.log(response);
       if (response.error) {
-        console.error("Failed to fetch materials:", response.message);
+        console.error(response.message);
       } else {
         setMaterials(response);
       }
     } catch (error) {
-      console.error("Error fetching materials:", error);
+      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -80,13 +80,13 @@ const MaterialsSubjectItemsScreen = ({ route, navigation }) => {
       const response = await HttpService.create("material/upload", payload);
 
       if (response.error) {
-        console.error("Failed to upload file:", response.message);
+        console.error(response.message);
       } else {
         console.log("File uploaded successfully:", response);
         fetchMaterials();
       }
     } catch (error) {
-      console.error("Error handling file upload:", error);
+      console.error(error);
     }
   };
 
@@ -126,7 +126,7 @@ const MaterialsSubjectItemsScreen = ({ route, navigation }) => {
       await Sharing.shareAsync(tempUri);
       //Alert.alert("Success", `${material.name} has been shared successfully.`);
     } catch (error) {
-      console.error("Error during file handling:", error);
+      console.error(error);
       Alert.alert("Error", error.message || "An unexpected error occurred.");
     }
   };

@@ -62,16 +62,16 @@ const ElementaryGroupsListScreen = ({ navigation }) => {
         setData((prevData) => [...prevData, newGroup]);
         setAddModalVisible(false);
       } else {
-        console.error("Greška pri dodavanju grupe");
+        console.error();
       }
     } catch (error) {
-      console.error("Greška pri slanju POST zahteva:", error);
+      console.error(error);
     }
   };
   const handleModalConfirm = async () => {
     try {
       if (!selectedGroup?.id) {
-        console.error("ID grupe nije definisan.");
+        console.error();
         return;
       }
 
@@ -88,13 +88,11 @@ const ElementaryGroupsListScreen = ({ navigation }) => {
         setBlurredItem(null);
       } else {
         console.error(
-          `Nepoznat odgovor servera. Status: ${
-            response?.status
-          }. Telo odgovora: ${JSON.stringify(response?.data)}`
+
         );
       }
     } catch (error) {
-      console.error("Greška pri slanju DELETE zahteva:", error);
+      console.error(error);
     }
   };
 
@@ -108,7 +106,7 @@ const ElementaryGroupsListScreen = ({ navigation }) => {
         );
         setData(formattedData);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error(error);
       } finally {
         setIsLoading(false);
       }
@@ -224,12 +222,12 @@ const ElementaryGroupsListScreen = ({ navigation }) => {
 
   const checkMembership = async (elementaryGroupChatId) => {
     if (!selectedChat || !selectedChat.id) {
-      console.error("Error: selectedChat is null or undefined");
+      console.error();
       return false;
     }
 
     if (!user || !user.accountId) {
-      console.error("User nije autentifikovan");
+      console.error();
       return false;
     }
     console.log("EGID", elementaryGroupChatId);
@@ -244,7 +242,7 @@ const ElementaryGroupsListScreen = ({ navigation }) => {
 
       return response;
     } catch (error) {
-      console.error("Error checking membership:", error);
+      console.error(error);
       return false;
     }
   };
@@ -273,7 +271,7 @@ const ElementaryGroupsListScreen = ({ navigation }) => {
         });
       }
     } catch (error) {
-      console.error("Error joining group:", error);
+      console.error(error);
     } finally {
       setShowJoinModal(false);
     }

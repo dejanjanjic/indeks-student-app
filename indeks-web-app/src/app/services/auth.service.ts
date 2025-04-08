@@ -25,7 +25,7 @@ export class AuthService {
           }
         },
         error: (error) => {
-          console.error('Login error:', error);
+          console.error(error);
           throw error;
         },
       })

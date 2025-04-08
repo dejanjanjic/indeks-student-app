@@ -6,3 +6,4 @@ public enum Roles {
     STUDENT,
     MODERATOR
 }
+

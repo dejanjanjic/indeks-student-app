@@ -40,10 +40,10 @@ const AnnouncementsSelectionScreen = () => {
             "4": response.canSeeYear4 || false,
           });
         } else {
-          console.error("Failed to fetch visibility data");
+          console.error();
         }
       } catch (error) {
-        console.error("Error fetching visibility data:", error);
+        console.error(error);
       }
     };
 
@@ -74,10 +74,10 @@ const AnnouncementsSelectionScreen = () => {
       
        
       } else {
-        console.error("Failed to update visibility:", response.message);
+        console.error(response.message);
       }
     } catch (error) {
-      console.error("Error in updating visibility:", error);
+      console.error(error);
     }
   };
 

@@ -91,7 +91,7 @@ const RegisterScreen = () => {
         lastName,
         email,
         password,
-        userAccountSelected
+        accountType
       );
       console.log(response);
       if (response.message) {

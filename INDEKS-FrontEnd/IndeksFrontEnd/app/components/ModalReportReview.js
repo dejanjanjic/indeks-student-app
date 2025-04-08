@@ -23,7 +23,7 @@ const ModalReportReview = ({
     try {
       await onSubmit(); 
     } catch (error) {
-      console.error("Greška prilikom prijave:", error);
+      console.error(error);
     } finally {
       setIsLoading(false); 
     }

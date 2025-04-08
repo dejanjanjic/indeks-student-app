@@ -65,7 +65,7 @@ const ReportedCommentsScreen = () => {
           setData(response); 
           console.log(response)
         } catch (error) {
-          console.error("Error fetching reported materials:", error);
+          console.error(error);
         } finally {
           setLoading(false); 
         }
@@ -89,7 +89,7 @@ const ReportedCommentsScreen = () => {
       const updatedData = data.filter(item => item.id !== selectedItem.id);
       setData(updatedData); 
     } catch (error) {
-      console.error("Error deleting comment:", error);
+      console.error(error);
     } finally {
       setisLoading(false);
       setModalVisible(false); 

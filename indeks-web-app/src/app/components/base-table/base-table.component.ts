@@ -29,6 +29,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   ],
   templateUrl: './base-table.component.html',
   styleUrl: './base-table.component.css',
+  standalone: true
 })
 export class BaseTableComponent<T extends { id: number }>
   implements AfterViewInit
@@ -80,7 +81,7 @@ export class BaseTableComponent<T extends { id: number }>
         this.isLoading = false;
       },
       error: (err: any) => {
-        console.error('Greška prilikom učitavanja podataka:', err);
+        console.error(err);
         this.isLoading = false;
       },
     });
@@ -103,35 +104,34 @@ export class BaseTableComponent<T extends { id: number }>
         this.isLoading = false;
       },
       error: (err: any) => {
-        console.error('Greška prilikom učitavanja podataka:', err);
+        console.error(err);
         this.isLoading = false;
       },
     });
   }
 
-  deleteItem(id: string): void {
-    if (this.deleteDataFunction) {
-      this.deleteDataFunction(id);
-    } else {
-      const dialogRef = this.dialog.open(DeleteDialogComponent, {
-        data: { name: `${this.headerMap['entityName']} ${id}` },
-      });
+// In base-table.component.ts (updated error handler)
+  deleteItem(id: number): void {
+    const dialogRef = this.dialog.open(DeleteDialogComponent, {
+      data: { name: `${this.headerMap['entityName']} ${id}` },
+    });
 
-      dialogRef.afterClosed().subscribe((result) => {
-        this.dataSource.data = [];
-        this.resultsLength = 0;
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
         this.isLoading = true;
-        if (result) {
-          this.service.deleteById(id).subscribe({
-            next: () => this.refreshTable(),
-            error: (err: any) => {
-              this.isLoading = false;
-              console.error('Greška prilikom brisanja:', err);
-            },
-          });
-        }
-      });
-    }
+        const deleteObservable = this.deleteDataFunction
+          ? this.deleteDataFunction(id)
+          : this.service.deleteById(id);
+
+        deleteObservable.subscribe({
+          next: () => this.refreshTable(),
+          error: (err: any) => { // <--- Add explicit type here
+            this.isLoading = false;
+            console.error(err);
+          },
+        });
+      }
+    });
   }
 
   getHeader(col: string): string {

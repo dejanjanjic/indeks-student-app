@@ -50,7 +50,7 @@ const ChatScreen = () => {
       );
       console.log("RESPONSE", response);
     } catch (error) {
-      console.error("Greška prilikom pokušaja blokiranja korisnika:", error);
+      console.error(error);
     } finally {
       setIsModalVisible(false); // Zatvori modal
       setIsBlockingUserModalVisible(true);
@@ -69,7 +69,6 @@ const ChatScreen = () => {
       // console.log("RESPONSE", response);
     } catch (error) {
       console.error(
-        "Greška prilikom pokušaja prijavljivanja korisnika:",
         error
       );
     } finally {
@@ -239,7 +238,7 @@ const ChatScreen = () => {
           setMessages(sortedMessages);
         }
       } catch (error) {
-        console.error("Greška pri dohvatanju ili kreiranju chata:", error);
+        console.error(error);
       } finally {
         setLoading(false);
       }

@@ -50,7 +50,7 @@ const InstructionsListScreen = () => {
       setInstructions(response);
       console.log("Fetched instructions:", response);
     } catch (err) {
-      console.error(err);
+      console.error();
       // Alert.alert("Error", err.message || "An error occurred while fetching data.");
     } finally {
       setIsLoading(false);

@@ -107,7 +107,7 @@ const ScheduleScreen = () => {
 
       setScheduleData(initialSchedule);
     } catch (error) {
-      console.error("Error fetching schedule data:", error);
+      console.error(error);
       const fallbackSchedule = Array(times.length)
         .fill(null)
         .map(() => Array(days.length).fill(""));
@@ -149,7 +149,7 @@ const ScheduleScreen = () => {
     try {
       await HttpService.create("scheduleItem", payload);
     } catch (error) {
-      console.error("Error saving schedule data:", error);
+      console.error(error);
     }
   };
 
@@ -215,7 +215,7 @@ const ScheduleScreen = () => {
                 });
                 fetchScheduleData(scheduleId);
               } catch (error) {
-                console.error("Greška pri ažuriranju rasporeda:", error);
+                console.error(error);
               }
             }
           }}

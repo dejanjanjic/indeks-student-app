@@ -67,6 +67,9 @@ export class SchedulePageComponent implements OnInit {
   selectedOption = '1';
   isLoading = true;
   errorMessage: string | null = null;
+  isEditable = false;
+  editingTimeIndex: number | null = null;
+  editingDayIndex: number | null = null;
 
   constructor(
     private authService: AuthService,
@@ -98,7 +101,7 @@ export class SchedulePageComponent implements OnInit {
         this.isLoading = false;
       },
       error: (error) => {
-        console.error('Greška pri učitavanju rasporeda:', error);
+        console.error(error);
 
         if (error.status === 200) {
           this.handleError(
@@ -135,6 +138,37 @@ export class SchedulePageComponent implements OnInit {
   private handleError(message: string, error?: any): void {
     this.errorMessage = message;
     this.isLoading = false;
-    if (error) console.error(error);
+    if (error) console.error();
+  }
+
+  private updateScheduleItem(scheduleItemId: number, updatedData: any) {
+    this.scheduleService
+      .updateScheduleData(scheduleItemId, updatedData)
+      .subscribe({
+        next: (response) => {
+          console.log('Uspešno ažurirano:', response);
+          this.isEditable = false;
+        },
+        error: (error) => {
+          console.error('Greška pri ažuriranju:', error);
+        },
+      });
+  }
+
+  toggleEditMode() {
+    this.isEditable = !this.isEditable;
+    if (!this.isEditable) {
+      console.log('Promjene spremljene:', this.scheduleData);
+    }
+  }
+
+  onCellEdit(timeIndex: number, dayIndex: number, event: Event) {
+    if (this.isEditable) {
+      const newValue = (event.target as HTMLElement).innerText;
+      if (!this.scheduleData[timeIndex]) {
+        this.scheduleData[timeIndex] = [];
+      }
+      this.scheduleData[timeIndex][dayIndex] = newValue.trim();
+    }
   }
 }

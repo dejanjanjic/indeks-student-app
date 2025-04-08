@@ -98,10 +98,7 @@ public class TutoringOfferController
     public ResponseEntity<List<TutoringOfferDetailsDTO>> getTutoringOfferDetails() {
         List<TutoringOfferDetailsDTO> tutoringOfferDetails = tutoringOfferService.getTutoringOfferDetails();
 
-        // If no tutoring offers found, return 404 not found
-        if (tutoringOfferDetails.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
+
 
         // Otherwise, return 200 OK with the list of details
         return ResponseEntity.ok(tutoringOfferDetails);
