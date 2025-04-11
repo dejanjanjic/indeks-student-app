@@ -79,10 +79,10 @@ export class AuthService {
 
     switch (role) {
       case 'ADMIN':
-        this.router.navigate(['/admin/dashboard']);
+        this.router.navigate(['/admin']);
         break;
       case 'STUDENT':
-        this.router.navigate(['/student/profile']);
+        this.router.navigate(['/student']);
         break;
       default:
         this.logout();
