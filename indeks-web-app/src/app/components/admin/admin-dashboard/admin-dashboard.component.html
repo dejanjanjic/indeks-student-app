@@ -1,28 +1,57 @@
+<!-- admin-dashboard.component.html -->
 <div class="admin-main">
-  <app-header (toggleSidebar)="sidenav.toggle()"> </app-header>
-  <mat-sidenav-container>
-    <mat-sidenav #sidenav>
-      <mat-nav-list>
+  <app-header (toggleSidebar)="sidenav.toggle()"></app-header>
+
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #sidenav mode="over" class="sidenav" [autoFocus]="false">
+      <div class="sidenav-header">
+        <img [src]="logoUrl" alt="INDEKS" class="sidenav-logo" />
+        <h2 class="sidenav-title">Navigacija</h2>
+      </div>
+
+      <div class="divider"></div>
+
+      <mat-nav-list class="nav-list">
         <a
           mat-list-item
           routerLink="elementary-groups"
+          routerLinkActive="active-link"
           (click)="sidenav.toggle()"
-          >Osnovne grupe</a
         >
+          <mat-icon class="nav-icon">group</mat-icon>
+          <span class="nav-label">Osnovne grupe</span>
+        </a>
+
         <a
           mat-list-item
           routerLink="subject-page"
+          routerLinkActive="active-link"
           (click)="sidenav.toggle()"
-        >Predmeti</a
         >
+          <mat-icon class="nav-icon">book</mat-icon>
+          <span class="nav-label">Predmeti</span>
+        </a>
+
         <a
           mat-list-item
           routerLink="materials-page"
+          routerLinkActive="active-link"
           (click)="sidenav.toggle()"
-        >Materijali</a
         >
+          <mat-icon class="nav-icon">description</mat-icon>
+          <span class="nav-label">Materijali</span>
+        </a>
       </mat-nav-list>
+
+      <div class="sidenav-footer">
+        <div class="version">INDEKS v1.0</div>
+      </div>
     </mat-sidenav>
-    <mat-sidenav-content><router-outlet /></mat-sidenav-content>
+
+    <mat-sidenav-content class="content-container">
+      <div class="content-wrapper">
+        <router-outlet />
+      </div>
+    </mat-sidenav-content>
   </mat-sidenav-container>
 </div>

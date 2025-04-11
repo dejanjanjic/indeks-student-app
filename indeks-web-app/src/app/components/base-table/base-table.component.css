@@ -1,31 +1,14 @@
-#visibility-icon {
-  color: #424874;
-}
-
-#update-icon {
-  color: #424874;
-}
-#search-icon {
-  color: #424874;
-}
-#add-icon {
-  color: #424874;
-}
-
-#delete-icon {
-  color: crimson;
-}
-
-th {
-  color: #424874;
-}
-
+/* Stilovi za tabelu koji se usklađuju sa headerom i sidebarom */
 .table-toolbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
+  padding: 16px;
   flex-wrap: wrap;
+  gap: 16px;
+  background-color: #fff;
+  border-radius: 8px 8px 0 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .search-container {
@@ -34,37 +17,180 @@ th {
   flex: 1;
   min-width: 300px;
   max-width: 600px;
-  gap: 15px;
-}
-
-.action-buttons {
-  display: flex;
-  align-items: center;
-  gap: 15px;
+  gap: 12px;
 }
 
 .search-field {
   flex: 1;
 }
 
-.add-button {
-  margin-right: 0;
+.search-field ::ng-deep .mat-mdc-form-field-flex {
+  background-color: #f5f7fb;
+}
+
+button#search-button {
+  background: linear-gradient(135deg, #003366, #0055a4);
+  color: white;
+  height: 40px;
+}
+
+button#search-button:hover {
+  background: linear-gradient(135deg, #004080, #0066cc);
+}
+
+.action-buttons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .refresh-button {
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  transition: background-color 0.3s ease;
-  color: #424874;
-  margin-left: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
+  color: #003366;
 }
 
 .refresh-button:hover {
-  background-color: rgba(0, 0, 0, 0.04);
+  background-color: rgba(0, 51, 102, 0.04);
+  transform: rotate(15deg);
 }
 
+.add-button {
+  background: linear-gradient(135deg, #003366, #0055a4);
+  color: white;
+  transition: all 0.2s ease;
+  height: 40px;
+}
+
+.add-button:hover {
+  background: linear-gradient(135deg, #004080, #0066cc);
+  box-shadow: 0 3px 8px rgba(0, 51, 102, 0.2);
+}
+
+.add-button mat-icon {
+  margin-left: 6px;
+}
+
+/* Stilovi za mat-table */
+table.mat-mdc-table {
+  width: 100%;
+  background-color: white;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+th.mat-mdc-header-cell {
+  background-color: #f5f7fb;
+  color: #003366;
+  font-weight: 500;
+  font-size: 14px;
+  padding: 16px;
+  border-bottom: 1px solid #e0e6ed;
+}
+
+td.mat-mdc-cell {
+  padding: 12px 16px;
+  font-size: 14px;
+  color: #37474f;
+  border-bottom: 1px solid #e0e6ed;
+}
+
+tr.mat-mdc-row:hover {
+  background-color: rgba(0, 51, 102, 0.02);
+}
+
+/* Ikone za akcije */
+#visibility-icon {
+  color: #003366;
+  transition: all 0.2s ease;
+}
+
+#visibility-icon:hover {
+  color: #0055a4;
+  transform: scale(1.1);
+}
+
+#update-icon {
+  color: #003366;
+  transition: all 0.2s ease;
+}
+
+#update-icon:hover {
+  color: #0055a4;
+  transform: scale(1.1);
+}
+
+#delete-icon {
+  color: #dc3545;
+  transition: all 0.2s ease;
+}
+
+#delete-icon:hover {
+  color: #c82333;
+  transform: scale(1.1);
+}
+
+/* Paginator stilovi */
+::ng-deep .mat-mdc-paginator {
+  background-color: white;
+  border-radius: 0 0 8px 8px;
+  border-top: 1px solid #e0e6ed;
+}
+
+::ng-deep .mat-mdc-paginator-page-size {
+  margin-right: 8px;
+}
+
+::ng-deep .mat-mdc-paginator-container {
+  min-height: 56px;
+}
+
+/* Spinner za učitavanje */
 .spinner-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding: 32px;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+::ng-deep .mat-mdc-progress-spinner circle {
+  stroke: #003366;
+}
+
+/* Responzivnost */
+@media (max-width: 768px) {
+  .table-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-container {
+    max-width: 100%;
+  }
+
+  .action-buttons {
+    justify-content: space-between;
+    margin-top: 8px;
+  }
+
+  th.mat-mdc-header-cell,
+  td.mat-mdc-cell {
+    padding: 10px 8px;
+  }
+}
+
+/* Empty state kada nema podataka */
+.mat-mdc-row:last-child td.mat-mdc-cell:first-child {
+  border-bottom-left-radius: 8px;
+}
+
+.mat-mdc-row:last-child td.mat-mdc-cell:last-child {
+  border-bottom-right-radius: 8px;
+}
+
+/* Alternating row colors za bolju čitljivost */
+tr.mat-mdc-row:nth-child(even) {
+  background-color: #f9fafc;
 }

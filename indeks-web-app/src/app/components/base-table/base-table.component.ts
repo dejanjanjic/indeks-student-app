@@ -29,7 +29,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   ],
   templateUrl: './base-table.component.html',
   styleUrl: './base-table.component.css',
-  standalone: true
+  standalone: true,
 })
 export class BaseTableComponent<T extends { id: number }>
   implements AfterViewInit
@@ -47,7 +47,13 @@ export class BaseTableComponent<T extends { id: number }>
   @Input() filterDataFunction: any;
   @Input() viewDetailsFunction: any;
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  private _paginator!: MatPaginator;
+  @ViewChild(MatPaginator) set paginator(paginator: MatPaginator) {
+    if (paginator) {
+      this._paginator = paginator;
+      this.dataSource.paginator = this._paginator;
+    }
+  }
   dataSource = new MatTableDataSource<T>();
   resultsLength = 0;
 
@@ -57,7 +63,6 @@ export class BaseTableComponent<T extends { id: number }>
   constructor(private dialog: MatDialog) {}
 
   ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
     this.loadData();
   }
 
@@ -110,7 +115,6 @@ export class BaseTableComponent<T extends { id: number }>
     });
   }
 
-// In base-table.component.ts (updated error handler)
   deleteItem(id: number): void {
     const dialogRef = this.dialog.open(DeleteDialogComponent, {
       data: { name: `${this.headerMap['entityName']} ${id}` },
@@ -125,7 +129,7 @@ export class BaseTableComponent<T extends { id: number }>
 
         deleteObservable.subscribe({
           next: () => this.refreshTable(),
-          error: (err: any) => { // <--- Add explicit type here
+          error: (err: any) => {
             this.isLoading = false;
             console.error(err);
           },

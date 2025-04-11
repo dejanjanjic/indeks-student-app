@@ -13,7 +13,7 @@ import { ElementaryGroupService } from '../../services/elementary-group.service'
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-add-elementay-group',
+  selector: 'app-add-elementary-group',
   imports: [
     ReactiveFormsModule,
     MatFormFieldModule,
@@ -21,10 +21,10 @@ import { ActivatedRoute, Router } from '@angular/router';
     MatButtonModule,
     MatCardModule,
   ],
-  templateUrl: './add-elementay-group.component.html',
-  styleUrl: './add-elementay-group.component.css',
+  templateUrl: './add-elementary-group.component.html',
+  styleUrl: './add-elementary-group.component.css',
 })
-export class AddElementayGroupComponent {
+export class AddElementaryGroupComponent {
   private elementaryGroupService: ElementaryGroupService = inject(
     ElementaryGroupService
   );

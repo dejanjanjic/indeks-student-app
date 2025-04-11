@@ -6,11 +6,11 @@ import { MaterialPageComponent } from './components/material-page/material-page.
 import { StudentProfileComponent } from './components/student-profile/student-profile.component';
 import { SchedulePageComponent } from './components/schedule-page/schedule-page.component';
 import { ElementaryGroupTableComponent } from './components/elementary-group-table/elementary-group-table.component';
-import { AddElementayGroupComponent } from './components/add-elementay-group/add-elementay-group.component';
+import { AddElementaryGroupComponent } from './components/add-elementary-group/add-elementary-group.component';
 import { loginGuard } from './guards/login.guard';
-import {SubjectPageComponent} from './components/subject-page/subject-page.component';
-import {AddSubjectComponent} from './components/add-subject/add-subject.component';
-import {UpdateSubjectComponent} from './components/update-subject/update-subject.component';
+import { SubjectPageComponent } from './components/subject-page/subject-page.component';
+import { AddSubjectComponent } from './components/add-subject/add-subject.component';
+import { UpdateSubjectComponent } from './components/update-subject/update-subject.component';
 import { AdminMaterialPageComponent } from './components/admin-material-page/admin-material-page.component';
 
 export const routes: Routes = [
@@ -30,7 +30,7 @@ export const routes: Routes = [
       { path: 'materials-page', component: AdminMaterialPageComponent },
       {
         path: 'elementary-groups/add-elementary-group',
-        component: AddElementayGroupComponent,
+        component: AddElementaryGroupComponent,
       },
       {
         path: 'subject-page/add-subject',
