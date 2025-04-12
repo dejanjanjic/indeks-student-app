@@ -2,7 +2,10 @@
   <div class="top-section">
     <mat-form-field class="mat-label">
       <mat-label>Odaberite grupu</mat-label>
-      <mat-select [(value)]="selectedOption">
+      <mat-select
+        [(ngModel)]="selectedOption"
+        (selectionChange)="loadSelectedSchedule()"
+      >
         @for (item of options; track $index) {
         <mat-option [value]="item.value">{{ item.label }}</mat-option>
         }

@@ -68,7 +68,7 @@ export class SchedulePageComponent implements OnInit {
   ];
 
   scheduleData: ScheduleItem[][] = [];
-  selectedOption = '1';
+  selectedOption: number | null = null;
   isLoading = true;
   errorMessage: string | null = null;
   isEditable = false;
@@ -82,23 +82,49 @@ export class SchedulePageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadStudentSchedule();
+    const studentId = this.authService.getUserId();
+    console.log('ngOnInit: Student ID:', studentId);
+
+    if (studentId) {
+      this.scheduleService.getScheduleData(studentId).subscribe({
+        next: (items: ScheduleItem[]) => {
+          console.log('ngOnInit: Received items:', items);
+          this.initializeSchedule(items);
+          this.isLoading = false;
+        },
+        error: (error) => {
+          console.error('ngOnInit: Greška pri dohvaćanju rasporeda.', error);
+          this.handleError('Greška pri dohvaćanju rasporeda.', error);
+        },
+      });
+    } else {
+      this.handleError('Korisnik nije prijavljen.');
+    }
   }
 
-  private loadStudentSchedule(): void {
-    const studentId = this.authService.getUserId();
-    console.log('STUDENT ID: ', studentId);
+  loadSelectedSchedule(): void {
+    console.log('loadSelectedSchedule: selectedOption:', this.selectedOption);
+    console.log('loadSelectedSchedule: Funkcija je pozvana!');
+    if (this.selectedOption !== null) {
+      this.loadStudentSchedule(this.selectedOption);
+    } else {
+      this.handleError('Niste odabrali raspored!');
+    }
+  }
 
-    if (!studentId) {
-      this.handleError('Niste prijavljeni!');
+  private loadStudentSchedule(scheduleId: number | null): void {
+    console.log('SCHEDULE ID: ', scheduleId);
+
+    if (!scheduleId) {
+      this.handleError('Niste odabrali raspored!');
       return;
     }
     this.isLoading = true;
     this.errorMessage = null;
 
-    this.scheduleService.getScheduleData(studentId).subscribe({
+    this.scheduleService.getScheduleData(scheduleId).subscribe({
       next: (items: ScheduleItem[]) => {
-        console.log('Received items:', items);
+        console.log('Received itemssss:', items);
         if (!Array.isArray(items)) {
           this.handleError('Neispravan format podataka sa servera.');
           return;
@@ -175,7 +201,7 @@ export class SchedulePageComponent implements OnInit {
       const cell =
         this.scheduleData[this.editingTimeIndex][this.editingDayIndex];
       const studentId = this.authService.getUserId();
-      console.log('Studentski id', studentId);
+      console.log('finishEdit: Studentski id', studentId);
 
       if (!studentId) {
         this.snackBar.open('Niste prijavljeni.', 'Zatvori', { duration: 5000 });
@@ -183,30 +209,34 @@ export class SchedulePageComponent implements OnInit {
       }
 
       const payload = {
-        day: this.editingDayIndex, // Pretpostavljam da dayIndex odgovara danu
+        day: this.editingDayIndex,
         time: this.times[this.editingTimeIndex],
         content: cell.content,
         studentId: studentId,
       };
 
-      console.log('Saljemo na backend:', payload);
+      console.log('finishEdit: Saljemo na backend:', payload);
       if (cell.id && cell.id !== 0) {
         this.scheduleService.updateScheduleData(cell.id, payload).subscribe({
           next: (response) => {
-            console.log('Stavka uspješno ažurirana:', response);
+            console.log('finishEdit: Stavka uspješno ažurirana:', response);
             this.editingTimeIndex = null;
             this.editingDayIndex = null;
-            this.loadStudentSchedule();
+            console.log(
+              'finishEdit: selectedOption before loadStudentSchedule:',
+              this.selectedOption
+            );
+            this.loadStudentSchedule(this.selectedOption);
           },
           error: (error) => {
-            console.error('Greška pri ažuriranju stavke:', error);
+            console.error('finishEdit: Greška pri ažuriranju stavke:', error);
             this.snackBar.open('Greška pri ažuriranju stavke.', 'Zatvori', {
               duration: 5000,
             });
           },
         });
       } else {
-        console.log('Nece izgleda cell id');
+        console.log('finishEdit: Nece izgleda cell id');
       }
     }
   }
