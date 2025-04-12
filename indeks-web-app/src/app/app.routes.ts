@@ -43,6 +43,10 @@ export const routes: Routes = [
         path: 'subject-page/update-subject/:id',
         component: UpdateSubjectComponent,
       },
+      {
+        path: 'report-page',
+        component: ReportPageComponent,
+      },
       { path: '', redirectTo: 'elementary-groups', pathMatch: 'full' },
       { path: 'moderators', component: ModeratorTableComponent },
       { path: 'moderators/add-moderator', component: AddModeratorComponent },

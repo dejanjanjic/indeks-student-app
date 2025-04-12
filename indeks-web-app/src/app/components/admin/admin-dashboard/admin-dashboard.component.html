@@ -71,6 +71,16 @@
             <span class="nav-label">Moderatori</span>
           </div>
         </a>
+
+        <a
+          mat-list-item
+          routerLink="report-page"
+          routerLinkActive="active-link"
+          (click)="sidenav.toggle()"
+        >
+          <mat-icon class="nav-icon">book</mat-icon>
+          <span class="nav-label">Prijave</span>
+        </a>
       </mat-nav-list>
 
       <div class="sidenav-footer">
