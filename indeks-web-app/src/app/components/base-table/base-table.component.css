@@ -1,4 +1,3 @@
-/* Stilovi za tabelu koji se usklađuju sa headerom i sidebarom */
 .table-toolbar {
   display: flex;
   justify-content: space-between;
@@ -24,8 +23,52 @@
   flex: 1;
 }
 
+.search-field ::ng-deep .mat-mdc-text-field-wrapper {
+  background-color: #f5f7fb;
+}
+
 .search-field ::ng-deep .mat-mdc-form-field-flex {
   background-color: #f5f7fb;
+}
+
+.search-field ::ng-deep .mdc-text-field {
+  background-color: #f5f7fb !important;
+}
+
+.search-field
+  ::ng-deep
+  .mdc-text-field--outlined
+  .mdc-notched-outline
+  .mdc-notched-outline__leading,
+.search-field
+  ::ng-deep
+  .mdc-text-field--outlined
+  .mdc-notched-outline
+  .mdc-notched-outline__trailing,
+.search-field
+  ::ng-deep
+  .mdc-text-field--outlined
+  .mdc-notched-outline
+  .mdc-notched-outline__notch {
+  border-color: #e0e6ed;
+}
+
+.search-field
+  ::ng-deep
+  .mdc-text-field--focused
+  .mdc-notched-outline
+  .mdc-notched-outline__leading,
+.search-field
+  ::ng-deep
+  .mdc-text-field--focused
+  .mdc-notched-outline
+  .mdc-notched-outline__trailing,
+.search-field
+  ::ng-deep
+  .mdc-text-field--focused
+  .mdc-notched-outline
+  .mdc-notched-outline__notch {
+  border-color: #003366;
 }
 
 button#search-button {
@@ -57,7 +100,7 @@ button#search-button:hover {
 
 .add-button {
   background: linear-gradient(135deg, #003366, #0055a4);
-  color: white;
+  color: white !important;
   transition: all 0.2s ease;
   height: 40px;
 }
@@ -69,9 +112,9 @@ button#search-button:hover {
 
 .add-button mat-icon {
   margin-left: 6px;
+  color: white !important;
 }
 
-/* Stilovi za mat-table */
 table.mat-mdc-table {
   width: 100%;
   background-color: white;
@@ -100,7 +143,6 @@ tr.mat-mdc-row:hover {
   background-color: rgba(0, 51, 102, 0.02);
 }
 
-/* Ikone za akcije */
 #visibility-icon {
   color: #003366;
   transition: all 0.2s ease;
@@ -131,6 +173,27 @@ tr.mat-mdc-row:hover {
   transform: scale(1.1);
 }
 
+.no-data-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  color: #78909c;
+}
+
+.no-data-message mat-icon {
+  font-size: 48px;
+  height: 48px;
+  width: 48px;
+  margin-bottom: 16px;
+}
+
+.action-buttons-cell {
+  display: flex;
+  gap: 4px;
+}
+
 /* Paginator stilovi */
 ::ng-deep .mat-mdc-paginator {
   background-color: white;
@@ -146,7 +209,6 @@ tr.mat-mdc-row:hover {
   min-height: 56px;
 }
 
-/* Spinner za učitavanje */
 .spinner-container {
   display: flex;
   justify-content: center;
@@ -159,7 +221,6 @@ tr.mat-mdc-row:hover {
   stroke: #003366;
 }
 
-/* Responzivnost */
 @media (max-width: 768px) {
   .table-toolbar {
     flex-direction: column;
@@ -181,7 +242,6 @@ tr.mat-mdc-row:hover {
   }
 }
 
-/* Empty state kada nema podataka */
 .mat-mdc-row:last-child td.mat-mdc-cell:first-child {
   border-bottom-left-radius: 8px;
 }
@@ -190,7 +250,6 @@ tr.mat-mdc-row:hover {
   border-bottom-right-radius: 8px;
 }
 
-/* Alternating row colors za bolju čitljivost */
 tr.mat-mdc-row:nth-child(even) {
   background-color: #f9fafc;
 }
