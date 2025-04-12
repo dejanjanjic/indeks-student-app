@@ -1,6 +1,6 @@
 <div class="schedule-wrapper">
   <div class="top-section">
-    <mat-form-field class="mat-label">
+    <mat-form-field class="mat-label" appearance="outline">
       <mat-label>Odaberite grupu</mat-label>
       <mat-select
         [(ngModel)]="selectedOption"
@@ -10,57 +10,87 @@
         <mat-option [value]="item.value">{{ item.label }}</mat-option>
         }
       </mat-select>
+      <mat-icon matPrefix>group</mat-icon>
+      <mat-hint>Izaberite godinu i smer za prikaz rasporeda</mat-hint>
     </mat-form-field>
-    <button mat-button color="primary">Odaberi</button>
-    <button mat-button color="primary" (click)="toggleEditMode()">
-      {{ isEditable ? "Spremi promene" : "Izmeni raspored" }}
-    </button>
+    <div class="button-group">
+      <button mat-raised-button color="primary">
+        <mat-icon>search</mat-icon>
+        Odaberi
+      </button>
+      <button
+        mat-raised-button
+        [color]="isEditable ? 'accent' : 'primary'"
+        (click)="toggleEditMode()"
+      >
+        <mat-icon>{{ isEditable ? "save" : "edit" }}</mat-icon>
+        {{ isEditable ? "Spremi promene" : "Izmeni raspored" }}
+      </button>
+    </div>
   </div>
 
   @if (isLoading) {
   <div class="loading-spinner">
     <mat-progress-spinner
-      diameter="50"
+      color="primary"
+      diameter="60"
       mode="indeterminate"
     ></mat-progress-spinner>
+    <p>Učitavanje rasporeda...</p>
   </div>
   } @if (errorMessage) {
   <div class="error-message">
-    {{ errorMessage }}
+    <mat-icon>error</mat-icon>
+    <span>{{ errorMessage }}</span>
   </div>
   } @if (!isLoading && !errorMessage) {
   <div class="schedule-container">
-    <table class="schedule-table">
-      <thead>
-        <tr>
-          <th class="time-column">Vrijeme</th>
-          @for (day of days; track $index) {
-          <th>{{ day }}</th>
-          }
-        </tr>
-      </thead>
-      <tbody>
-        @for (time of times; track $index; let timeIndex = $index) {
-        <tr>
-          <td class="time-column">{{ time }}</td>
-          @for (day of days; track $index; let dayIndex = $index) {
-          <td (click)="startEdit(timeIndex, dayIndex)">
-            @if(isEditable && editingTimeIndex==timeIndex &&
-            editingDayIndex==dayIndex){
-            <input
-              type="text"
-              [(ngModel)]="scheduleData[timeIndex][dayIndex].content"
-              (blur)="finishEdit()"
-              (keyup.enter)="finishEdit()"
-            />} @else {
-            {{ scheduleData[timeIndex][dayIndex].content || "" }}
+    <div class="table-header">
+      <h2>Raspored časova</h2>
+      @if (isEditable) {
+      <div class="edit-badge"><mat-icon>edit</mat-icon> Režim uređivanja</div>
+      }
+    </div>
+    <div class="table-container">
+      <table class="schedule-table" [class.edit-mode]="isEditable">
+        <thead>
+          <tr>
+            <th class="time-column">Vrijeme</th>
+            @for (day of days; track $index) {
+            <th>{{ day }}</th>
             }
-          </td>
+          </tr>
+        </thead>
+        <tbody>
+          @for (time of times; track $index; let timeIndex = $index) {
+          <tr>
+            <td class="time-column">{{ time }}</td>
+            @for (day of days; track $index; let dayIndex = $index) {
+            <td
+              [class.editable-cell]="isEditable"
+              (click)="isEditable && startEdit(timeIndex, dayIndex)"
+            >
+              @if(isEditable && editingTimeIndex==timeIndex &&
+              editingDayIndex==dayIndex){
+              <input
+                type="text"
+                [(ngModel)]="scheduleData[timeIndex][dayIndex].content"
+                (blur)="finishEdit()"
+                (keyup.enter)="finishEdit()"
+                #editInput
+                placeholder="Unesite predmet..."
+              />} @else {
+              <div class="schedule-item">
+                {{ scheduleData[timeIndex][dayIndex].content || "" }}
+              </div>
+              }
+            </td>
+            }
+          </tr>
           }
-        </tr>
-        }
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   </div>
   }
 </div>

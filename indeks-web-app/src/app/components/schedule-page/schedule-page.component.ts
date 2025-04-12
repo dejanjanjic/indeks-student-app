@@ -1,4 +1,11 @@
-import { Component, OnInit, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  inject,
+  ViewChild,
+  ElementRef,
+  AfterViewChecked,
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -9,6 +16,7 @@ import { CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormsModule } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-schedule-page',
@@ -20,11 +28,12 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     MatSelectModule,
     MatProgressSpinnerModule,
     FormsModule,
+    MatIconModule,
   ],
   templateUrl: './schedule-page.component.html',
   styleUrls: ['./schedule-page.component.css'],
 })
-export class SchedulePageComponent implements OnInit {
+export class SchedulePageComponent implements OnInit, AfterViewChecked {
   days = [
     'Ponedjeljak',
     'Utorak',
@@ -74,12 +83,25 @@ export class SchedulePageComponent implements OnInit {
   isEditable = false;
   editingTimeIndex: number | null = null;
   editingDayIndex: number | null = null;
+  @ViewChild('editInput') editInput: ElementRef | null = null;
 
   constructor(
     private authService: AuthService,
     private scheduleService: ScheduleService,
     private snackBar: MatSnackBar
   ) {}
+
+  ngAfterViewChecked(): void {
+    if (
+      this.isEditable &&
+      this.editInput &&
+      document.activeElement !== this.editInput.nativeElement
+    ) {
+      setTimeout(() => {
+        this.editInput?.nativeElement.focus();
+      });
+    }
+  }
 
   ngOnInit(): void {
     const studentId = this.authService.getUserId();
