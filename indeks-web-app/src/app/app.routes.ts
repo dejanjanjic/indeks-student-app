@@ -3,7 +3,7 @@ import { LoginFormComponent } from './components/login-form/login-form.component
 import { authGuard } from './guards/auth.guard';
 import { roleGuard } from './guards/role.guard';
 import { MaterialPageComponent } from './components/material-page/material-page.component';
-import { StudentProfileComponent } from './components/student-profile/student-profile.component';
+import { StudentProfileComponent } from './components/student/student-profile/student-profile.component';
 import { SchedulePageComponent } from './components/schedule-page/schedule-page.component';
 import { ElementaryGroupTableComponent } from './components/elementary-group-table/elementary-group-table.component';
 import { AddElementaryGroupComponent } from './components/add-elementary-group/add-elementary-group.component';
@@ -48,9 +48,15 @@ export const routes: Routes = [
     canActivate: [authGuard, roleGuard],
     data: { roles: ['STUDENT'] },
     children: [
-      { path: 'profile', component: StudentProfileComponent },
-      { path: 'schedule', component: SchedulePageComponent },
-      { path: 'material', component: MaterialPageComponent },
+      {
+        path: 'profile',
+        component: StudentProfileComponent,
+        children: [
+          { path: 'material-page', component: MaterialPageComponent },
+          { path: 'schedule-page', component: SchedulePageComponent },
+          { path: '', redirectTo: 'material-page', pathMatch: 'full' },
+        ],
+      },
       { path: '', redirectTo: 'profile', pathMatch: 'full' },
     ],
   },
