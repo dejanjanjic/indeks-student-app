@@ -2,6 +2,7 @@ package net.etfbl.indeks.controller;
 
 import lombok.RequiredArgsConstructor;
 import net.etfbl.indeks.dto.AddModeratorDTO;
+import net.etfbl.indeks.dto.UpdateModeratorDTO;
 import net.etfbl.indeks.model.ModeratorAccount;
 import net.etfbl.indeks.service.ModeratorAccountService;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +38,18 @@ public class ModeratorAccountController {
     public ResponseEntity<Void> deleteModerator(@PathVariable Long id) {
         moderatorAccountService.deleteModerator(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ModeratorAccount> updateModerator(@PathVariable Long id, @RequestBody UpdateModeratorDTO dto) {
+        Optional<ModeratorAccount> existingModerator = moderatorAccountService.getModeratorById(id);
+
+        if (existingModerator.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        ModeratorAccount updatedModerator = moderatorAccountService.updateModerator(id, dto);
+        return ResponseEntity.ok(updatedModerator);
     }
 
 }
