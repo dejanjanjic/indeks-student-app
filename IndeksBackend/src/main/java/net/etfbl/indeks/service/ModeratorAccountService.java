@@ -2,6 +2,7 @@ package net.etfbl.indeks.service;
 
 import lombok.RequiredArgsConstructor;
 import net.etfbl.indeks.dto.AddModeratorDTO;
+import net.etfbl.indeks.dto.UpdateModeratorDTO;
 import net.etfbl.indeks.model.Account;
 import net.etfbl.indeks.model.ModeratorAccount;
 import net.etfbl.indeks.repository.AccountRepository;
@@ -48,8 +49,22 @@ public class ModeratorAccountService {
         return moderatorAccountRepository.save(moderator);
     }
 
+    @Transactional
+    public ModeratorAccount updateModerator(Long id, UpdateModeratorDTO dto) {
+        Optional<ModeratorAccount> existingModerator = moderatorAccountRepository.findById(id);
+
+        if (existingModerator.isEmpty()) {
+            throw new IllegalArgumentException("Moderator not found");
+        }
+
+        ModeratorAccount moderator = existingModerator.get();
+        moderator.setMaterialPath(dto.getMaterialPath());
+
+        return moderatorAccountRepository.save(moderator);
+    }
+
+
     public void deleteModerator(Long id) {
         moderatorAccountRepository.deleteById(id);
     }
 }
-

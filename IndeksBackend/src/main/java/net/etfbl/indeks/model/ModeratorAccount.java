@@ -23,5 +23,4 @@ public class ModeratorAccount {
     @JoinColumn(name = "id")
     @MapsId
     private Account account;
-
 }
