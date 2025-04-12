@@ -6,6 +6,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { AuthService } from '../../../services/auth.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { ThemeService } from '../../../services/theme.service';
 
 @Component({
   selector: 'app-student-header',
@@ -28,8 +29,14 @@ export class HeaderComponent implements OnInit {
   public username: string | null = '';
   public logoUrl = 'assets/indeks-logo.png';
 
+  public isDarkMode = false;
+  private themeService = inject(ThemeService);
+
   ngOnInit(): void {
     this.loadData();
+    this.themeService.darkMode$.subscribe((isDark) => {
+      this.isDarkMode = isDark;
+    });
   }
 
   public loadData() {
@@ -43,5 +50,9 @@ export class HeaderComponent implements OnInit {
 
   public onToggleSidebar() {
     this.toggleSidebar.emit();
+  }
+
+  public toggleTheme(): void {
+    this.themeService.toggleDarkMode();
   }
 }

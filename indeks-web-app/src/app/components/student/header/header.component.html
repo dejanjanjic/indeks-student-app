@@ -33,6 +33,15 @@
       >
         <mat-icon>logout</mat-icon>
       </button>
+
+      <button
+        mat-icon-button
+        class="theme-toggle"
+        (click)="toggleTheme()"
+        [matTooltip]="isDarkMode ? 'Svetla tema' : 'Tamna tema'"
+      >
+        <mat-icon>{{ isDarkMode ? "light_mode" : "dark_mode" }}</mat-icon>
+      </button>
     </div>
   </div>
 </header>

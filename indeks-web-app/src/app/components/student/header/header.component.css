@@ -3,7 +3,7 @@
   position: fixed;
   top: 0;
   z-index: 10;
-  background-color: #3f51b5;
+  background-color: var(--primary-color);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
@@ -18,6 +18,19 @@
 .header-left {
   display: flex;
   align-items: center;
+}
+
+.theme-toggle {
+  color: white;
+  margin-left: 8px;
+}
+
+.theme-toggle mat-icon {
+  transition: transform 0.3s ease;
+}
+
+.theme-toggle:hover mat-icon {
+  transform: rotate(30deg);
 }
 
 .menu-toggle {
