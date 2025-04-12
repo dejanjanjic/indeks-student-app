@@ -12,6 +12,9 @@ import { SubjectPageComponent } from './components/subject-page/subject-page.com
 import { AddSubjectComponent } from './components/add-subject/add-subject.component';
 import { UpdateSubjectComponent } from './components/update-subject/update-subject.component';
 import { AdminMaterialPageComponent } from './components/admin-material-page/admin-material-page.component';
+import { ModeratorTableComponent } from './components/moderator-table/moderator-table.component';
+import { AddModeratorComponent } from './components/add-moderator/add-moderator.component';
+import { UpdateModeratorComponent } from './components/update-moderator/update-moderator.component';
 
 export const routes: Routes = [
   { path: 'login', canActivate: [loginGuard], component: LoginFormComponent },
@@ -41,6 +44,9 @@ export const routes: Routes = [
         component: UpdateSubjectComponent,
       },
       { path: '', redirectTo: 'elementary-groups', pathMatch: 'full' },
+      { path: 'moderators', component: ModeratorTableComponent },
+      { path: 'moderators/add-moderator', component: AddModeratorComponent },
+      { path: 'moderators/update-moderator/:id', component: UpdateModeratorComponent },
     ],
   },
   {
@@ -61,5 +67,5 @@ export const routes: Routes = [
     ],
   },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: '**', redirectTo: '/login' },
+  { path: '**', redirectTo: '/login' }
 ];

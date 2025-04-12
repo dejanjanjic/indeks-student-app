@@ -1,0 +1,37 @@
+.container {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
+  
+  .form-field {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+  
+  .button-container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  
+  .loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+  }
+  
+  /* Novi stilovi za razmak */
+  mat-card-header {
+    margin-bottom: 1rem;
+  }
+  
+  mat-card-content {
+    padding-top: 0rem;
+  }
+  
+  form {
+    margin-top: 0.7rem;
+  }
