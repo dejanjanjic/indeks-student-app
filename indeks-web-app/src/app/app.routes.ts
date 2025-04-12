@@ -15,6 +15,7 @@ import { AdminMaterialPageComponent } from './components/admin-material-page/adm
 import { ModeratorTableComponent } from './components/moderator-table/moderator-table.component';
 import { AddModeratorComponent } from './components/add-moderator/add-moderator.component';
 import { UpdateModeratorComponent } from './components/update-moderator/update-moderator.component';
+import { ReportPageComponent } from './components/report-page/report-page.component';
 
 export const routes: Routes = [
   { path: 'login', canActivate: [loginGuard], component: LoginFormComponent },
