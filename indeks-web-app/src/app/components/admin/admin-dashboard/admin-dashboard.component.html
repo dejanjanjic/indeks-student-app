@@ -49,15 +49,28 @@
         </a>
 
         <a
-        mat-list-item
-        routerLink="moderators"
-        routerLinkActive="active-link"
-        (click)="sidenav.toggle()"
-      >
-        <mat-icon class="nav-icon">person</mat-icon>
-        <span class="nav-label">Moderatori</span>
-      </a>
+          mat-list-item
+          routerLink="users-table"
+          routerLinkActive="active-link"
+          (click)="sidenav.toggle()"
+        >
+          <div class="nav-item-container">
+            <mat-icon class="nav-icon">manage_accounts</mat-icon>
+            <span class="nav-label">Korisnički nalozi</span>
+          </div>
+        </a>
 
+        <a
+          mat-list-item
+          routerLink="moderators"
+          routerLinkActive="active-link"
+          (click)="sidenav.toggle()"
+        >
+          <div class="nav-item-container">
+            <mat-icon class="nav-icon">person</mat-icon>
+            <span class="nav-label">Moderatori</span>
+          </div>
+        </a>
       </mat-nav-list>
 
       <div class="sidenav-footer">

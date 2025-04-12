@@ -46,7 +46,17 @@ export const routes: Routes = [
       { path: '', redirectTo: 'elementary-groups', pathMatch: 'full' },
       { path: 'moderators', component: ModeratorTableComponent },
       { path: 'moderators/add-moderator', component: AddModeratorComponent },
-      { path: 'moderators/update-moderator/:id', component: UpdateModeratorComponent },
+      {
+        path: 'moderators/update-moderator/:id',
+        component: UpdateModeratorComponent,
+      },
+      {
+        path: 'users-table',
+        loadComponent: () =>
+          import('./components/users-table/users-table.component').then(
+            (m) => m.UsersTableComponent
+          ),
+      },
     ],
   },
   {
@@ -67,5 +77,5 @@ export const routes: Routes = [
     ],
   },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: '**', redirectTo: '/login' }
+  { path: '**', redirectTo: '/login' },
 ];

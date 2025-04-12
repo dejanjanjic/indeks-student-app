@@ -78,6 +78,12 @@ public class UserAccountController {
         return userAccountService.getUserAccountSummaries();
     }
 
+    @GetMapping("details/search")
+    public ResponseEntity<List<UserAccountDetailsDTO>> searchUserAccountDetails(@RequestParam(name = "keyword") String keyword) {
+        List<UserAccountDetailsDTO> results = userAccountService.searchUserAccountDetailsByKeyword(keyword);
+        return ResponseEntity.ok(results);
+    }
+
     @GetMapping("details")
     public ResponseEntity<List<UserAccountDetailsDTO>> getUserAccountDetailsDTO() {
         return ResponseEntity.ok(userAccountService.getUserAccountDetails());

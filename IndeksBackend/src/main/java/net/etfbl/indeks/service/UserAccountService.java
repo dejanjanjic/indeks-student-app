@@ -51,7 +51,12 @@ public class UserAccountService {
                 .map(user -> new UserAccountDTO(user.getId(), user.getFirstName(), user.getLastName()))
                 .collect(Collectors.toList());
     }
-
+    public List<UserAccountDetailsDTO> searchUserAccountDetailsByKeyword(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return userAccountRepository.findAllUserAccountDetails();
+        }
+        return userAccountRepository.searchUserAccountDetailsByKeyword(keyword.trim());
+    }
     public Optional<UserAccount> getUserAccountById(Long id) {
         return userAccountRepository.findById(id);
     }

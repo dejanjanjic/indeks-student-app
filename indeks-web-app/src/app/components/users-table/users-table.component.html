@@ -10,4 +10,9 @@
   [headerMap]="headerMap"
   [retrieveDataFunction]="this.retrieveDataFunction"
   [filterDataFunction]="this.filterDataFunction"
+  [toggleColumns]="['active']"
+  [toggleLabels]="{
+    active: { true: 'Aktivan', false: 'Suspendovan' }
+  }"
+  (toggleChange)="handleToggleChange($event)"
 />
