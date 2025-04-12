@@ -17,8 +17,10 @@
           routerLinkActive="active-link"
           (click)="sidenav.toggle()"
         >
-          <mat-icon class="nav-icon">description</mat-icon>
-          <span class="nav-label">Materijali</span>
+          <div class="nav-item-container">
+            <mat-icon class="nav-icon">description</mat-icon>
+            <span class="nav-label">Materijali</span>
+          </div>
         </a>
 
         <a
@@ -27,8 +29,10 @@
           routerLinkActive="active-link"
           (click)="sidenav.toggle()"
         >
-          <mat-icon class="nav-icon">schedule</mat-icon>
-          <span class="nav-label">Raspored</span>
+          <div class="nav-item-container">
+            <mat-icon class="nav-icon">schedule</mat-icon>
+            <span class="nav-label">Raspored</span>
+          </div>
         </a>
       </mat-nav-list>
 
