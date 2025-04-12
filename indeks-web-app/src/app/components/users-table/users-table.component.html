@@ -1,0 +1,13 @@
+<app-base-table
+  [displayedColumns]="[
+    'id',
+    'firstName',
+    'lastName',
+    'email',
+    'role',
+    'active'
+  ]"
+  [headerMap]="headerMap"
+  [retrieveDataFunction]="this.retrieveDataFunction"
+  [filterDataFunction]="this.filterDataFunction"
+/>

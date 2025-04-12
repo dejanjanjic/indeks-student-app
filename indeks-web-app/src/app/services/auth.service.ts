@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { LoginDTO } from '../model/login.model';
-import { Observable, tap } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 
@@ -10,8 +10,14 @@ import { jwtDecode } from 'jwt-decode';
 })
 export class AuthService {
   private BASE_URL = 'http://localhost:8080/api/v1/auth';
-  private readonly STORAGE_KEY = 'authToken';
+  private readonly ACCES_TOKEN_KEY = 'authToken';
+  private readonly REFRESH_TOKEN_KEY = 'refreshToken';
   private router = inject(Router);
+
+  private isRefreshing = false;
+  private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(
+    null
+  );
 
   constructor(private http: HttpClient) {}
 
@@ -32,10 +38,10 @@ export class AuthService {
     );
   }
   private storeToken(token: string): void {
-    localStorage.setItem(this.STORAGE_KEY, token);
+    localStorage.setItem(this.ACCES_TOKEN_KEY, token);
   }
   public getToken(): string | null {
-    return localStorage.getItem(this.STORAGE_KEY);
+    return localStorage.getItem(this.ACCES_TOKEN_KEY);
   }
   public getDecodedToken(): any {
     const token = this.getToken();
@@ -43,7 +49,7 @@ export class AuthService {
   }
 
   logout(): void {
-    localStorage.removeItem(this.STORAGE_KEY);
+    localStorage.removeItem(this.ACCES_TOKEN_KEY);
     this.router.navigate(['/login']);
   }
 

@@ -253,3 +253,52 @@ tr.mat-mdc-row:hover {
 tr.mat-mdc-row:nth-child(even) {
   background-color: #f9fafc;
 }
+
+.toggle-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.toggle-label {
+  font-size: 14px;
+  color: var(--text-color, #333);
+}
+
+/* Stilovi za toggle u aktivnom/neaktivnom stanju */
+:host
+  ::ng-deep
+  .mat-slide-toggle.mat-primary.mat-checked
+  .mat-slide-toggle-thumb {
+  background-color: var(--primary-color, #3f51b5);
+}
+
+:host
+  ::ng-deep
+  .mat-slide-toggle.mat-primary.mat-checked
+  .mat-slide-toggle-bar {
+  background-color: rgba(var(--primary-color-rgb, 63, 81, 181), 0.5);
+}
+
+/* Hover efekat za toggle ćelije */
+td.mat-column-toggle:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+/* Osiguranje da je toggle pozicioniran ispravno */
+.mat-mdc-slide-toggle {
+  margin: 0;
+}
+
+/* Responsive podešavanja za toggle u mobilnom prikazu */
+@media (max-width: 600px) {
+  .toggle-cell {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .toggle-label {
+    font-size: 12px;
+  }
+}

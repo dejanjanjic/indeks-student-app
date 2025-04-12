@@ -2,6 +2,7 @@ package net.etfbl.indeks.controller;
 
 import net.etfbl.indeks.dto.AddUserAccountDTO;
 import net.etfbl.indeks.dto.UserAccountDTO;
+import net.etfbl.indeks.dto.UserAccountDetailsDTO;
 import net.etfbl.indeks.dto.UserAccountSummaryDTO;
 import net.etfbl.indeks.util.Encryption;
 import net.etfbl.indeks.model.UserAccount;
@@ -9,6 +10,7 @@ import net.etfbl.indeks.service.UserAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -74,6 +76,11 @@ public class UserAccountController {
     @GetMapping("/user-accounts/summary")
     public List<UserAccountSummaryDTO> getUserAccountSummaries() {
         return userAccountService.getUserAccountSummaries();
+    }
+
+    @GetMapping("details")
+    public ResponseEntity<List<UserAccountDetailsDTO>> getUserAccountDetailsDTO() {
+        return ResponseEntity.ok(userAccountService.getUserAccountDetails());
     }
 
     @PostMapping("/{id}/suspend")
