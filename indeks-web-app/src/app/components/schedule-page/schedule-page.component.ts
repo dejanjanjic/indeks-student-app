@@ -7,6 +7,8 @@ import { ScheduleService } from '../../services/schedule.service';
 import { ScheduleItem } from '../../model/scheduleItem.model';
 import { CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { FormsModule } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-schedule-page',
@@ -17,6 +19,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatFormFieldModule,
     MatSelectModule,
     MatProgressSpinnerModule,
+    FormsModule,
   ],
   templateUrl: './schedule-page.component.html',
   styleUrls: ['./schedule-page.component.css'],
@@ -32,8 +35,8 @@ export class SchedulePageComponent implements OnInit {
     'Nedjelja',
   ];
   times = [
-    '08:15',
-    '09:15',
+    '8:15',
+    '9:15',
     '10:15',
     '11:15',
     '12:15',
@@ -42,6 +45,7 @@ export class SchedulePageComponent implements OnInit {
     '15:15',
     '16:15',
     '17:15',
+    '18:15',
   ];
   options = [
     { label: 'Prva godina', value: '1' },
@@ -63,7 +67,7 @@ export class SchedulePageComponent implements OnInit {
     { label: 'Četvrta godina - Elektroenergetika', value: '17' },
   ];
 
-  scheduleData: string[][] = [];
+  scheduleData: ScheduleItem[][] = [];
   selectedOption = '1';
   isLoading = true;
   errorMessage: string | null = null;
@@ -73,7 +77,8 @@ export class SchedulePageComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private scheduleService: ScheduleService
+    private scheduleService: ScheduleService,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -93,6 +98,7 @@ export class SchedulePageComponent implements OnInit {
 
     this.scheduleService.getScheduleData(studentId).subscribe({
       next: (items: ScheduleItem[]) => {
+        console.log('Received items:', items);
         if (!Array.isArray(items)) {
           this.handleError('Neispravan format podataka sa servera.');
           return;
@@ -119,18 +125,22 @@ export class SchedulePageComponent implements OnInit {
   }
 
   private initializeSchedule(items: ScheduleItem[]): void {
-    this.scheduleData = this.times.map(() => Array(this.days.length).fill(''));
+    this.scheduleData = this.times.map((time) =>
+      this.days.map((_, dayIndex) => ({
+        id: 0,
+        content: '',
+        day: dayIndex,
+        time: time,
+        schedule: '',
+      }))
+    );
 
     items.forEach((item) => {
       const timeIndex = this.times.findIndex((t) => t === item.time);
       const dayIndex = item.day;
 
       if (timeIndex !== -1 && dayIndex >= 0 && dayIndex < this.days.length) {
-        const cellContent = item.schedule
-          ? `${item.content} [${item.schedule}]`
-          : item.content;
-
-        this.scheduleData[timeIndex][dayIndex] = cellContent;
+        this.scheduleData[timeIndex][dayIndex] = item;
       }
     });
   }
@@ -138,37 +148,66 @@ export class SchedulePageComponent implements OnInit {
   private handleError(message: string, error?: any): void {
     this.errorMessage = message;
     this.isLoading = false;
-    if (error) console.error();
-  }
-
-  private updateScheduleItem(scheduleItemId: number, updatedData: any) {
-    this.scheduleService
-      .updateScheduleData(scheduleItemId, updatedData)
-      .subscribe({
-        next: (response) => {
-          console.log('Uspešno ažurirano:', response);
-          this.isEditable = false;
-        },
-        error: (error) => {
-          console.error('Greška pri ažuriranju:', error);
-        },
-      });
+    if (error) console.error(error);
   }
 
   toggleEditMode() {
     this.isEditable = !this.isEditable;
     if (!this.isEditable) {
-      console.log('Promjene spremljene:', this.scheduleData);
+      this.editingTimeIndex = null;
+      this.editingDayIndex = null;
     }
   }
 
-  onCellEdit(timeIndex: number, dayIndex: number, event: Event) {
+  startEdit(timeIndex: number, dayIndex: number) {
     if (this.isEditable) {
-      const newValue = (event.target as HTMLElement).innerText;
-      if (!this.scheduleData[timeIndex]) {
-        this.scheduleData[timeIndex] = [];
+      this.editingTimeIndex = timeIndex;
+      this.editingDayIndex = dayIndex;
+    }
+  }
+
+  finishEdit() {
+    if (
+      this.isEditable &&
+      this.editingTimeIndex !== null &&
+      this.editingDayIndex !== null
+    ) {
+      const cell =
+        this.scheduleData[this.editingTimeIndex][this.editingDayIndex];
+      const studentId = this.authService.getUserId();
+      console.log('Studentski id', studentId);
+
+      if (!studentId) {
+        this.snackBar.open('Niste prijavljeni.', 'Zatvori', { duration: 5000 });
+        return;
       }
-      this.scheduleData[timeIndex][dayIndex] = newValue.trim();
+
+      const payload = {
+        day: this.editingDayIndex, // Pretpostavljam da dayIndex odgovara danu
+        time: this.times[this.editingTimeIndex],
+        content: cell.content,
+        studentId: studentId,
+      };
+
+      console.log('Saljemo na backend:', payload);
+      if (cell.id && cell.id !== 0) {
+        this.scheduleService.updateScheduleData(cell.id, payload).subscribe({
+          next: (response) => {
+            console.log('Stavka uspješno ažurirana:', response);
+            this.editingTimeIndex = null;
+            this.editingDayIndex = null;
+            this.loadStudentSchedule();
+          },
+          error: (error) => {
+            console.error('Greška pri ažuriranju stavke:', error);
+            this.snackBar.open('Greška pri ažuriranju stavke.', 'Zatvori', {
+              duration: 5000,
+            });
+          },
+        });
+      } else {
+        console.log('Nece izgleda cell id');
+      }
     }
   }
 }

@@ -18,7 +18,10 @@ export class ScheduleService {
     );
   }
 
-  updateScheduleData(scheduleItemId: number, data: any): Observable<any> {
+  updateScheduleData(
+    scheduleItemId: number,
+    data: Partial<ScheduleItem>
+  ): Observable<any> {
     return this.http.put(`${this.scheduleItemUrl}/${scheduleItemId}`, data);
   }
 }

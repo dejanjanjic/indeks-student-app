@@ -56,14 +56,14 @@ public class ScheduleItemController {
         }
     }
 
-    @PutMapping(path = "{scheduleItemId}")
-    public ResponseEntity<Void> updateScheduleItem(@PathVariable("scheduleItemId") Long scheduleItemId, @RequestBody AddScheduleItemDTO addScheduleItemDTO) {
-        boolean updated = scheduleItemService.updateScheduleItem(scheduleItemId, addScheduleItemDTO);
-        if (updated) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
+        @PutMapping(path = "{scheduleItemId}")
+        public ResponseEntity<Void> updateScheduleItem(@PathVariable("scheduleItemId") Long scheduleItemId, @RequestBody AddScheduleItemDTO addScheduleItemDTO) {
+            boolean updated = scheduleItemService.updateScheduleItem(scheduleItemId, addScheduleItemDTO);
+            if (updated) {
+                return ResponseEntity.noContent().build();
+            } else {
+                return ResponseEntity.notFound().build();
+            }
         }
-    }
 
 }

@@ -41,8 +41,17 @@
         <tr>
           <td class="time-column">{{ time }}</td>
           @for (day of days; track $index; let dayIndex = $index) {
-          <td onclick="onCellEdit(timeIndex,dayIndex,toggleEditMode())">
-            {{ scheduleData[timeIndex][dayIndex] || "" }}
+          <td (click)="startEdit(timeIndex, dayIndex)">
+            @if(isEditable && editingTimeIndex==timeIndex &&
+            editingDayIndex==dayIndex){
+            <input
+              type="text"
+              [(ngModel)]="scheduleData[timeIndex][dayIndex].content"
+              (blur)="finishEdit()"
+              (keyup.enter)="finishEdit()"
+            />} @else {
+            {{ scheduleData[timeIndex][dayIndex].content || "" }}
+            }
           </td>
           }
         </tr>
