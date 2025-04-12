@@ -8,6 +8,7 @@ import {
   MatDialogTitle,
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
 
 export interface DialogData {
   name: string;
@@ -21,6 +22,7 @@ export interface DialogData {
     MatDialogClose,
     MatDialogTitle,
     MatDialogContent,
+    MatIconModule,
   ],
   templateUrl: './delete-dialog.component.html',
   styleUrl: './delete-dialog.component.css',

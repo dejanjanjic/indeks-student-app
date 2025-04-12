@@ -9,17 +9,23 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ElementaryGroupService } from '../../services/elementary-group.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-add-elementary-group',
+  standalone: true,
   imports: [
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
     MatCardModule,
+    MatIconModule,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './add-elementary-group.component.html',
   styleUrl: './add-elementary-group.component.css',
@@ -34,8 +40,9 @@ export class AddElementaryGroupComponent {
   private formBuilder = inject(FormBuilder);
 
   public conflict = false;
+  public isLoading = false;
   public elementaryGroupForm: FormGroup = this.formBuilder.group({
-    name: [null, [Validators.required]],
+    name: [null, [Validators.required, Validators.minLength(3)]],
   });
 
   submitForm(): void {
@@ -43,15 +50,25 @@ export class AddElementaryGroupComponent {
       return;
     }
 
-    this.elementaryGroupService.add(this.elementaryGroupForm.value).subscribe({
-      next: (elementaryGroup: any) => {
-        this.navigateBack();
-      },
-      error: (err: any) => this.handleError(err),
-    });
+    this.isLoading = true;
+    this.conflict = false;
+
+    this.elementaryGroupService
+      .add(this.elementaryGroupForm.value)
+      .pipe(
+        finalize(() => {
+          this.isLoading = false;
+        })
+      )
+      .subscribe({
+        next: (elementaryGroup: any) => {
+          this.navigateBack();
+        },
+        error: (err: any) => this.handleError(err),
+      });
   }
 
-  private navigateBack(): void {
+  navigateBack(): void {
     this.router.navigate(['../'], { relativeTo: this.route });
   }
 
