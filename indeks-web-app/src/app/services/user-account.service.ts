@@ -21,4 +21,8 @@ export class UserAccountService {
   updateSuspension(id: number) {
     return this.http.post<any>(`${this.BASE_URL}/${id}/suspend`, null);
   }
+
+  getUserById(userAccountId: number): Observable<any> {
+    return this.http.get<any>(`${this.BASE_URL}/${userAccountId}`);
+  }
 }

@@ -11,7 +11,11 @@ import { BaseTableComponent } from '../base-table/base-table.component';
 import { ReportProblemService } from '../../services/report-problem.service';
 import { Observable } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';
-import { Inject } from '@angular/core';
+import { MaterialService } from '../../services/material.service';
+import { MatDialog } from '@angular/material/dialog';
+import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component';
+import { UserAccountService } from '../../services/user-account.service';
+import { SuspendDialogComponent } from '../suspend-dialog/suspend-dialog.component';
 
 @Component({
   selector: 'app-report-page',
@@ -24,12 +28,19 @@ import { Inject } from '@angular/core';
     CommonModule,
     BaseTableComponent,
     MatIconModule,
+    SuspendDialogComponent,
   ],
   templateUrl: './report-page.component.html',
   styleUrl: './report-page.component.css',
 })
 export class ReportPageComponent implements OnInit {
-  constructor(private reportService: ReportProblemService) {}
+  constructor(
+    private reportService: ReportProblemService,
+    private materialService: MaterialService,
+    private userService: UserAccountService,
+    public dialog: MatDialog
+  ) {}
+
   retrieveMaterials = (): Observable<ReportedMaterial[]> => {
     return this.reportService.getReportedMaterials() as Observable<
       ReportedMaterial[]
@@ -47,8 +58,95 @@ export class ReportPageComponent implements OnInit {
       ReportedAccount[]
     >;
   };
+
   deleteReportedProblem = (id: number): Observable<any> => {
     return this.reportService.deleteReportedProblem(id);
+  };
+
+  deleteReportedMaterial = (reportedMaterialId: number): void => {
+    this.reportService.getReportedMaterials().subscribe((reportedMaterials) => {
+      const reportedMaterial = reportedMaterials.find(
+        (m) => m.id === reportedMaterialId
+      );
+      if (reportedMaterial) {
+        const materialId = reportedMaterial.materialId;
+        console.log('NADAJMO SE MATERIAL ID:', reportedMaterialId);
+        this.materialService
+          .getMaterialById(materialId)
+          .subscribe((material) => {
+            if (material) {
+              const dialogRef = this.dialog.open(DeleteDialogComponent, {
+                width: '400px',
+                data: { name: material.name },
+              });
+
+              dialogRef.afterClosed().subscribe((result) => {
+                if (result) {
+                  this.materialService
+                    .deleteMaterial(materialId)
+                    .subscribe(() => {
+                      this.reportService
+                        .deleteReportedProblem(reportedMaterialId)
+                        .subscribe(() => {
+                          this.retrieveMaterials();
+                        });
+                    });
+                }
+              });
+            } else {
+              console.error(
+                'Materijal sa ID-om ' + materialId + ' nije pronađen.'
+              );
+            }
+          });
+      } else {
+        console.error(
+          'Prijavljeni materijal sa ID-om ' +
+            reportedMaterialId +
+            ' nije pronađen.'
+        );
+      }
+    });
+  };
+
+  suspendReportedUser = (reportedUserId: number): void => {
+    this.reportService.getReportedAccounts().subscribe((reportedAccounts) => {
+      const reportedAccount = reportedAccounts.find(
+        (a) => a.id === reportedUserId
+      );
+      if (reportedAccount) {
+        const userId = reportedAccount.reportedId;
+
+        this.userService.getUserById(userId).subscribe((user) => {
+          if (user) {
+            const dialogRef = this.dialog.open(SuspendDialogComponent, {
+              data: {
+                user: user,
+                reportedAccount: reportedAccount,
+              },
+            });
+
+            dialogRef.afterClosed().subscribe((result) => {
+              if (result) {
+                this.userService.updateSuspension(userId).subscribe(() => {
+                  this.reportService
+                    .deleteReportedProblem(reportedUserId)
+                    .subscribe(() => {
+                      this.retrieveAccounts();
+                    });
+                });
+              }
+            });
+          } else {
+            console.error('Korisnik sa ID-om ' + userId + ' nije pronađen.');
+          }
+        });
+      } else {
+        console.error(
+          'Prijavljeni nalog sa ID-om ' + reportedUserId + ' nije pronađen.'
+        );
+      }
+    });
   };
 
   ngOnInit(): void {}

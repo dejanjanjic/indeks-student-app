@@ -68,7 +68,11 @@
             }}</span>
           </div>
           } @else {
-          {{ isDateColumn(col) ? (item[col] | date : dateFormat) : item[col] }}
+          {{
+            isDateColumn(col) && item[col]
+              ? (item[col] | date : "dd.MM.yyyy HH:mm:ss")
+              : item[col]
+          }}
           } } @else {
           <div class="action-buttons-cell">
             @if (actionButtons.includes('details')){

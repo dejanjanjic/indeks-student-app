@@ -1,10 +1,11 @@
 export interface ReportedMaterial {
   id: number;
   materialName: string;
+  materialId: number;
   reason: string;
   reporterName: string;
   reporterSurname: string;
-  date: Date;
+  time: Date;
 }
 
 export interface ReportedComment {
@@ -13,7 +14,7 @@ export interface ReportedComment {
   reason: string;
   reporterName: string;
   reporterSurname: string;
-  date: Date;
+  time: Date;
 }
 
 export interface ReportedAccount {
@@ -22,6 +23,7 @@ export interface ReportedAccount {
   reporterSurname: string;
   reportedName: string;
   reporterSurename: string;
+  reportedId: number;
   reason: string;
-  date: Date;
+  time: Date;
 }
