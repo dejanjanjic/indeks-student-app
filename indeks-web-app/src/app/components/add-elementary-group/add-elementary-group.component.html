@@ -1,0 +1,58 @@
+<div class="form-container">
+  <mat-card class="form-card" appearance="outlined">
+    <mat-card-header class="form-header">
+      <mat-card-title class="title">Dodavanje osnovne grupe</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="elementaryGroupForm">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Naziv</mat-label>
+          <input
+            matInput
+            formControlName="name"
+            placeholder="Unesite naziv osnovne grupe"
+          />
+          <mat-icon matSuffix>group</mat-icon>
+          @if(elementaryGroupForm.get('name')?.hasError('required') &&
+          elementaryGroupForm.get('name')?.touched) {
+          <mat-error>Naziv osnovne grupe je obavezan</mat-error>
+          } @if(elementaryGroupForm.get('name')?.hasError('minlength')) {
+          <mat-error>Naziv mora imati najmanje 3 karaktera</mat-error>
+          }
+        </mat-form-field>
+
+        @if(conflict) {
+        <div class="error">
+          <mat-icon class="error-icon">error_outline</mat-icon>
+          Osnovna grupa sa ovim nazivom već postoji!
+        </div>
+        }
+
+        <div class="button-container">
+          <button
+            mat-stroked-button
+            class="cancel-button"
+            (click)="navigateBack()"
+            [disabled]="isLoading"
+          >
+            Odustani
+          </button>
+          <button
+            mat-raised-button
+            class="save-button"
+            (click)="submitForm()"
+            [disabled]="elementaryGroupForm.invalid || isLoading"
+          >
+            @if(isLoading) {
+            <mat-spinner
+              diameter="20"
+              color="accent"
+              class="button-spinner"
+            ></mat-spinner>
+            } @else { Sačuvaj }
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -1,13 +1,24 @@
-<form [formGroup]="loginForm" novalidate (ngSubmit)="onSubmit()">
-  <mat-card class="shipping-card">
-    <mat-card-header>
-      <mat-card-title>Prijava</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <div class="row">
-        <div class="col">
-          <mat-form-field class="full-width">
-            <input matInput placeholder="Email" formControlName="email" />
+<div class="login-container">
+  <div class="logo-container">
+    <img [src]="logoUrl" alt="INDEKS Logo" class="logo" />
+    <h1 class="app-title">INDEKS</h1>
+  </div>
+
+  <form [formGroup]="loginForm" novalidate (ngSubmit)="onSubmit()">
+    <mat-card class="login-card">
+      <mat-card-header>
+        <mat-card-title>Prijava na sistem</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="form-field">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Email</mat-label>
+            <input
+              matInput
+              placeholder="Unesite vaš email"
+              formControlName="email"
+            />
+            <mat-icon matPrefix>email</mat-icon>
             @if (loginForm.controls['email'].hasError('required')) {
             <mat-error>Email je <strong>obavezan</strong></mat-error>
             } @else if (loginForm.controls['email'].hasError('email')) {
@@ -15,34 +26,56 @@
             }
           </mat-form-field>
         </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <mat-form-field class="full-width">
+
+        <div class="form-field">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Lozinka</mat-label>
             <input
               matInput
-              type="password"
-              placeholder="Lozinka"
+              [type]="hidePassword ? 'password' : 'text'"
+              placeholder="Unesite vašu lozinku"
               formControlName="password"
             />
+            <mat-icon matPrefix>lock</mat-icon>
+            <button
+              mat-icon-button
+              matSuffix
+              (click)="hidePassword = !hidePassword"
+              [attr.aria-label]="'Prikaži lozinku'"
+              type="button"
+            >
+              <mat-icon>{{
+                hidePassword ? "visibility_off" : "visibility"
+              }}</mat-icon>
+            </button>
             @if (loginForm.controls['password'].hasError('required')) {
             <mat-error>Lozinka je <strong>obavezna</strong></mat-error>
             }
           </mat-form-field>
         </div>
-      </div>
-      @if (errorMessage) {
-      <mat-error class="error-message">
-        {{ errorMessage }}
-      </mat-error>
-      }
-    </mat-card-content>
-    <mat-card-actions>
-      <button mat-raised-button color="primary" type="submit">
-        @if (!isLoading) { Prijava } @else {
-        <mat-spinner diameter="20"></mat-spinner>
+
+        @if (errorMessage) {
+        <div class="error-container">
+          <mat-error class="error-message">
+            <mat-icon>error_outline</mat-icon> {{ errorMessage }}
+          </mat-error>
+        </div>
         }
-      </button>
-    </mat-card-actions>
-  </mat-card>
-</form>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          class="login-button"
+          [disabled]="loginForm.invalid || isLoading"
+        >
+          @if (!isLoading) { Prijava } @else {
+          <mat-spinner diameter="20"></mat-spinner>
+          }
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </form>
+</div>

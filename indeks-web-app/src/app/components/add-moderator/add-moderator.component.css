@@ -1,0 +1,37 @@
+/* moderator.component.css */
+.moderator-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f5f5f5;
+  }
+  
+  .moderator-card {
+    width: 400px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .full-width {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+  
+  .button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 24px;
+  }
+  
+  mat-card-title {
+    color: #3f51b5;
+    margin-bottom: 24px;
+    text-align: center;
+    font-size: 24px;
+  }
+  
+  mat-card-header {
+    justify-content: center;
+    margin-bottom: 20px;
+  }

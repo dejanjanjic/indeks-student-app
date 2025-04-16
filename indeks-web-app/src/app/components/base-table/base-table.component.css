@@ -1,31 +1,13 @@
-#visibility-icon {
-  color: #424874;
-}
-
-#update-icon {
-  color: #424874;
-}
-#search-icon {
-  color: #424874;
-}
-#add-icon {
-  color: #424874;
-}
-
-#delete-icon {
-  color: crimson;
-}
-
-th {
-  color: #424874;
-}
-
 .table-toolbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
+  padding: 16px;
   flex-wrap: wrap;
+  gap: 16px;
+  background-color: #fff;
+  border-radius: 8px 8px 0 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .search-container {
@@ -34,37 +16,289 @@ th {
   flex: 1;
   min-width: 300px;
   max-width: 600px;
-  gap: 15px;
-}
-
-.action-buttons {
-  display: flex;
-  align-items: center;
-  gap: 15px;
+  gap: 12px;
 }
 
 .search-field {
   flex: 1;
 }
 
-.add-button {
-  margin-right: 0;
+.search-field ::ng-deep .mat-mdc-text-field-wrapper {
+  background-color: #f5f7fb;
+}
+
+.search-field ::ng-deep .mat-mdc-form-field-flex {
+  background-color: #f5f7fb;
+}
+
+.search-field ::ng-deep .mdc-text-field {
+  background-color: #f5f7fb !important;
+}
+
+.search-field
+  ::ng-deep
+  .mdc-text-field--outlined
+  .mdc-notched-outline
+  .mdc-notched-outline__leading,
+.search-field
+  ::ng-deep
+  .mdc-text-field--outlined
+  .mdc-notched-outline
+  .mdc-notched-outline__trailing,
+.search-field
+  ::ng-deep
+  .mdc-text-field--outlined
+  .mdc-notched-outline
+  .mdc-notched-outline__notch {
+  border-color: #e0e6ed;
+}
+
+.search-field
+  ::ng-deep
+  .mdc-text-field--focused
+  .mdc-notched-outline
+  .mdc-notched-outline__leading,
+.search-field
+  ::ng-deep
+  .mdc-text-field--focused
+  .mdc-notched-outline
+  .mdc-notched-outline__trailing,
+.search-field
+  ::ng-deep
+  .mdc-text-field--focused
+  .mdc-notched-outline
+  .mdc-notched-outline__notch {
+  border-color: #003366;
+}
+
+button#search-button {
+  background: linear-gradient(135deg, #003366, #0055a4);
+  color: white;
+  height: 40px;
+}
+
+button#search-button:hover {
+  background: linear-gradient(135deg, #004080, #0066cc);
+}
+
+.action-buttons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .refresh-button {
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  transition: background-color 0.3s ease;
-  color: #424874;
-  margin-left: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
+  color: #003366;
 }
 
 .refresh-button:hover {
-  background-color: rgba(0, 0, 0, 0.04);
+  background-color: rgba(0, 51, 102, 0.04);
+  transform: rotate(15deg);
+}
+
+.add-button {
+  background: linear-gradient(135deg, #003366, #0055a4);
+  color: white !important;
+  transition: all 0.2s ease;
+  height: 40px;
+}
+
+.add-button:hover {
+  background: linear-gradient(135deg, #004080, #0066cc);
+  box-shadow: 0 3px 8px rgba(0, 51, 102, 0.2);
+}
+
+.add-button mat-icon {
+  margin-left: 6px;
+  color: white !important;
+}
+
+table.mat-mdc-table {
+  width: 100%;
+  background-color: white;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+th.mat-mdc-header-cell {
+  background-color: #f5f7fb;
+  color: #003366;
+  font-weight: 500;
+  font-size: 14px;
+  padding: 16px;
+  border-bottom: 1px solid #e0e6ed;
+}
+
+td.mat-mdc-cell {
+  padding: 12px 16px;
+  font-size: 14px;
+  color: #37474f;
+  border-bottom: 1px solid #e0e6ed;
+}
+
+tr.mat-mdc-row:hover {
+  background-color: rgba(0, 51, 102, 0.02);
+}
+
+#visibility-icon {
+  color: #003366;
+  transition: all 0.2s ease;
+}
+
+#visibility-icon:hover {
+  color: #0055a4;
+  transform: scale(1.1);
+}
+
+#update-icon {
+  color: #003366;
+  transition: all 0.2s ease;
+}
+
+#update-icon:hover {
+  color: #0055a4;
+  transform: scale(1.1);
+}
+
+#delete-icon {
+  color: #dc3545;
+  transition: all 0.2s ease;
+}
+
+#delete-icon:hover {
+  color: #c82333;
+  transform: scale(1.1);
+}
+
+.no-data-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  color: #78909c;
+}
+
+.no-data-message mat-icon {
+  font-size: 48px;
+  height: 48px;
+  width: 48px;
+  margin-bottom: 16px;
+}
+
+.action-buttons-cell {
+  display: flex;
+  gap: 4px;
+}
+
+/* Paginator stilovi */
+::ng-deep .mat-mdc-paginator {
+  background-color: white;
+  border-radius: 0 0 8px 8px;
+  border-top: 1px solid #e0e6ed;
+}
+
+::ng-deep .mat-mdc-paginator-page-size {
+  margin-right: 8px;
+}
+
+::ng-deep .mat-mdc-paginator-container {
+  min-height: 56px;
 }
 
 .spinner-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding: 32px;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+::ng-deep .mat-mdc-progress-spinner circle {
+  stroke: #003366;
+}
+
+@media (max-width: 768px) {
+  .table-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-container {
+    max-width: 100%;
+  }
+
+  .action-buttons {
+    justify-content: space-between;
+    margin-top: 8px;
+  }
+
+  th.mat-mdc-header-cell,
+  td.mat-mdc-cell {
+    padding: 10px 8px;
+  }
+}
+
+.mat-mdc-row:last-child td.mat-mdc-cell:first-child {
+  border-bottom-left-radius: 8px;
+}
+
+.mat-mdc-row:last-child td.mat-mdc-cell:last-child {
+  border-bottom-right-radius: 8px;
+}
+
+tr.mat-mdc-row:nth-child(even) {
+  background-color: #f9fafc;
+}
+
+.toggle-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.toggle-label {
+  font-size: 14px;
+  color: var(--text-color, #333);
+}
+
+/* Stilovi za toggle u aktivnom/neaktivnom stanju */
+:host
+  ::ng-deep
+  .mat-slide-toggle.mat-primary.mat-checked
+  .mat-slide-toggle-thumb {
+  background-color: var(--primary-color, #3f51b5);
+}
+
+:host
+  ::ng-deep
+  .mat-slide-toggle.mat-primary.mat-checked
+  .mat-slide-toggle-bar {
+  background-color: rgba(var(--primary-color-rgb, 63, 81, 181), 0.5);
+}
+
+/* Hover efekat za toggle ćelije */
+td.mat-column-toggle:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+/* Osiguranje da je toggle pozicioniran ispravno */
+.mat-mdc-slide-toggle {
+  margin: 0;
+}
+
+/* Responsive podešavanja za toggle u mobilnom prikazu */
+@media (max-width: 600px) {
+  .toggle-cell {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .toggle-label {
+    font-size: 12px;
+  }
 }

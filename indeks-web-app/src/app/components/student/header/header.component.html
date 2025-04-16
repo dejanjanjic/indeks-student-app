@@ -1,0 +1,47 @@
+<header class="student-header">
+  <div class="header-container">
+    <div class="header-left">
+      <button
+        mat-icon-button
+        class="menu-toggle"
+        (click)="onToggleSidebar()"
+        matTooltip="Otvori meni"
+      >
+        <mat-icon>menu</mat-icon>
+      </button>
+      <div class="brand">
+        <img [src]="logoUrl" alt="INDEKS" class="brand-logo" />
+        <h1 class="brand-name">INDEKS</h1>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <div class="user-profile">
+        <span class="username">{{ username }}</span>
+        <div class="avatar-wrapper">
+          <div class="avatar">
+            <mat-icon>person</mat-icon>
+          </div>
+        </div>
+      </div>
+
+      <button
+        mat-icon-button
+        class="logout-button"
+        (click)="logout()"
+        matTooltip="Odjava"
+      >
+        <mat-icon>logout</mat-icon>
+      </button>
+
+      <button
+        mat-icon-button
+        class="theme-toggle"
+        (click)="toggleTheme()"
+        [matTooltip]="isDarkMode ? 'Svetla tema' : 'Tamna tema'"
+      >
+        <mat-icon>{{ isDarkMode ? "light_mode" : "dark_mode" }}</mat-icon>
+      </button>
+    </div>
+  </div>
+</header>

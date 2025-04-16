@@ -5,6 +5,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import net.etfbl.indeks.dto.AddUserAccountDTO;
 import net.etfbl.indeks.dto.UserAccountDTO;
+import net.etfbl.indeks.dto.UserAccountDetailsDTO;
 import net.etfbl.indeks.dto.UserAccountSummaryDTO;
 import net.etfbl.indeks.model.Account;
 import net.etfbl.indeks.security.blacklisting.service.BlacklistedTokenService;
@@ -15,6 +16,7 @@ import net.etfbl.indeks.repository.UserAccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,7 +51,12 @@ public class UserAccountService {
                 .map(user -> new UserAccountDTO(user.getId(), user.getFirstName(), user.getLastName()))
                 .collect(Collectors.toList());
     }
-
+    public List<UserAccountDetailsDTO> searchUserAccountDetailsByKeyword(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return userAccountRepository.findAllUserAccountDetails();
+        }
+        return userAccountRepository.searchUserAccountDetailsByKeyword(keyword.trim());
+    }
     public Optional<UserAccount> getUserAccountById(Long id) {
         return userAccountRepository.findById(id);
     }
@@ -227,6 +234,10 @@ public class UserAccountService {
         if (userAccount.isPresent()) {
             return userAccount.get().getActive();
         } else return account.isPresent();
+    }
+
+    public List<UserAccountDetailsDTO> getUserAccountDetails() {
+        return userAccountRepository.findAllUserAccountDetails();
     }
 
 //    public UserAccount unsuspendAccount(Long id) {

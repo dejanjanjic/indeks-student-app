@@ -5,30 +5,42 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AuthService } from '../../../services/auth.service';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-header',
-  imports: [MatToolbarModule, MatButtonModule, MatIconModule, MatTooltipModule],
+  standalone: true,
+  imports: [
+    CommonModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatIconModule,
+    MatTooltipModule,
+  ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   @Output() toggleSidebar = new EventEmitter<void>();
   private authService = inject(AuthService);
   private router = inject(Router);
 
   public username: string | null = '';
+  public logoUrl = 'assets/indeks-logo.png';
 
   ngOnInit(): void {
     this.loadData();
   }
+
   public loadData() {
     this.username = this.authService.getUsername();
   }
+
   public logout() {
     this.authService.logout();
     this.router.navigate(['/login']);
   }
+
   public onToggleSidebar() {
     this.toggleSidebar.emit();
   }

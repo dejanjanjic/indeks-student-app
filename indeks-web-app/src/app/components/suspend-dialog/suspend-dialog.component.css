@@ -1,0 +1,154 @@
+/* Stilovi za dialog za suspendovanje korisnika */
+.dialog-container {
+  min-width: 400px;
+  max-width: 500px;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.dialog-header {
+  background: linear-gradient(135deg, #003366, #0055a4);
+  color: white;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dialog-title {
+  font-size: 22px;
+  font-weight: 500;
+  margin: 0;
+  color: white;
+}
+
+.close-button {
+  color: white;
+}
+
+.dialog-content {
+  padding: 20px;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.alert-banner {
+  display: flex;
+  align-items: center;
+  background-color: #fff4e5;
+  padding: 12px 16px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.warning-icon {
+  color: #ff9800;
+  margin-right: 12px;
+  font-size: 24px;
+  height: 24px;
+  width: 24px;
+}
+
+.report-details {
+  background-color: #f5f7fb;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.detail-item {
+  display: flex;
+  align-items: flex-start; /* Aligns items to the top */
+  margin-bottom: 12px;
+  padding: 8px 0;
+}
+
+.detail-label, .detail-value {
+  margin: 0; /* Remove any margin that might cause spacing */
+  padding: 0; /* Remove any padding that might cause spacing */
+}
+
+/* Replace the .report-reason class with this */
+.report-reason {
+  flex-direction: column;
+  /* Remove or reduce the padding-top value */
+  padding-top: 0;
+  /* Remove the border-top if you don't want the separator */
+  border-top: none;
+}
+
+/* And optionally adjust the margin here too */
+.report-reason .detail-label {
+  margin-bottom: 4px;
+}
+
+/* You might also want to adjust the reason container padding */
+.reason-container {
+  background-color: white;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #e0e0e0;
+  color: #333;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-top: 4px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 20px;
+  margin: 0;
+}
+
+.suspend-button {
+  background: linear-gradient(135deg, #003366, #0055a4);
+  color: white;
+  transition: all 0.2s ease;
+  height: 40px;
+  min-width: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.suspend-button:hover {
+  background: linear-gradient(135deg, #004080, #0066cc);
+  box-shadow: 0 3px 8px rgba(0, 51, 102, 0.2);
+}
+
+.cancel-button {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  transition: all 0.2s ease;
+  height: 40px;
+  min-width: 90px;
+}
+
+.cancel-button:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+/* Responsivnost */
+@media (max-width: 768px) {
+  .dialog-container {
+    min-width: unset;
+    width: 100%;
+  }
+  
+  .detail-item {
+    flex-direction: column;
+  }
+  
+  .detail-label {
+    margin-bottom: 4px;
+  }
+  
+  .button-container {
+    flex-direction: column-reverse;
+    gap: 12px;
+  }
+  
+  .suspend-button,
+  .cancel-button {
+    width: 100%;
+  }
+}

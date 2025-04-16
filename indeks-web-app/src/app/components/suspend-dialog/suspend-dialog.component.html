@@ -1,0 +1,50 @@
+<div class="dialog-container">
+  <div class="dialog-header">
+    <h2 mat-dialog-title class="dialog-title">Detalji o prijavi</h2>
+    <button mat-icon-button mat-dialog-close class="close-button">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div mat-dialog-content class="dialog-content">
+    <div class="alert-banner">
+      <mat-icon class="warning-icon">warning</mat-icon>
+      <span>Korisnik je prijavljen zbog kršenja pravila platforme</span>
+    </div>
+
+    <div class="report-details">
+      <div class="detail-item">
+        <span class="detail-label">ID prijave:</span>
+        <span class="detail-value">{{ data.reportedAccount.id }}</span>
+      </div>
+
+      <div class="detail-item">
+        <span class="detail-label">Datum prijave:</span>
+        <span class="detail-value">{{ data.reportedAccount.time }}</span>
+      </div>
+
+      <div class="detail-item">
+        <span class="detail-label">Prijavljeni ID:</span>
+        <span class="detail-value">{{ data.reportedAccount.reportedId }}</span>
+      </div>
+
+      <div class="detail-item">
+        <span class="detail-label">Razlog prijave: </span>
+        <span class="detail-value">{{ data.reportedAccount.reason }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div mat-dialog-actions class="button-container">
+    <button mat-stroked-button class="cancel-button" [mat-dialog-close]="false">
+      Odustani
+    </button>
+    <button
+      mat-raised-button
+      class="suspend-button"
+      (click)="suspendUser(data.user.id)"
+    >
+      Suspenduj korisnika
+    </button>
+  </div>
+</div>

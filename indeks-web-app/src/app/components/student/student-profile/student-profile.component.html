@@ -1,0 +1,50 @@
+<div class="student-main">
+  <app-student-header (toggleSidebar)="sidenav.toggle()"></app-student-header>
+
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #sidenav mode="over" class="sidenav" [autoFocus]="false">
+      <div class="sidenav-header">
+        <img [src]="logoUrl" alt="INDEKS" class="sidenav-logo" />
+        <h2 class="sidenav-title">Studentski portal</h2>
+      </div>
+
+      <div class="divider"></div>
+
+      <mat-nav-list class="nav-list">
+        <a
+          mat-list-item
+          routerLink="material-page"
+          routerLinkActive="active-link"
+          (click)="sidenav.toggle()"
+        >
+          <div class="nav-item-container">
+            <mat-icon class="nav-icon">description</mat-icon>
+            <span class="nav-label">Materijali</span>
+          </div>
+        </a>
+
+        <a
+          mat-list-item
+          routerLink="schedule-page"
+          routerLinkActive="active-link"
+          (click)="sidenav.toggle()"
+        >
+          <div class="nav-item-container">
+            <mat-icon class="nav-icon">schedule</mat-icon>
+            <span class="nav-label">Raspored</span>
+          </div>
+        </a>
+      </mat-nav-list>
+
+      <div class="sidenav-footer">
+        <div class="version">INDEKS v1.0</div>
+      </div>
+    </mat-sidenav>
+
+    <mat-sidenav-content class="content-container">
+      <div class="content-wrapper">
+        <router-outlet />
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

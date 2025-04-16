@@ -1,18 +1,38 @@
-<mat-toolbar color="accent">
-  <button mat-icon-button class="hamburger-icon" (click)="onToggleSidebar()">
-    <mat-icon class="font-color-blue">menu</mat-icon>
-  </button>
-  <span class="font-color-blue">INDEKS</span>
-  <span class="spacer"></span>
-  <p class="font-color-blue">{{ username }}</p>
-  <mat-icon class="font-color-blue">person</mat-icon>
+<header class="admin-header">
+  <div class="header-container">
+    <div class="header-left">
+      <button
+        mat-icon-button
+        class="menu-toggle"
+        (click)="onToggleSidebar()"
+        matTooltip="Otvori meni"
+      >
+        <mat-icon>menu</mat-icon>
+      </button>
+      <div class="brand">
+        <img [src]="logoUrl" alt="INDEKS" class="brand-logo" />
+        <h1 class="brand-name">INDEKS</h1>
+      </div>
+    </div>
 
-  <button
-    mat-icon-button
-    class="logout-icon"
-    (click)="logout()"
-    matTooltip="Logout"
-  >
-    <mat-icon>logout</mat-icon>
-  </button>
-</mat-toolbar>
+    <div class="header-right">
+      <div class="user-profile">
+        <span class="username">{{ username }}</span>
+        <div class="avatar-wrapper">
+          <div class="avatar">
+            <mat-icon>person</mat-icon>
+          </div>
+        </div>
+      </div>
+
+      <button
+        mat-icon-button
+        class="logout-button"
+        (click)="logout()"
+        matTooltip="Odjava"
+      >
+        <mat-icon>logout</mat-icon>
+      </button>
+    </div>
+  </div>
+</header>

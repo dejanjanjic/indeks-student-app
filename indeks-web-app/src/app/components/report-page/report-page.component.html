@@ -1,0 +1,96 @@
+<div class="admin-container">
+  <mat-toolbar color="primary" class="admin-toolbar">
+    <span>Prijavljeni problemi</span>
+  </mat-toolbar>
+
+  <div class="content-container">
+    <mat-card>
+      <mat-tab-group>
+        <mat-tab label="Prijavljeni materijali">
+          <app-base-table
+            [displayedColumns]="[
+              'id',
+              'materialName',
+              'reason',
+              'reporterName',
+              'reporterSurname',
+              'time',
+              'actions'
+            ]"
+            [retrieveDataFunction]="retrieveMaterials"
+            [filterDataFunction]="retrieveMaterials"
+            [deleteDataFunction]="deleteReportedProblem"
+            [viewDetailsFunction]="deleteReportedMaterial"
+            [actionButtons]="['delete', 'details']"
+            [headerMap]="{
+              id: 'ID',
+              materialName: 'Naziv materijala',
+              reason: 'Razlog prijave',
+              reporterName: 'Ime prijavljivača',
+              reporterSurname: 'Prezime prijavljivača',
+              time: 'Datum prijave'
+            }"
+            [dateColumns]="['time']"
+          ></app-base-table>
+        </mat-tab>
+
+        <mat-tab label="Prijavljeni komentari">
+          <app-base-table
+            [displayedColumns]="[
+              'id',
+              'reviewText',
+              'reason',
+              'reporterName',
+              'reporterSurname',
+              'time',
+              'actions'
+            ]"
+            [retrieveDataFunction]="retrieveComments"
+            [filterDataFunction]="retrieveComments"
+            [deleteDataFunction]="deleteReportedProblem"
+            [actionButtons]="['delete', 'details']"
+            [headerMap]="{
+              id: 'ID',
+              reviewText: 'Tekst komentara',
+              reason: 'Razlog prijave',
+              reporterName: 'Ime prijavljivača',
+              reporterSurname: 'Prezime prijavljivača',
+              time: 'Datum prijave'
+            }"
+            [dateColumns]="['time']"
+          ></app-base-table>
+        </mat-tab>
+
+        <mat-tab label="Prijavljeni nalozi">
+          <app-base-table
+            [displayedColumns]="[
+              'id',
+              'reportedName',
+              'reportedSurname',
+              'reporterName',
+              'reporterSurename',
+              'reason',
+              'time',
+              'actions'
+            ]"
+            [retrieveDataFunction]="retrieveAccounts"
+            [filterDataFunction]="retrieveAccounts"
+            [deleteDataFunction]="deleteReportedProblem"
+            [viewDetailsFunction]="suspendReportedUser"
+            [actionButtons]="['delete', 'details']"
+            [headerMap]="{
+              id: 'ID',
+              reportedName: 'Ime prijavljenog',
+              reportedSurname: 'Prezime prijavljenog',
+              reason: 'Razlog prijave',
+              reporterName: 'Ime prijavljivača',
+              reporterSurename: 'Prezime prijavljivača',
+              time: 'Datum prijave'
+            }"
+            [dateColumns]="['time']"
+          ></app-base-table>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-card>
+  </div>
+</div>

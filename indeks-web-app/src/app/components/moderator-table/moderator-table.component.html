@@ -1,0 +1,11 @@
+<app-base-table
+  [displayedColumns]="['id', 'firstName', 'lastName', 'materialPath', 'actions']"
+  [service]="moderatorService"
+  [headerMap]="headerMap"
+  [actionButtons]="['delete', 'update', 'add']"
+  [retrieveDataFunction]="retrieveDataFunction"
+  [addDataFunction]="addDataFunction"
+  [filterDataFunction]="filterDataFunction"
+  [updateDataFunction]="updateDataFunction"
+  [deleteDataFunction]="deleteDataFunction"
+/>

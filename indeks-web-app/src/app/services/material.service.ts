@@ -6,18 +6,20 @@ import { Material } from '../model/material.model';
 import { AuthService } from './auth.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MaterialService {
   private apiUrl = 'http://localhost:8080/api/v1/material';
 
-  constructor(
-    private http: HttpClient,
-    private authService: AuthService
-  ) { }
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
+  getAllMaterials(): Observable<Material[]> {
+    return this.http.get<Material[]>(`${this.apiUrl}/DTOs`);
+  }
   getMaterialsBySubject(subjectId: number): Observable<Material[]> {
-    return this.http.get<Material[]>(`${this.apiUrl}/materials/subject/${subjectId}`);
+    return this.http.get<Material[]>(
+      `${this.apiUrl}/materials/subject/${subjectId}`
+    );
   }
 
   uploadMaterial(subjectId: number, file: File): Observable<any> {
@@ -28,12 +30,12 @@ export class MaterialService {
     }
 
     return from(this.convertFileToBase64(file)).pipe(
-      switchMap(base64 => {
+      switchMap((base64) => {
         const payload = {
           base64: base64,
           name: file.name,
           subjectId: subjectId,
-          ownerAccountId: ownerAccountId
+          ownerAccountId: ownerAccountId,
         };
         return this.http.post(`${this.apiUrl}/upload`, payload);
       })
@@ -50,7 +52,7 @@ export class MaterialService {
         const base64 = result.split(',')[1];
         resolve(base64);
       };
-      reader.onerror = error => reject(error);
+      reader.onerror = (error) => reject(error);
     });
   }
 
@@ -64,5 +66,9 @@ export class MaterialService {
 
   deleteMaterial(materialId: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${materialId}`);
+  }
+
+  getMaterialById(materialId: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/${materialId}`);
   }
 }

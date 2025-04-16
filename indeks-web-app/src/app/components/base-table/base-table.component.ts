@@ -1,5 +1,12 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { AfterViewInit, Component, Input, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  Input,
+  ViewChild,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
@@ -11,6 +18,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-base-table',
@@ -26,10 +34,11 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatInputModule,
     RouterModule,
     DatePipe,
+    MatTooltipModule,
   ],
   templateUrl: './base-table.component.html',
   styleUrl: './base-table.component.css',
-  standalone: true
+  standalone: true,
 })
 export class BaseTableComponent<T extends { id: number }>
   implements AfterViewInit
@@ -38,6 +47,7 @@ export class BaseTableComponent<T extends { id: number }>
   @Input() service: any;
   @Input() headerMap: { [key: string]: string } = {};
   @Input() dateColumns: string[] = [];
+  @Input() toggleColumns: string[] = [];
   @Input() actionButtons: string[] = [];
   @Input() dateFormat: string = 'dd.MM.yyyy.';
   @Input() retrieveDataFunction: any;
@@ -46,8 +56,22 @@ export class BaseTableComponent<T extends { id: number }>
   @Input() updateDataFunction: any;
   @Input() filterDataFunction: any;
   @Input() viewDetailsFunction: any;
+  @Input() toggleLabels: { [key: string]: { true: string; false: string } } =
+    {};
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @Output() toggleChange = new EventEmitter<{
+    id: number;
+    column: string;
+    value: boolean;
+  }>();
+
+  private _paginator!: MatPaginator;
+  @ViewChild(MatPaginator) set paginator(paginator: MatPaginator) {
+    if (paginator) {
+      this._paginator = paginator;
+      this.dataSource.paginator = this._paginator;
+    }
+  }
   dataSource = new MatTableDataSource<T>();
   resultsLength = 0;
 
@@ -57,7 +81,6 @@ export class BaseTableComponent<T extends { id: number }>
   constructor(private dialog: MatDialog) {}
 
   ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
     this.loadData();
   }
 
@@ -110,7 +133,6 @@ export class BaseTableComponent<T extends { id: number }>
     });
   }
 
-// In base-table.component.ts (updated error handler)
   deleteItem(id: number): void {
     const dialogRef = this.dialog.open(DeleteDialogComponent, {
       data: { name: `${this.headerMap['entityName']} ${id}` },
@@ -125,7 +147,7 @@ export class BaseTableComponent<T extends { id: number }>
 
         deleteObservable.subscribe({
           next: () => this.refreshTable(),
-          error: (err: any) => { // <--- Add explicit type here
+          error: (err: any) => {
             this.isLoading = false;
             console.error(err);
           },
@@ -140,5 +162,22 @@ export class BaseTableComponent<T extends { id: number }>
 
   isDateColumn(col: string): boolean {
     return this.dateColumns.includes(col);
+  }
+
+  isToggleColumn(col: string): boolean {
+    return this.toggleColumns.includes(col);
+  }
+
+  onToggleChange(id: number, column: string, value: boolean): void {
+    this.toggleChange.emit({ id, column, value });
+  }
+
+  getToggleLabel(column: string, value: boolean): string {
+    if (this.toggleLabels[column]) {
+      return value
+        ? this.toggleLabels[column].true
+        : this.toggleLabels[column].false;
+    }
+    return value ? 'Da' : 'Ne';
   }
 }

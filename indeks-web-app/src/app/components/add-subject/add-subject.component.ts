@@ -1,4 +1,3 @@
-// add-subject.component.ts
 import { Component, inject } from '@angular/core';
 import {
   FormBuilder,
@@ -10,8 +9,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SubjectService } from '../../services/subject.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-add-subject',
@@ -22,9 +24,11 @@ import { ActivatedRoute, Router } from '@angular/router';
     MatInputModule,
     MatButtonModule,
     MatCardModule,
+    MatIconModule,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './add-subject.component.html',
-  styleUrls: ['./add-subject.component.css']
+  styleUrl: './add-subject.component.css',
 })
 export class AddSubjectComponent {
   private subjectService = inject(SubjectService);
@@ -33,9 +37,10 @@ export class AddSubjectComponent {
   private formBuilder = inject(FormBuilder);
 
   public conflict = false;
+  public isLoading = false;
   public subjectForm: FormGroup = this.formBuilder.group({
     name: ['', [Validators.required]],
-    year: [null, [Validators.required]]
+    year: [null, [Validators.required]],
   });
 
   submitForm(): void {
@@ -43,13 +48,23 @@ export class AddSubjectComponent {
       return;
     }
 
-    this.subjectService.addSubject(this.subjectForm.value).subscribe({
-      next: () => this.navigateBack(),
-      error: (err) => this.handleError(err)
-    });
+    this.isLoading = true;
+    this.conflict = false;
+
+    this.subjectService
+      .addSubject(this.subjectForm.value)
+      .pipe(
+        finalize(() => {
+          this.isLoading = false;
+        })
+      )
+      .subscribe({
+        next: () => this.navigateBack(),
+        error: (err) => this.handleError(err),
+      });
   }
 
-  private navigateBack(): void {
+  navigateBack(): void {
     this.router.navigate(['../'], { relativeTo: this.route });
   }
 

@@ -1,13 +1,139 @@
-.spacer {
-  flex: 1 1 auto;
+.admin-header {
+  background: linear-gradient(135deg, #003366, #0055a4);
+  color: white;
+  height: 64px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
-.logout-icon {
-  color: crimson;
-  margin-left: 10px;
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  padding: 0 16px;
+  max-width: 1600px;
+  margin: 0 auto;
 }
-.mat-toolbar {
-  --mat-toolbar-container-background-color: #a6b1e1;
+
+/* Left section */
+.header-left {
+  display: flex;
+  align-items: center;
 }
-.font-color-blue {
-  color: #424874;
+
+.menu-toggle {
+  color: white;
+  margin-right: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  transition: background 0.2s ease;
+}
+
+.menu-toggle:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  padding-left: 8px;
+}
+
+.brand-logo {
+  height: 32px;
+  width: auto;
+  margin-right: 12px;
+  filter: brightness(0.6);
+}
+
+.brand-name {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin: 0;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Right section */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  padding: 4px 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 40px;
+  transition: background 0.2s ease;
+}
+
+.user-profile:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.username {
+  font-weight: 500;
+  margin-right: 12px;
+  font-size: 15px;
+}
+
+.avatar-wrapper {
+  position: relative;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+.avatar mat-icon {
+  color: white;
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.logout-button {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  transition: all 0.2s ease;
+}
+
+.logout-button:hover {
+  background: rgba(220, 53, 69, 0.9);
+}
+
+.logout-button mat-icon {
+  transition: transform 0.2s ease;
+}
+
+.logout-button:hover mat-icon {
+  transform: translateX(2px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .username {
+    display: none;
+  }
+
+  .brand-name {
+    font-size: 18px;
+  }
+
+  .header-container {
+    padding: 0 8px;
+  }
 }

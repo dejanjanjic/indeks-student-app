@@ -1,5 +1,4 @@
 import { Component, inject } from '@angular/core';
-
 import {
   ReactiveFormsModule,
   FormBuilder,
@@ -10,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -22,7 +22,9 @@ import { AuthService } from '../../services/auth.service';
     MatCardModule,
     ReactiveFormsModule,
     MatProgressSpinnerModule,
-  ]
+    MatIconModule,
+  ],
+  standalone: true,
 })
 export class LoginFormComponent {
   private formBuilder = inject(FormBuilder);
@@ -30,6 +32,8 @@ export class LoginFormComponent {
 
   public isLoading = false;
   public errorMessage = '';
+  public hidePassword = true;
+  public logoUrl = 'assets/indeks-logo.png';
 
   public loginForm: FormGroup = this.formBuilder.group({
     email: [null, [Validators.required, Validators.email]],
@@ -46,13 +50,18 @@ export class LoginFormComponent {
     this.isLoading = true;
     this.errorMessage = '';
 
-    this.authService.login(this.loginForm.value).subscribe({
+    const loginData = {
+      email: this.loginForm.value.email,
+      password: this.loginForm.value.password,
+    };
+
+    this.authService.login(loginData).subscribe({
       next: (result: any) => {
         this.isLoading = false;
       },
       error: (error: any) => {
         this.isLoading = false;
-        this.errorMessage = 'Neispravni kredencijali ili greška u prijavi';
+        this.errorMessage = 'Neispravni kredencijali ili greška pri prijavi';
         console.error(error);
       },
     });
