@@ -25,7 +25,7 @@ public class ModeratorAccountController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ModeratorAccount> getModeratorById(@PathVariable Long id) {
-        Optional<ModeratorAccount> moderator = moderatorAccountService.getModeratorById(id);
+        Optional<ModeratorAccount> moderator = moderatorAccountService.getModeratorAccountById(id);
         return moderator.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
@@ -42,7 +42,7 @@ public class ModeratorAccountController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ModeratorAccount> updateModerator(@PathVariable Long id, @RequestBody UpdateModeratorDTO dto) {
-        Optional<ModeratorAccount> existingModerator = moderatorAccountService.getModeratorById(id);
+        Optional<ModeratorAccount> existingModerator = moderatorAccountService.getModeratorAccountById(id);
 
         if (existingModerator.isEmpty()) {
             return ResponseEntity.notFound().build();

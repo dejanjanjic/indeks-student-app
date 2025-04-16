@@ -12,14 +12,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
-import net.etfbl.indeks.model.Account;
-import net.etfbl.indeks.model.AdminAccount;
-import net.etfbl.indeks.model.StudentAccount;
-import net.etfbl.indeks.model.TutorAccount;
-import net.etfbl.indeks.service.AccountService;
-import net.etfbl.indeks.service.AdminAccountService;
-import net.etfbl.indeks.service.StudentAccountService;
-import net.etfbl.indeks.service.TutorAccountService;
+import net.etfbl.indeks.model.*;
+import net.etfbl.indeks.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,14 +25,16 @@ public class JwtService {
     private final AdminAccountService adminAccountService;
     private final StudentAccountService studentAccountService;
     private final TutorAccountService tutorAccountService;
+    private final ModeratorAccountService moderatorAccountService;
 
     @Autowired
     public JwtService(AccountService accountService, AdminAccountService adminAccountService,
-                      StudentAccountService studentAccountService, TutorAccountService tutorAccountService) {
+                      StudentAccountService studentAccountService, TutorAccountService tutorAccountService, ModeratorAccountService moderatorAccountService) {
         this.accountService = accountService;
         this.adminAccountService = adminAccountService;
         this.studentAccountService = studentAccountService;
         this.tutorAccountService = tutorAccountService;
+        this.moderatorAccountService = moderatorAccountService;
     }
 
     @Value("${security.jwt.secret-key}")
@@ -67,6 +63,19 @@ public class JwtService {
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
         return buildToken(extraClaims, userDetails, jwtExpiration);
     }
+
+    public String generateRefreshToken(UserDetails userDetails) {
+        Map<String, Object> extraClaims = new HashMap<>();
+        return Jwts
+                .builder()
+                .setClaims(extraClaims)
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + jwtExpiration * 3)) // npr. 3x duži rok važenja
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+                .compact();
+    }
+
 
     public long getExpirationTime() {
         return jwtExpiration;
@@ -104,6 +113,13 @@ public class JwtService {
             firstName = tutorAccount.get().getUserAccount().getFirstName();
             lastName = tutorAccount.get().getUserAccount().getLastName();
             accountType = "TUTOR";
+        }
+
+        Optional<ModeratorAccount> moderatorAccount = moderatorAccountService.getModeratorAccountById(account.get().getId());
+        if(moderatorAccount.isPresent()) {
+            firstName = moderatorAccount.get().getFirstName();
+            lastName = moderatorAccount.get().getLastName();
+            accountType = "MODERATOR";
         }
 
         extraClaims.put("firstName", firstName);
