@@ -4,6 +4,8 @@ package net.etfbl.indeks.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+
+import java.util.Iterator;
 import java.util.List;
 
 @Entity
@@ -76,6 +78,19 @@ public class TutoringOffer {
         return tutorAccount;
     }
 
+    public boolean removeReview(Long reviewId) {
+        if (this.reviews != null) {
+            Iterator<Review> iterator = this.reviews.iterator();
+            while (iterator.hasNext()) {
+                Review review = iterator.next();
+                if (review.getId().equals(reviewId)) {
+                    iterator.remove();
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     public void setTutorAccount(TutorAccount tutorAccount) {
         this.tutorAccount = tutorAccount;
     }
