@@ -80,9 +80,39 @@ const InstructionDetailsScreen = ({ route }) => {
     fetchInstructorId();
   }, [instructor]);
 
+  // const handleSubscribeButton = async () => {
+  //   console.log("povezano");
+  // };
   const handleSubscribeButton = async () => {
     console.log("povezano");
+    if (!user || !user.accountId) {
+      Alert.alert("Greška", "Niste prijavljeni.");
+      return;
+    }
+
+    const payload = {
+      tutoringOfferId: id,
+      studentAccountId: user.accountId,
+    };
+
+    try {
+      const response = await HttpService.create("subscriptions", payload);
+      console.log("Odgovor sa servera:", response);
+
+      if (response && !response.error) {
+        Alert.alert("Uspjeh", "Prijava na kurs je poslana.");
+      } else {
+        Alert.alert(
+          "Greška pri prijavi",
+          response?.message || "Nepoznata greška."
+        );
+      }
+    } catch (error) {
+      console.error("Greška pri POST zahtjevu:", error);
+      Alert.alert("Greška", "Došlo je do problema pri prijavi.");
+    }
   };
+
   const handleSubmitReport = async () => {
     if (!reportDescription.trim()) {
       Alert.alert("Greška", "Opis prijave ne može biti prazan.");
