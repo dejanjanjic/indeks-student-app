@@ -66,6 +66,10 @@ public class JwtService {
 
     public String generateRefreshToken(UserDetails userDetails) {
         Map<String, Object> extraClaims = new HashMap<>();
+
+        Optional<Account> account = accountService.getAccountByEMail(userDetails.getUsername());
+        account.ifPresent(value -> extraClaims.put("accountId", value.getId()));
+
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
