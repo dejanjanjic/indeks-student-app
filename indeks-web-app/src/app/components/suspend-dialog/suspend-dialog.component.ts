@@ -12,11 +12,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { UserAccountService } from '../../services/user-account.service';
 import { User } from '../../model/user-account.model';
 import { ReportedAccount } from '../../model/reported-types.model';
-import { MatDivider } from '@angular/material/divider';
 
 export interface DialogData {
-  user: User; // Korisnik koga suspendujemo
-  reportedAccount: ReportedAccount; // Celi prijavljeni nalog
+  user: User;
+  reportedAccount: ReportedAccount;
 }
 
 @Component({
@@ -28,7 +27,6 @@ export interface DialogData {
     MatDialogTitle,
     MatDialogContent,
     MatIconModule,
-    MatDivider,
   ],
   templateUrl: './suspend-dialog.component.html',
   styleUrl: './suspend-dialog.component.css',

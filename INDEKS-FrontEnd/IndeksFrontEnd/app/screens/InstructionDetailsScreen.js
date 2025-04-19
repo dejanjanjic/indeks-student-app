@@ -41,6 +41,8 @@ const InstructionDetailsScreen = ({ route }) => {
   const [addReviewDescription, setAddReviewDescription] = useState("");
   const [selectedRating, setSelectedRating] = useState(0);
   const user = useUser();
+  const [instructorAccountId, setInstructorAccountId] = useState(null);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -60,6 +62,27 @@ const InstructionDetailsScreen = ({ route }) => {
     fetchData();
   }, [description]);
 
+  useEffect(() => {
+    const fetchInstructorId = async () => {
+      if (instructor) {
+        const [firstName, lastName] = instructor.split(" ");
+        try {
+          const response = await HttpService.get(
+            `tutorAccount/by-name?firstName=${firstName}&lastName=${lastName}`
+          );
+          setInstructorAccountId(response);
+        } catch (error) {
+          console.error("Error fetching instructor ID:", error);
+        }
+      }
+    };
+
+    fetchInstructorId();
+  }, [instructor]);
+
+  const handleSubscribeButton = async () => {
+    console.log("povezano");
+  };
   const handleSubmitReport = async () => {
     if (!reportDescription.trim()) {
       Alert.alert("Greška", "Opis prijave ne može biti prazan.");
@@ -190,6 +213,48 @@ const InstructionDetailsScreen = ({ route }) => {
     </TouchableOpacity>
   );
 
+  const handleChatPress = async () => {
+    if (!instructorAccountId) {
+      Alert.alert("Greška", "ID instruktora nije pronađen.");
+      return;
+    }
+
+    try {
+      const existingChatId = await HttpService.get(
+        `singleChat/exists?firstParticipantId=${user.accountId}&secondParticipantId=${instructorAccountId}`
+      );
+
+      let finalChatId = existingChatId;
+
+      if (!existingChatId) {
+        const response = await HttpService.create("singleChat", {
+          firstParticipantId: user.accountId,
+          secondParticipantId: instructorAccountId,
+        });
+
+        // Dodajemo proveru da li `response` nije null/undefined i da li sadrži `chatId` ????
+        if (response && response.chatId) {
+          finalChatId = response.chatId;
+        } else {
+          Alert.alert("Greška", "Nije moguće kreirati razgovor.");
+          return;
+        }
+      }
+
+      if (finalChatId) {
+        navigation.navigate("Chat", {
+          chatId: finalChatId,
+          otherUserId: instructorAccountId,
+          name: instructor,
+          group: false,
+        });
+      }
+    } catch (error) {
+      console.error("Error opening chat:", error);
+      Alert.alert("Greška", "Došlo je do problema pri otvaranju chata.");
+    }
+  };
+
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
@@ -240,13 +305,13 @@ const InstructionDetailsScreen = ({ route }) => {
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={styles.customButton}
-              onPress={() => console.log("Prijava")}
+              onPress={() => handleSubscribeButton()}
             >
               <Text style={styles.buttonText}>Prijava</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.customButton}
-              onPress={() => console.log("Razgovor")}
+              onPress={() => handleChatPress()}
             >
               <Text style={styles.buttonText}>Razgovor</Text>
             </TouchableOpacity>

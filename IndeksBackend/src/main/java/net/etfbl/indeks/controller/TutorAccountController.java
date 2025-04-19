@@ -57,4 +57,13 @@ public class TutorAccountController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @GetMapping("/by-name")
+    public ResponseEntity<Long> getTutorAccountIdByName(@RequestParam String firstName, @RequestParam String lastName) {
+
+        Optional<Long> tutorAccountId = tutorAccountService.getInstructorAccountIdByName(firstName, lastName);
+
+        return tutorAccountId.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    }
+
 }

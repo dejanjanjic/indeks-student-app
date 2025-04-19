@@ -119,5 +119,18 @@ public class TutoringOfferController
         return ResponseEntity.ok(tutoringOfferDetails);
     }
 
+    @DeleteMapping("/{tutoringOfferId}/reviews/{reviewId}")
+    public ResponseEntity<Void> deleteReviewFromTutoringOffer(
+            @PathVariable Long tutoringOfferId,
+            @PathVariable Long reviewId
+    ) {
+        boolean deleted = tutoringOfferService.deleteReviewFromTutoringOffer(tutoringOfferId, reviewId);
+        if (deleted) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 
 }
