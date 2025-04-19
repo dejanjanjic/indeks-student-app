@@ -20,6 +20,10 @@ public interface UserAccountRepository extends JpaRepository<UserAccount, Long> 
     List<UserAccountDetailsDTO> findAllUserAccountDetails();
 
     @Query("SELECT new net.etfbl.indeks.dto.UserAccountDetailsDTO(ua.id, ua.firstName, ua.lastName, ua.active, a.email, a.role) " +
+            "FROM UserAccount ua JOIN ua.account a WHERE ua.id = :id")
+    Optional<UserAccountDetailsDTO> findAllUserAccountDetailsById(Long id);
+
+    @Query("SELECT new net.etfbl.indeks.dto.UserAccountDetailsDTO(ua.id, ua.firstName, ua.lastName, ua.active, a.email, a.role) " +
             "FROM UserAccount ua JOIN ua.account a " +
             "WHERE LOWER(ua.firstName) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
             "   OR LOWER(ua.lastName) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
