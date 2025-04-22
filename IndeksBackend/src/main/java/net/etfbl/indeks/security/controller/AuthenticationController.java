@@ -115,9 +115,10 @@ public class AuthenticationController {
 
             if (jwtService.isTokenValid(refreshToken, account)) {
                 String newAccessToken = jwtService.generateToken(account);
+                String newRefreshToken = jwtService.generateRefreshToken(account);
                 LoginResponse loginResponse = new LoginResponse();
                 loginResponse.setToken(newAccessToken);
-                loginResponse.setRefreshToken(refreshToken); // ili novi refresh token, ako želiš rotaciju
+                loginResponse.setRefreshToken(newRefreshToken);
                 return ResponseEntity.ok(loginResponse);
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid refresh token"));

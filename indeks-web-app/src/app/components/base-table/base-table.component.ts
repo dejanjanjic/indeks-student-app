@@ -6,6 +6,7 @@ import {
   ViewChild,
   Output,
   EventEmitter,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -67,7 +68,10 @@ export class BaseTableComponent<T extends { id: number }>
 
   private _paginator!: MatPaginator;
   @ViewChild(MatPaginator) set paginator(paginator: MatPaginator) {
-    if (paginator) {
+    if (paginator && !this._paginator) {
+      this._paginator = paginator;
+      this.dataSource.paginator = this._paginator;
+    } else if (paginator && this._paginator !== paginator) {
       this._paginator = paginator;
       this.dataSource.paginator = this._paginator;
     }
@@ -78,7 +82,7 @@ export class BaseTableComponent<T extends { id: number }>
   searchTerm = '';
   isLoading = false;
 
-  constructor(private dialog: MatDialog) {}
+  constructor(private dialog: MatDialog, private cdr: ChangeDetectorRef) {}
 
   ngAfterViewInit(): void {
     this.loadData();
@@ -102,10 +106,12 @@ export class BaseTableComponent<T extends { id: number }>
         this.dataSource.data = result;
         this.resultsLength = result.length;
         this.isLoading = false;
+        this.cdr.markForCheck();
       },
       error: (err: any) => {
         console.error(err);
         this.isLoading = false;
+        this.cdr.markForCheck();
       },
     });
   }
@@ -125,10 +131,12 @@ export class BaseTableComponent<T extends { id: number }>
         this.dataSource.data = result;
         this.resultsLength = result.length;
         this.isLoading = false;
+        this.cdr.markForCheck();
       },
       error: (err: any) => {
         console.error(err);
         this.isLoading = false;
+        this.cdr.markForCheck();
       },
     });
   }
@@ -141,6 +149,7 @@ export class BaseTableComponent<T extends { id: number }>
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.isLoading = true;
+        this.cdr.markForCheck();
         const deleteObservable = this.deleteDataFunction
           ? this.deleteDataFunction(id)
           : this.service.deleteById(id);
@@ -150,6 +159,7 @@ export class BaseTableComponent<T extends { id: number }>
           error: (err: any) => {
             this.isLoading = false;
             console.error(err);
+            this.cdr.markForCheck();
           },
         });
       }
