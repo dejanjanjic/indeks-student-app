@@ -18,6 +18,8 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { ThemeService } from '../../services/theme.service';
 import { Subscription } from 'rxjs';
+import { ReportDialogComponent } from '../report-dialog/report-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 declare var URL: {
   createObjectURL(blob: Blob): string;
@@ -50,7 +52,8 @@ export class MaterialPageComponent implements OnInit, OnDestroy {
     private subjectService: SubjectService,
     private materialService: MaterialService,
     private authService: AuthService,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private dialog: MatDialog
   ) {
     this.currentUserId = this.authService.getUserId();
     this.themeSubscription = this.themeService.darkMode$.subscribe((isDark) => {
@@ -242,6 +245,28 @@ export class MaterialPageComponent implements OnInit, OnDestroy {
   isMaterialOwner(material: Material): boolean {
     return this.userMaterials.some((m) => m.id === material.id);
   }
+
+
+reportMaterial(materialId: number) {
+  const dialogRef = this.dialog.open(ReportDialogComponent, {
+    width: '400px',
+    data: { materialId: materialId }
+  });
+
+  dialogRef.afterClosed().subscribe(result => {
+    if (result) {
+      this.materialService.submitMaterialReport(materialId, result.reportText)
+        .subscribe({
+          next: (response) => {
+            console.log('Report submitted successfully', response);
+          },
+          error: (error) => {
+            console.error('Error submitting report', error);
+          }
+        });
+    }
+  });
+}
 
   deleteMaterial(materialId: number): void {
     if (confirm('Da li ste sigurni da želite obrisati ovaj materijal?')) {
