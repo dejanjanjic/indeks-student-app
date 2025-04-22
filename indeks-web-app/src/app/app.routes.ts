@@ -17,6 +17,8 @@ import { AddModeratorComponent } from './components/add-moderator/add-moderator.
 import { UpdateModeratorComponent } from './components/update-moderator/update-moderator.component';
 import { ReportPageComponent } from './components/report-page/report-page.component';
 import { ElementaryGroupMembersTableComponent } from './components/elementary-group-members-table/elementary-group-members-table.component';
+import { ModeratorDashboardComponent } from './components/moderator/moderator-dashboard/moderator-dashboard.component';
+
 
 export const routes: Routes = [
   { path: 'login', canActivate: [loginGuard], component: LoginFormComponent },
@@ -85,6 +87,18 @@ export const routes: Routes = [
       },
       { path: '', redirectTo: 'profile', pathMatch: 'full' },
     ],
+  },
+  {
+    path: 'moderator',
+    component: ModeratorDashboardComponent, // Set as direct component for the path
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['MODERATOR'] },
+    children: [
+      // Add more moderator routes as needed
+      { path: 'material-page', component: MaterialPageComponent },
+      { path: 'moderators', component: ModeratorTableComponent },
+      { path: '', redirectTo: 'material-page', pathMatch: 'full' }
+    ]
   },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', redirectTo: '/login' },

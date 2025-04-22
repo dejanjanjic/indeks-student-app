@@ -15,6 +15,9 @@ export const loginGuard: CanActivateFn = () => {
       case 'STUDENT':
         router.navigate(['/student']);
         break;
+      case 'MODERATOR':
+        router.navigate(['/moderator']);
+        break;
       default:
         authService.logout();
         break;

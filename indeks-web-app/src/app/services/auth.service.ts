@@ -24,7 +24,7 @@ export class AuthService {
     null
   );
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   public login(loginDTO: LoginDTO): Observable<AuthTokens> {
     return this.http.post(`${this.BASE_URL}/login`, loginDTO).pipe(
@@ -171,6 +171,9 @@ export class AuthService {
         break;
       case 'STUDENT':
         this.router.navigate(['/student']);
+        break;
+      case 'MODERATOR':
+        this.router.navigate(['/moderator']);
         break;
       default:
         this.logout();
