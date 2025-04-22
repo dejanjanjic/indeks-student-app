@@ -1,37 +1,127 @@
-.admin-container {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
-
-.admin-toolbar {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-
-.content-container {
+.page-container {
   padding: 20px;
-  flex: 1;
-  background-color: #f5f5f5;
+  background-color: #f5f7fb;
+  height: 100%;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e0e6ed;
+}
+
+.page-title {
+  color: #003366;
+  font-size: 24px;
+  font-weight: 500;
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+
+.page-subheader {
+  font-size: 14px;
+  color: #546e7a;
+  margin-top: 4px;
+  max-width: 600px;
+}
+
+.content-card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+/* Tab styling */
+::ng-deep .mat-mdc-tab-header {
+  background-color: white;
+  border-bottom: 1px solid #e0e6ed;
+}
+
+::ng-deep .mat-mdc-tab-label-container {
+  padding: 0 16px;
+}
+
+::ng-deep .mat-mdc-tab {
+  height: 48px;
+  transition: background-color 0.2s ease;
+}
+
+::ng-deep .mat-mdc-tab:hover {
+  background-color: rgba(0, 51, 102, 0.04);
+}
+
+::ng-deep .mat-mdc-tab-label-content {
+  font-weight: 500;
+  color: #37474f;
+}
+
+::ng-deep .mat-mdc-tab.mdc-tab--active .mdc-tab__text-label {
+  color: #003366;
+  font-weight: 600;
+}
+
+::ng-deep .mat-mdc-tab-header .mat-mdc-tab-header-pagination-chevron {
+  border-color: #003366;
+}
+
+::ng-deep
+  .mat-mdc-tab-group.mat-primary
+  .mat-mdc-tab-header-pagination-chevron {
+  border-color: #003366;
+}
+
+::ng-deep .mat-mdc-tab-group.mat-primary .mat-mdc-ink-bar {
+  background-color: #003366;
+  height: 3px;
 }
 
 .tab-content {
-  padding: 20px;
+  padding: 0;
 }
 
-.full-width-table {
-  width: 100%;
-  margin-top: 16px;
+/* Empty state styling */
+.no-reports {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  color: #78909c;
+  text-align: center;
+}
+
+.no-reports mat-icon {
+  font-size: 48px;
+  height: 48px;
+  width: 48px;
+  margin-bottom: 16px;
+  color: #b0bec5;
+}
+
+.no-reports-text {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.no-reports-subtext {
+  font-size: 14px;
+  max-width: 400px;
+  line-height: 1.5;
+  color: #90a4ae;
 }
 
 /* Responsive styles */
 @media screen and (max-width: 768px) {
-  .content-container {
-    padding: 10px;
+  .page-container {
+    padding: 12px;
   }
 
-  .tab-content {
-    padding: 10px;
+  .page-title {
+    font-size: 20px;
   }
 }

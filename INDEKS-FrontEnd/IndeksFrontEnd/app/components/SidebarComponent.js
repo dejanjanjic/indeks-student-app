@@ -47,12 +47,6 @@ const SidebarComponent = ({ visible, onClose }) => {
       iconType: "FontAwesome",
     },
     {
-      label: "Moja ponuda",
-      icon: "book",
-      route: "ListOfMyInstructionsScreen",
-      iconType: "Feather",
-    },
-    {
       label: "Podešavanja",
       icon: "settings",
       route: "SettingsScreen",

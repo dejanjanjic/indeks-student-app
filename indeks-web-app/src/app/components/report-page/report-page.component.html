@@ -1,12 +1,15 @@
-<div class="admin-container">
-  <mat-toolbar color="primary" class="admin-toolbar">
-    <span>Prijavljeni problemi</span>
-  </mat-toolbar>
+<div class="page-container">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Prijavljeni problemi</h1>
+      <p class="page-subheader">Pregled i upravljanje prijavama u sistemu</p>
+    </div>
+  </div>
 
-  <div class="content-container">
-    <mat-card>
-      <mat-tab-group>
-        <mat-tab label="Prijavljeni materijali">
+  <div class="content-card">
+    <mat-tab-group animationDuration="200ms">
+      <mat-tab label="Prijavljeni materijali">
+        <div class="tab-content">
           <app-base-table
             [displayedColumns]="[
               'id',
@@ -28,13 +31,16 @@
               reason: 'Razlog prijave',
               reporterName: 'Ime prijavljivača',
               reporterSurname: 'Prezime prijavljivača',
-              time: 'Datum prijave'
+              time: 'Datum prijave',
+              entityName: 'Prijava'
             }"
             [dateColumns]="['time']"
           ></app-base-table>
-        </mat-tab>
+        </div>
+      </mat-tab>
 
-        <mat-tab label="Prijavljeni komentari">
+      <mat-tab label="Prijavljeni komentari">
+        <div class="tab-content">
           <app-base-table
             [displayedColumns]="[
               'id',
@@ -56,13 +62,16 @@
               reason: 'Razlog prijave',
               reporterName: 'Ime prijavljivača',
               reporterSurname: 'Prezime prijavljivača',
-              time: 'Datum prijave'
+              time: 'Datum prijave',
+              entityName: 'Prijava'
             }"
             [dateColumns]="['time']"
           ></app-base-table>
-        </mat-tab>
+        </div>
+      </mat-tab>
 
-        <mat-tab label="Prijavljeni nalozi">
+      <mat-tab label="Prijavljeni nalozi">
+        <div class="tab-content">
           <app-base-table
             [displayedColumns]="[
               'id',
@@ -86,12 +95,13 @@
               reason: 'Razlog prijave',
               reporterName: 'Ime prijavljivača',
               reporterSurename: 'Prezime prijavljivača',
-              time: 'Datum prijave'
+              time: 'Datum prijave',
+              entityName: 'Prijava'
             }"
             [dateColumns]="['time']"
           ></app-base-table>
-        </mat-tab>
-      </mat-tab-group>
-    </mat-card>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
   </div>
 </div>

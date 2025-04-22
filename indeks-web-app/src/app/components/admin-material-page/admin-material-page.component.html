@@ -1,12 +1,22 @@
+<div class="page-container">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Materijali</h1>
+      <p class="page-subheader">Pregled i upravljanje materijalima u sistemu</p>
+    </div>
+  </div>
 
-<app-base-table
-[displayedColumns]="['id', 'name', 'subject', 'owner', 'actions']"
-[service]="materialService"
-[headerMap]="headerMap"
-[actionButtons]="['delete']"
-[retrieveDataFunction]="retrieveDataFunction"
-
-[filterDataFunction]="filterDataFunction"
-[deleteDataFunction]="deleteDataFunction"
-
-/>
+  <div class="content-card">
+    <div class="table-container">
+      <app-base-table
+        [displayedColumns]="['id', 'name', 'subject', 'owner', 'actions']"
+        [service]="materialService"
+        [headerMap]="headerMap"
+        [actionButtons]="['delete']"
+        [retrieveDataFunction]="retrieveDataFunction"
+        [filterDataFunction]="filterDataFunction"
+        [deleteDataFunction]="deleteDataFunction"
+      />
+    </div>
+  </div>
+</div>

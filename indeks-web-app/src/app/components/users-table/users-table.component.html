@@ -1,18 +1,31 @@
-<app-base-table
-  [displayedColumns]="[
-    'id',
-    'firstName',
-    'lastName',
-    'email',
-    'role',
-    'active'
-  ]"
-  [headerMap]="headerMap"
-  [retrieveDataFunction]="this.retrieveDataFunction"
-  [filterDataFunction]="this.filterDataFunction"
-  [toggleColumns]="['active']"
-  [toggleLabels]="{
-    active: { true: 'Aktivan', false: 'Suspendovan' }
-  }"
-  (toggleChange)="handleToggleChange($event)"
-/>
+<div class="page-container">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Korisnički nalozi</h1>
+      <p class="page-subheader">Upravljanje korisničkim nalozima u sistemu</p>
+    </div>
+  </div>
+
+  <div class="content-card">
+    <div class="table-container">
+      <app-base-table
+        [displayedColumns]="[
+          'id',
+          'firstName',
+          'lastName',
+          'email',
+          'role',
+          'active'
+        ]"
+        [headerMap]="headerMap"
+        [retrieveDataFunction]="this.retrieveDataFunction"
+        [filterDataFunction]="this.filterDataFunction"
+        [toggleColumns]="['active']"
+        [toggleLabels]="{
+          active: { true: 'Aktivan', false: 'Suspendovan' }
+        }"
+        (toggleChange)="handleToggleChange($event)"
+      />
+    </div>
+  </div>
+</div>

@@ -3,8 +3,6 @@ import { ReportedMaterial } from '../../model/reported-types.model';
 import { ReportedAccount } from '../../model/reported-types.model';
 import { ReportedComment } from '../../model/reported-types.model';
 import { MatTab, MatTabsModule } from '@angular/material/tabs';
-import { MatCard } from '@angular/material/card';
-import { MatToolbar } from '@angular/material/toolbar';
 import { MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import { BaseTableComponent } from '../base-table/base-table.component';
@@ -21,9 +19,7 @@ import { TutoringOfferService } from '../../services/tutoring-offer.service';
 @Component({
   selector: 'app-report-page',
   imports: [
-    MatCard,
     MatTab,
-    MatToolbar,
     MatTabsModule,
     MatTableModule,
     CommonModule,
