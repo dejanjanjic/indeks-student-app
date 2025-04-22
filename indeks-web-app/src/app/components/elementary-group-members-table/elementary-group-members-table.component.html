@@ -1,9 +1,22 @@
-<app-base-table
-  [displayedColumns]="['firstName', 'lastName', 'email', 'actions']"
-  [service]="elementaryGroupChatMemberService"
-  [headerMap]="headerMap"
-  [actionButtons]="['delete']"
-  [retrieveDataFunction]="this.retrieveDataFunction"
-  [filterDataFunction]="this.filterDataFunction"
-  [deleteDataFunction]="this.deleteDataFunction"
-/>
+<div class="page-container">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Članovi grupe</h1>
+      <p class="page-subheader">Upravljanje članovima osnovne grupe</p>
+    </div>
+  </div>
+
+  <div class="content-card">
+    <div class="table-container">
+      <app-base-table
+        [displayedColumns]="['firstName', 'lastName', 'email', 'actions']"
+        [service]="elementaryGroupChatMemberService"
+        [headerMap]="headerMap"
+        [actionButtons]="['delete']"
+        [retrieveDataFunction]="this.retrieveDataFunction"
+        [filterDataFunction]="this.filterDataFunction"
+        [deleteDataFunction]="this.deleteDataFunction"
+      />
+    </div>
+  </div>
+</div>

@@ -130,13 +130,22 @@
             </span>
           </div>
           <div class="item-actions">
+            @if(isMaterialOwner(material)){
             <button
-              *ngIf="isMaterialOwner(material)"
               class="delete-button"
               (click)="deleteMaterial(material.id); $event.stopPropagation()"
             >
               <span class="delete-icon"></span>
             </button>
+            }@else {
+              <button
+                class="report-button"
+                (click)="reportMaterial(material.id); $event.stopPropagation()"
+                title="Prijavi materijal"
+              >
+                <span class="report-icon"></span>
+              </button>
+            }
             <button
               class="download-button"
               (click)="downloadMaterial(material.id)"

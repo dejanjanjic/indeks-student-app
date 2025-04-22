@@ -4,6 +4,7 @@ import { Observable, from, throwError } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { Material } from '../model/material.model';
 import { AuthService } from './auth.service';
+import { ProblemReportDTO } from '../model/problemReportDTO.model';
 
 @Injectable({
   providedIn: 'root',
@@ -71,4 +72,25 @@ export class MaterialService {
   getMaterialById(materialId: number): Observable<any> {
     return this.http.get(`${this.apiUrl}/${materialId}`);
   }
+
+
+  submitMaterialReport(materialId: number, reason: string): Observable<ProblemReportDTO> {
+    const reporterId = this.authService.getUserId();
+    const reportApiUrl = 'http://localhost:8080/api/v1/problemReport';
+    if (!reporterId) {
+      return throwError(() => new Error('User not authenticated'));
+    }
+    
+    const reportData: ProblemReportDTO = {
+      reason: reason,
+      time: new Date().toISOString(), 
+      type: 1, 
+      materialId: materialId,
+      reporterId: reporterId,
+      
+    };
+    
+    return this.http.post<ProblemReportDTO>(`${reportApiUrl}/newReport`, reportData);
+  }
+
 }

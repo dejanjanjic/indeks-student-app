@@ -1,0 +1,16 @@
+<h2 mat-dialog-title>Prijavi materijal</h2>
+<mat-dialog-content>
+  <p>Unesite razlog prijave za ovaj materijal:</p>
+  <mat-form-field appearance="fill" style="width: 100%">
+    <textarea 
+      matInput 
+      [(ngModel)]="reportText" 
+      placeholder="Razlog prijave" 
+      rows="5">
+    </textarea>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Odustani</button>
+  <button mat-raised-button color="warn" [disabled]="!reportText.trim()" (click)="onSubmit()">Prijavi</button>
+</mat-dialog-actions>

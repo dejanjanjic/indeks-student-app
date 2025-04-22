@@ -1,11 +1,30 @@
-<app-base-table
-  [displayedColumns]="['id', 'firstName', 'lastName', 'materialPath', 'actions']"
-  [service]="moderatorService"
-  [headerMap]="headerMap"
-  [actionButtons]="['delete', 'update', 'add']"
-  [retrieveDataFunction]="retrieveDataFunction"
-  [addDataFunction]="addDataFunction"
-  [filterDataFunction]="filterDataFunction"
-  [updateDataFunction]="updateDataFunction"
-  [deleteDataFunction]="deleteDataFunction"
-/>
+<div class="page-container">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Moderatori</h1>
+      <p class="page-subheader">Upravljanje moderatorima sistema</p>
+    </div>
+  </div>
+
+  <div class="content-card">
+    <div class="table-container">
+      <app-base-table
+        [displayedColumns]="[
+          'id',
+          'firstName',
+          'lastName',
+          'materialPath',
+          'actions'
+        ]"
+        [service]="moderatorService"
+        [headerMap]="headerMap"
+        [actionButtons]="['delete', 'update', 'add']"
+        [retrieveDataFunction]="retrieveDataFunction"
+        [addDataFunction]="addDataFunction"
+        [filterDataFunction]="filterDataFunction"
+        [updateDataFunction]="updateDataFunction"
+        [deleteDataFunction]="deleteDataFunction"
+      />
+    </div>
+  </div>
+</div>

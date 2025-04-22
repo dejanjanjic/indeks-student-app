@@ -39,34 +39,36 @@ public class ProblemReportService {
         report.setTime(LocalDateTime.now());
         report.setType(dto.getType());
 
-        Optional<Review> review = reviewRepository.findById(dto.getReviewId());
-        review.ifPresent(report::setReview);
-
-        Optional<Material> material = materialRepository.findById(dto.getMaterialId());
-        material.ifPresent(report::setMaterial);
+        if(dto.getReviewId() != null) {
+            Optional<Review> review = reviewRepository.findById(dto.getReviewId());
+            review.ifPresent(report::setReview);
+        }
+        if(dto.getMaterialId() != null) {
+            Optional<Material> material = materialRepository.findById(dto.getMaterialId());
+            material.ifPresent(report::setMaterial);
+        }
 
         Optional<UserAccount> reporter = userAccountRepository.findById(dto.getReporterId());
         reporter.ifPresent(report::setReporter);
 
+        if(dto.getReportedId() !=null) {
+            Optional<SingleChat> singleChat = singleChatRepository.findById(dto.getReportedId());
 
-        Optional<SingleChat> singleChat = singleChatRepository.findById(dto.getReportedId());
 
-        Optional<UserAccount> currentUser = userAccountRepository.findById(dto.getReporterId());
+            Optional<UserAccount> currentUser = userAccountRepository.findById(dto.getReporterId());
 
-        UserAccount otherUser = null;
-        if(singleChat.isPresent())
-        {
-             otherUser = singleChat.get().getOtherUser(currentUser.get());
+            UserAccount otherUser = null;
+            if (singleChat.isPresent()) {
+                otherUser = singleChat.get().getOtherUser(currentUser.get());
+            }
+
+            if (otherUser != null) {
+
+                Optional<UserAccount> reported = userAccountRepository.findById(otherUser.getId());
+                reported.ifPresent(report::setReported);
+
+            }
         }
-
-        if(otherUser!=null)
-        {
-
-            Optional<UserAccount> reported = userAccountRepository.findById(otherUser.getId());
-            reported.ifPresent(report::setReported);
-
-        }
-
         ProblemReport saved = problemReportRepository.save(report);
         return mapToDTO(saved);
     }

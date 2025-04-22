@@ -130,6 +130,7 @@ body.dark-theme :host {
 .empty-icon,
 .download-icon,
 .delete-icon,
+.report-icon
 .owner-dot {
   display: inline-block;
   width: 24px;
@@ -170,6 +171,8 @@ body.dark-theme :host {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='5' y1='12' x2='19' y2='12'%3E%3C/line%3E%3C/svg%3E");
 }
 
+
+
 .upload-icon {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233a86ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4'%3E%3C/path%3E%3Cpolyline points='17 8 12 3 7 8'%3E%3C/polyline%3E%3Cline x1='12' y1='3' x2='12' y2='15'%3E%3C/line%3E%3C/svg%3E");
   width: 40px;
@@ -194,6 +197,9 @@ body.dark-theme :host {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d90429' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='3 6 5 6 21 6'%3E%3C/polyline%3E%3Cpath d='M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2'%3E%3C/path%3E%3C/svg%3E");
 }
 
+.report-icon {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FF0000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 9v2M12 15h.01'/%3E%3Cpath d='M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z'/%3E%3C/svg%3E");
+}
 .years-nav {
   margin-bottom: 1rem;
 }
@@ -529,6 +535,7 @@ body.dark-theme :host .upload-button:hover {
 }
 
 .download-button,
+.report-button,
 .delete-button {
   background: none;
   border: none;
@@ -559,7 +566,16 @@ body.dark-theme :host .upload-button:hover {
   background-color: rgba(217, 4, 41, 0.2);
 }
 
+
+.report-button {
+  background-color: var(--gray-100);
+}
+
+.report-button:hover {
+  background-color: rgba(var(--primary-color-rgb, 63, 81, 181), 0.2);
+}
 .download-icon,
+.report-icon,
 .delete-icon {
   display: inline-block;
   width: 20px;
