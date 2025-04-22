@@ -25,6 +25,9 @@ public class TutoringOfferService
     private EntityManager entityManager;
     private final TutoringOfferRepository tutoringOfferRepository;
 
+    // TutoringOfferService.java
+    @Autowired
+    private ProblemReportService problemReportService;
     @Autowired
     public TutoringOfferService(TutoringOfferRepository tutoringOfferRepository){
         this.tutoringOfferRepository=tutoringOfferRepository;
@@ -66,13 +69,32 @@ public class TutoringOfferService
     }
 
 
+    @Transactional
     public boolean deleteTutoringOffer(Long id) {
         boolean exists = tutoringOfferRepository.existsById(id);
-        if(!exists){
+        if (!exists) {
             return false;
         }
+
+        // First, delete all subscriptions associated with this tutoring offer
+        deleteSubscriptionsForTutoringOffer(id);
+
+        // Then delete the tutoring offer itself
         tutoringOfferRepository.deleteById(id);
         return true;
+    }
+
+    @Autowired
+    private SubscriptionService subscriptionService;
+
+    private void deleteSubscriptionsForTutoringOffer(Long tutoringOfferId) {
+        // Get all subscriptions for this tutoring offer
+        List<Subscription> subscriptions = subscriptionService.getSubscriptionsByTutoringOffer(tutoringOfferId.intValue());
+
+        // Delete each subscription
+        for (Subscription subscription : subscriptions) {
+            subscriptionService.deleteSubscription(subscription.getId());
+        }
     }
 
 
@@ -216,17 +238,19 @@ public class TutoringOfferService
         return null;  // Return null if no valid data is found
     }
 
+    // TutoringOfferService.java
+    @Transactional
     public boolean deleteReviewFromTutoringOffer(Long tutoringOfferId, Long reviewId) {
-        Optional<TutoringOffer> tutoringOfferOptional = tutoringOfferRepository.findById(tutoringOfferId);
-
-        if (tutoringOfferOptional.isPresent()) {
-            TutoringOffer tutoringOffer = tutoringOfferOptional.get();
-            boolean reviewRemoved = tutoringOffer.removeReview(reviewId);
-            if (reviewRemoved) {
-                tutoringOfferRepository.save(tutoringOffer);
-                return true;
-            }
+        Review review = reviewRepository.findById(reviewId).orElse(null);
+        if (review == null || !review.getTutoringOffer().getId().equals(tutoringOfferId)) {
+            return false;
         }
-        return false;
+
+        // Delete all problem reports associated with this review
+        problemReportService.deleteProblemReportsByReviewId(reviewId);
+
+        // Now delete the review
+        reviewRepository.deleteById(reviewId);
+        return true;
     }
 }

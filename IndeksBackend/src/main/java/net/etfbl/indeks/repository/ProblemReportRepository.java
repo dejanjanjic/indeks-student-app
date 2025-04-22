@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface ProblemReportRepository extends JpaRepository<ProblemReport, Long> {
     List<ProblemReport> findByType(Integer type); // Correct return type
+    List<ProblemReport> findByReview_Id(Long reviewId); // Add this method
 }

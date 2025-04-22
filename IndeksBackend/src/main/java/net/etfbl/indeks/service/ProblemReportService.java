@@ -102,7 +102,11 @@ public class ProblemReportService {
     public void addNewProblemReport(ProblemReport problemReport) {
         problemReportRepository.save(problemReport);
     }
-
+    // ProblemReportService.java
+    public void deleteProblemReportsByReviewId(Long reviewId) {
+        List<ProblemReport> reports = problemReportRepository.findByReview_Id(reviewId);
+        problemReportRepository.deleteAll(reports);
+    }
     public boolean deleteProblemReport(Long id) {
         boolean exists = problemReportRepository.existsById(id);
         if (exists) {

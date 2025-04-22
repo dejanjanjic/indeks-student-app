@@ -78,7 +78,7 @@
             @if (actionButtons.includes('details')){
             <button
               mat-icon-button
-              (click)="viewDetailsFunction(item.id)"
+              (click)="viewDetailsFunction(item.tutoringOfferId || item.id)"
               matTooltip="Prikaži detalje"
             >
               <mat-icon id="visibility-icon">visibility</mat-icon>
@@ -95,7 +95,7 @@
             } @if (actionButtons.includes('delete')) {
             <button
               mat-icon-button
-              (click)="deleteItem(item.id)"
+              (click)="deleteItem(item.id || item.tutoringOfferId)"
               matTooltip="Obriši"
             >
               <mat-icon id="delete-icon">delete</mat-icon>

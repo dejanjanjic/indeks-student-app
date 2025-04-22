@@ -17,6 +17,8 @@ import { AddModeratorComponent } from './components/add-moderator/add-moderator.
 import { UpdateModeratorComponent } from './components/update-moderator/update-moderator.component';
 import { ReportPageComponent } from './components/report-page/report-page.component';
 import { ElementaryGroupMembersTableComponent } from './components/elementary-group-members-table/elementary-group-members-table.component';
+import {TutoringOfferPageComponent} from './components/tutoring-offer/tutoring-offer.component';
+import {ReviewComponent} from './components/review/review.component';
 
 export const routes: Routes = [
   { path: 'login', canActivate: [loginGuard], component: LoginFormComponent },
@@ -32,6 +34,17 @@ export const routes: Routes = [
     children: [
       { path: 'elementary-groups', component: ElementaryGroupTableComponent },
       { path: 'subject-page', component: SubjectPageComponent },
+
+      // routes.ts
+
+      {
+        path: 'tutoring-offers',
+        component: TutoringOfferPageComponent
+      },
+      {
+        path: 'tutoring-offers/:id',
+        component: ReviewComponent
+      },
       { path: 'materials-page', component: AdminMaterialPageComponent },
       {
         path: 'elementary-groups/add-elementary-group',

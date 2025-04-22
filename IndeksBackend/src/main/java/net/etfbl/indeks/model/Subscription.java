@@ -3,9 +3,7 @@ package net.etfbl.indeks.model;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+
 @Entity
 @Table(name = "Subscription")
 
@@ -13,7 +11,7 @@ public class Subscription {
 
     @Id
     @Column(name = "id")
-    private Integer id;
+    private Long id;
 
     @Column(name = "tutoring_offer_id")
     private Integer tutoringOfferId;
@@ -36,11 +34,11 @@ public class Subscription {
     public Subscription() {
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

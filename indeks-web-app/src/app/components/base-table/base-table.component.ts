@@ -191,3 +191,4 @@ export class BaseTableComponent<T extends { id: number }>
     return value ? 'Da' : 'Ne';
   }
 }
+

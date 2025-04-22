@@ -88,7 +88,7 @@ public class SubscriptionService {
                 });
 
         // Generate a unique ID (in a real application, consider using a sequence or auto-increment)
-        Integer id = generateUniqueId();
+        Long id = Long.valueOf(generateUniqueId());
 
         Subscription subscription = new Subscription();
         subscription.setId(id);

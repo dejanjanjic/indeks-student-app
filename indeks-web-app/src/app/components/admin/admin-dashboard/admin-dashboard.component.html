@@ -83,6 +83,18 @@
             <span class="nav-label">Prijave</span>
           </div>
         </a>
+
+        <a
+          mat-list-item
+          routerLink="tutoring-offers"
+          routerLinkActive="active-link"
+          (click)="sidenav.toggle()"
+        >
+          <div class="nav-item-container">
+            <mat-icon class="nav-icon">school</mat-icon>
+            <span class="nav-label">Ponude za instrukcije</span>
+          </div>
+        </a>
       </mat-nav-list>
 
       <div class="sidenav-footer">
