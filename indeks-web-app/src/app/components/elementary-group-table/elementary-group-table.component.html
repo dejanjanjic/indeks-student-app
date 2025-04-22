@@ -1,10 +1,23 @@
-<app-base-table
-  [displayedColumns]="['id', 'name', 'size', 'actions']"
-  [service]="elementaryGroupService"
-  [headerMap]="headerMap"
-  [actionButtons]="['delete', 'details', 'add']"
-  [retrieveDataFunction]="this.retrieveDataFunction"
-  [addDataFunction]="this.addDataFunction"
-  [filterDataFunction]="this.filterDataFunction"
-  [viewDetailsFunction]="this.viewDetailsFunction"
-/>
+<div class="page-container">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Osnovne grupe</h1>
+      <p class="page-subheader">Upravljanje osnovnim grupama sistema</p>
+    </div>
+  </div>
+
+  <div class="content-card">
+    <div class="table-container">
+      <app-base-table
+        [displayedColumns]="['id', 'name', 'size', 'actions']"
+        [service]="elementaryGroupService"
+        [headerMap]="headerMap"
+        [actionButtons]="['delete', 'details', 'add']"
+        [retrieveDataFunction]="this.retrieveDataFunction"
+        [addDataFunction]="this.addDataFunction"
+        [filterDataFunction]="this.filterDataFunction"
+        [viewDetailsFunction]="this.viewDetailsFunction"
+      />
+    </div>
+  </div>
+</div>

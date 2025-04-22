@@ -9,20 +9,8 @@ import { map } from 'rxjs/operators';
   selector: 'app-subject-table',
   standalone: true,
   imports: [BaseTableComponent],
-  template: `
-    <app-base-table
-      [displayedColumns]="['id', 'name', 'year', 'actions']"
-      [service]="subjectService"
-      [headerMap]="headerMap"
-      [actionButtons]="['delete', 'update' ,'add']"
-      [retrieveDataFunction]="retrieveDataFunction"
-      [addDataFunction]="addDataFunction"
-      [filterDataFunction]="filterDataFunction"
-      [deleteDataFunction]="deleteDataFunction"
-      [updateDataFunction]="updateDataFunction"
-
-    />
-  `,
+  templateUrl: './subject-page.component.html',
+  styleUrl: './subject-page.component.css',
 })
 export class SubjectPageComponent {
   private router = inject(Router);
@@ -43,16 +31,19 @@ export class SubjectPageComponent {
   };
 
   filterDataFunction = (keyword: string) =>
-    this.subjectService.getAllSubjects().pipe(
-      map(subjects => subjects.filter(s =>
-        s.name.toLowerCase().includes(keyword.toLowerCase()) ||
-        s.year.toString().includes(keyword)
-      ))
-    );
+    this.subjectService
+      .getAllSubjects()
+      .pipe(
+        map((subjects) =>
+          subjects.filter(
+            (s) =>
+              s.name.toLowerCase().includes(keyword.toLowerCase()) ||
+              s.year.toString().includes(keyword)
+          )
+        )
+      );
 
-  deleteDataFunction = (id: number) =>
-    this.subjectService.deleteSubject(id);
-
+  deleteDataFunction = (id: number) => this.subjectService.deleteSubject(id);
 
   // Add this method
   updateDataFunction = (id: number) => {

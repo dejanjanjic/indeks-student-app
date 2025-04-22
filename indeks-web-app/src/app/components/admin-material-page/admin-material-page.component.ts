@@ -8,7 +8,8 @@ import { map } from 'rxjs/operators';
   selector: 'app-material-table',
   standalone: true,
   imports: [BaseTableComponent],
-  templateUrl: './admin-material-page.component.html'
+  templateUrl: './admin-material-page.component.html',
+  styleUrl: './admin-material-page.component.css',
 })
 export class AdminMaterialPageComponent {
   private router = inject(Router);
@@ -25,17 +26,16 @@ export class AdminMaterialPageComponent {
 
   retrieveDataFunction = () => this.materialService.getAllMaterials();
 
- 
-
   filterDataFunction = (keyword: string) =>
-    this.materialService.getAllMaterials().pipe(
-      map(materials => materials.filter(m =>
-        m.name.toLowerCase().includes(keyword.toLowerCase()) 
-      ))
-    );
+    this.materialService
+      .getAllMaterials()
+      .pipe(
+        map((materials) =>
+          materials.filter((m) =>
+            m.name.toLowerCase().includes(keyword.toLowerCase())
+          )
+        )
+      );
 
-  deleteDataFunction = (id: number) =>
-    this.materialService.deleteMaterial(id);
-
-
+  deleteDataFunction = (id: number) => this.materialService.deleteMaterial(id);
 }

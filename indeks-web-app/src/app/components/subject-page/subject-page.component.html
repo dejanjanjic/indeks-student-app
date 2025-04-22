@@ -1,1 +1,24 @@
-<p>subject-page works!</p>
+<div class="page-container">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Predmeti</h1>
+      <p class="page-subheader">Upravljanje predmetima u sistemu</p>
+    </div>
+  </div>
+
+  <div class="content-card">
+    <div class="table-container">
+      <app-base-table
+        [displayedColumns]="['id', 'name', 'year', 'actions']"
+        [service]="subjectService"
+        [headerMap]="headerMap"
+        [actionButtons]="['delete', 'update', 'add']"
+        [retrieveDataFunction]="retrieveDataFunction"
+        [addDataFunction]="addDataFunction"
+        [filterDataFunction]="filterDataFunction"
+        [deleteDataFunction]="deleteDataFunction"
+        [updateDataFunction]="updateDataFunction"
+      />
+    </div>
+  </div>
+</div>
