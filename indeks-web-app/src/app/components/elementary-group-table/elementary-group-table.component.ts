@@ -31,4 +31,8 @@ export class ElementaryGroupTableComponent {
   };
   filterDataFunction = (keyword: string) =>
     this.elementaryGroupService.getByKeyword(keyword);
+  viewDetailsFunction = (id: number) =>
+    this.router.navigate([id], {
+      relativeTo: this.route,
+    });
 }

@@ -16,6 +16,7 @@ import { ModeratorTableComponent } from './components/moderator-table/moderator-
 import { AddModeratorComponent } from './components/add-moderator/add-moderator.component';
 import { UpdateModeratorComponent } from './components/update-moderator/update-moderator.component';
 import { ReportPageComponent } from './components/report-page/report-page.component';
+import { ElementaryGroupMembersTableComponent } from './components/elementary-group-members-table/elementary-group-members-table.component';
 
 export const routes: Routes = [
   { path: 'login', canActivate: [loginGuard], component: LoginFormComponent },
@@ -35,6 +36,10 @@ export const routes: Routes = [
       {
         path: 'elementary-groups/add-elementary-group',
         component: AddElementaryGroupComponent,
+      },
+      {
+        path: 'elementary-groups/:id',
+        component: ElementaryGroupMembersTableComponent,
       },
       {
         path: 'subject-page/add-subject',

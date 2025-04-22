@@ -46,4 +46,11 @@ public class TutorAccountService {
         UserAccount acc = userAccountService.addNewUserAccount(tutorAccount, Roles.TUTOR);
         return tutorAccountRepository.save(new TutorAccount(acc));
     }
+
+    public Optional<Long> getInstructorAccountIdByName(String firstName, String lastName) {
+        Optional<TutorAccount> tutor = tutorAccountRepository.findByFirstAndLastName(firstName, lastName);
+        return tutor.map(t -> t.getUserAccount().getId());  // Vraćamo ID iz UserAccount
+    }
+
+
 }

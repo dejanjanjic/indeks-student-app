@@ -1,8 +1,13 @@
 package net.etfbl.indeks.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.List;
 
+@Setter
+@Getter
 @Entity
 @Table
 public class UserAccount {
@@ -44,87 +49,6 @@ public class UserAccount {
         this.active = active;
         this.suspended = suspended;
         this.account = account;
-    }
-
-    // Getters and Setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public Boolean getActive() {
-        return active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
-
-    public Boolean getSuspended() {
-        return suspended;
-    }
-
-    public void setSuspended(Boolean suspended) {
-        this.suspended = suspended;
-    }
-
-    public Account getAccount() {
-        return account;
-    }
-
-    public void setAccount(Account account) {
-        this.account = account;
-    }
-
-    public List<BlockedAccount> getBlockedAccounts() {
-        return blockedAccounts;
-    }
-
-    public void setBlockedAccounts(List<BlockedAccount> blockedAccounts) {
-        this.blockedAccounts = blockedAccounts;
-    }
-
-    public List<BlockedAccount> getBlockedBy() {
-        return blockedBy;
-    }
-
-    public void setBlockedBy(List<BlockedAccount> blockedBy) {
-        this.blockedBy = blockedBy;
-    }
-
-    public String getRecoveryToken() {
-        return recoveryToken;
-    }
-
-    public void setRecoveryToken(String recoveryToken) {
-        this.recoveryToken = recoveryToken;
-    }
-
-    public String getPushNotificationToken() {
-        return pushNotificationToken;
-    }
-
-    public void setPushNotificationToken(String pushNotificationToken) {
-        this.pushNotificationToken = pushNotificationToken;
     }
 
     @Override

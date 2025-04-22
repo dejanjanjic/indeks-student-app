@@ -1,7 +1,6 @@
 import {
   Component,
   OnInit,
-  inject,
   ViewChild,
   ElementRef,
   AfterViewChecked,
@@ -17,6 +16,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormsModule } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatIconModule } from '@angular/material/icon';
+import { UpdateSchedulePayload } from '../../model/schedule.model';
 
 @Component({
   selector: 'app-schedule-page',
@@ -77,7 +77,7 @@ export class SchedulePageComponent implements OnInit, AfterViewChecked {
   ];
 
   scheduleData: ScheduleItem[][] = [];
-  selectedOption: number | null = null;
+  selectedOption: string | null = '1';
   isLoading = true;
   errorMessage: string | null = null;
   isEditable = false;
@@ -104,18 +104,25 @@ export class SchedulePageComponent implements OnInit, AfterViewChecked {
   }
 
   ngOnInit(): void {
+    this.loadInitialSchedule();
+  }
+
+  loadInitialSchedule(): void {
     const studentId = this.authService.getUserId();
-    console.log('ngOnInit: Student ID:', studentId);
+    console.log('loadInitialSchedule: Student ID:', studentId);
 
     if (studentId) {
       this.scheduleService.getScheduleData(studentId).subscribe({
         next: (items: ScheduleItem[]) => {
-          console.log('ngOnInit: Received items:', items);
+          console.log('loadInitialSchedule: Received items:', items);
           this.initializeSchedule(items);
           this.isLoading = false;
         },
         error: (error) => {
-          console.error('ngOnInit: Greška pri dohvaćanju rasporeda.', error);
+          console.error(
+            'loadInitialSchedule: Greška pri dohvaćanju rasporeda.',
+            error
+          );
           this.handleError('Greška pri dohvaćanju rasporeda.', error);
         },
       });
@@ -128,48 +135,38 @@ export class SchedulePageComponent implements OnInit, AfterViewChecked {
     console.log('loadSelectedSchedule: selectedOption:', this.selectedOption);
     console.log('loadSelectedSchedule: Funkcija je pozvana!');
     if (this.selectedOption !== null) {
-      this.loadStudentSchedule(this.selectedOption);
+      this.updateScheduleGroupOnBackend(this.selectedOption);
+      this.loadStudentSchedule(this.authService.getUserId());
     } else {
       this.handleError('Niste odabrali raspored!');
     }
   }
 
-  private loadStudentSchedule(scheduleId: number | null): void {
-    console.log('SCHEDULE ID: ', scheduleId);
+  async loadStudentSchedule(studentId: number | null): Promise<void> {
+    console.log('loadStudentSchedule: Student ID:', studentId);
 
-    if (!scheduleId) {
-      this.handleError('Niste odabrali raspored!');
+    if (!studentId) {
+      this.handleError('Korisnik nije prijavljen!');
       return;
     }
     this.isLoading = true;
     this.errorMessage = null;
 
-    this.scheduleService.getScheduleData(scheduleId).subscribe({
-      next: (items: ScheduleItem[]) => {
-        console.log('Received itemssss:', items);
-        if (!Array.isArray(items)) {
-          this.handleError('Neispravan format podataka sa servera.');
-          return;
-        }
-        this.initializeSchedule(items);
-        this.isLoading = false;
-      },
-      error: (error) => {
-        console.error(error);
-
-        if (error.status === 200) {
-          this.handleError(
-            'Server vratio neočekivan odgovor (HTML umesto JSON-a).'
-          );
-        } else if (error.status === 404) {
-          this.handleError('Raspored nije pronađen.');
-        } else {
-          this.handleError(`Greška na serveru: ${error.statusText}`);
-        }
-
-        this.isLoading = false;
-      },
-    });
+    try {
+      const items: ScheduleItem[] = (await this.scheduleService
+        .getScheduleData(studentId)
+        .toPromise()) as ScheduleItem[];
+      console.log('loadStudentSchedule: Received items (async):', items);
+      this.initializeSchedule(items);
+      this.isLoading = false;
+    } catch (error: any) {
+      console.error(
+        'loadStudentSchedule: Greška pri dohvaćanju rasporeda (async).',
+        error
+      );
+      this.handleError('Greška pri dohvaćanju rasporeda.', error);
+      this.isLoading = false;
+    }
   }
 
   private initializeSchedule(items: ScheduleItem[]): void {
@@ -235,20 +232,15 @@ export class SchedulePageComponent implements OnInit, AfterViewChecked {
         time: this.times[this.editingTimeIndex],
         content: cell.content,
         studentId: studentId,
-      };
-
+      } as Partial<ScheduleItem>;
       console.log('finishEdit: Saljemo na backend:', payload);
       if (cell.id && cell.id !== 0) {
-        this.scheduleService.updateScheduleData(cell.id, payload).subscribe({
+        this.scheduleService.updateScheduleItem(cell.id, payload).subscribe({
           next: (response) => {
             console.log('finishEdit: Stavka uspješno ažurirana:', response);
             this.editingTimeIndex = null;
             this.editingDayIndex = null;
-            console.log(
-              'finishEdit: selectedOption before loadStudentSchedule:',
-              this.selectedOption
-            );
-            this.loadStudentSchedule(this.selectedOption);
+            this.loadStudentSchedule(studentId);
           },
           error: (error) => {
             console.error('finishEdit: Greška pri ažuriranju stavke:', error);
@@ -258,8 +250,62 @@ export class SchedulePageComponent implements OnInit, AfterViewChecked {
           },
         });
       } else {
-        console.log('finishEdit: Nece izgleda cell id');
+        this.scheduleService.createScheduleItem(payload).subscribe({
+          next: (newItem) => {
+            console.log('finishEdit: Nova stavka uspješno kreirana:', newItem);
+            this.editingTimeIndex = null;
+            this.editingDayIndex = null;
+            this.loadStudentSchedule(studentId);
+          },
+          error: (error) => {
+            console.error(
+              'finishEdit: Greška pri kreiranju nove stavke:',
+              error
+            );
+            this.snackBar.open('Greška pri kreiranju nove stavke.', 'Zatvori', {
+              duration: 5000,
+            });
+          },
+        });
       }
+    }
+  }
+
+  updateScheduleGroupOnBackend(groupId: string): void {
+    const studentId = this.authService.getUserId();
+    if (studentId) {
+      const payload: UpdateSchedulePayload = {
+        id: studentId,
+        num: groupId,
+      };
+      this.scheduleService.updateScheduleGroup(payload).subscribe({
+        next: (response) => {
+          console.log(
+            'updateScheduleGroupOnBackend: Grupa uspješno ažurirana:',
+            response
+          );
+          this.snackBar.open('Grupa rasporeda je ažurirana.', 'Zatvori', {
+            duration: 3000,
+          });
+          this.loadStudentSchedule(studentId);
+        },
+        error: (error: any) => {
+          console.error(
+            'updateScheduleGroupOnBackend: Greška pri ažuriranju grupe:',
+            error
+          );
+          console.error('Status kod greške:', error.status);
+          console.error('Tekst statusa greške:', error.statusText);
+          console.error('Tijelo greške:', error.error);
+          this.snackBar.open(
+            'Greška pri ažuriranju grupe rasporeda.',
+            'Zatvori',
+            { duration: 5000 }
+          );
+        },
+      });
+    } else {
+      this.snackBar.open('Niste prijavljeni.', 'Zatvori', { duration: 5000 });
     }
   }
 }

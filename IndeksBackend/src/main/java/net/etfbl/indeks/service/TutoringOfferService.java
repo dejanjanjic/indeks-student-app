@@ -216,4 +216,17 @@ public class TutoringOfferService
         return null;  // Return null if no valid data is found
     }
 
+    public boolean deleteReviewFromTutoringOffer(Long tutoringOfferId, Long reviewId) {
+        Optional<TutoringOffer> tutoringOfferOptional = tutoringOfferRepository.findById(tutoringOfferId);
+
+        if (tutoringOfferOptional.isPresent()) {
+            TutoringOffer tutoringOffer = tutoringOfferOptional.get();
+            boolean reviewRemoved = tutoringOffer.removeReview(reviewId);
+            if (reviewRemoved) {
+                tutoringOfferRepository.save(tutoringOffer);
+                return true;
+            }
+        }
+        return false;
+    }
 }

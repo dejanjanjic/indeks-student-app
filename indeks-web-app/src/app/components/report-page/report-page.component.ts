@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ReportedMaterial } from '../../model/reported-types.model';
 import { ReportedAccount } from '../../model/reported-types.model';
 import { ReportedComment } from '../../model/reported-types.model';
@@ -16,6 +16,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component';
 import { UserAccountService } from '../../services/user-account.service';
 import { SuspendDialogComponent } from '../suspend-dialog/suspend-dialog.component';
+import { TutoringOfferService } from '../../services/tutoring-offer.service';
 
 @Component({
   selector: 'app-report-page',
@@ -28,7 +29,6 @@ import { SuspendDialogComponent } from '../suspend-dialog/suspend-dialog.compone
     CommonModule,
     BaseTableComponent,
     MatIconModule,
-    SuspendDialogComponent,
   ],
   templateUrl: './report-page.component.html',
   styleUrl: './report-page.component.css',
@@ -38,7 +38,8 @@ export class ReportPageComponent implements OnInit {
     private reportService: ReportProblemService,
     private materialService: MaterialService,
     private userService: UserAccountService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public tutoringOfferService: TutoringOfferService
   ) {}
 
   retrieveMaterials = (): Observable<ReportedMaterial[]> => {
@@ -144,6 +145,46 @@ export class ReportPageComponent implements OnInit {
       } else {
         console.error(
           'Prijavljeni nalog sa ID-om ' + reportedUserId + ' nije pronađen.'
+        );
+      }
+    });
+  };
+
+  deleteReportedComment = (reportedCommentId: number): void => {
+    this.reportService.getReportedComments().subscribe((reportedComments) => {
+      const reportedComment = reportedComments.find(
+        (c) => c.id === reportedCommentId
+      );
+      if (reportedComment) {
+        const dialogRef = this.dialog.open(DeleteDialogComponent, {
+          width: '400px',
+          data: { name: `komentar: "${reportedComment.reviewText}"` },
+        });
+
+        console.log('reviewId: ', reportedComment.reviewId);
+        dialogRef.afterClosed().subscribe((result) => {
+          if (result) {
+            this.tutoringOfferService
+              .deleteReviewFromOffer(reportedComment.reviewId)
+              .subscribe(
+                () => {
+                  this.reportService
+                    .deleteReportedProblem(reportedCommentId)
+                    .subscribe(() => {
+                      this.retrieveComments();
+                    });
+                },
+                (error) => {
+                  console.error('Greška', error);
+                }
+              );
+          }
+        });
+      } else {
+        console.error(
+          'Пријављени коментар са ID-ом ' +
+            reportedCommentId +
+            ' није пронађен.'
         );
       }
     });

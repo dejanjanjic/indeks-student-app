@@ -14,7 +14,7 @@ import AddingNewInstructionOfferScreen from "../screens/AddingNewInstructionOffe
 import ListOfMyInstructionsScreen from "../screens/ListOfMyInstructionsScreen";
 import useNotifications from "../hooks/useNotifications";
 import MyMaterialScreen from "../screens/MyMaterialsScreen";
-
+import SubscriptionsScreen from "../screens/SubscriptionsScreen";
 const Stack = createStackNavigator();
 
 export default function TutorAppNavigator() {
@@ -55,6 +55,11 @@ export default function TutorAppNavigator() {
       />
 
       <Stack.Screen name="MyMaterialScreen" component={MyMaterialScreen} />
+
+      <Stack.Screen
+        name="SubscriptionsScreen"
+        component={SubscriptionsScreen}
+      />
     </Stack.Navigator>
   );
 }

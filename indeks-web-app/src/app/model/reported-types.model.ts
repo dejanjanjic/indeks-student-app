@@ -15,6 +15,7 @@ export interface ReportedComment {
   reporterName: string;
   reporterSurname: string;
   time: Date;
+  reviewId: number;
 }
 
 export interface ReportedAccount {

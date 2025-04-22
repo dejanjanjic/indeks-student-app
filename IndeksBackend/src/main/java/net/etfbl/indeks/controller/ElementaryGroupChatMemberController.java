@@ -1,6 +1,7 @@
 package net.etfbl.indeks.controller;
 
 import net.etfbl.indeks.dto.AddElementaryGroupChatMemberDTO;
+import net.etfbl.indeks.dto.UserAccountDetailsDTO;
 import net.etfbl.indeks.model.ElementaryGroupChat;
 import net.etfbl.indeks.model.ElementaryGroupChatMember;
 import net.etfbl.indeks.service.ElementaryGroupChatMemberService;
@@ -39,9 +40,24 @@ public class ElementaryGroupChatMemberController {
         return new ResponseEntity<>(elementaryGroupChatMembers, HttpStatus.OK);
     }
 
+    @GetMapping(path = "{groupId}")
+    public ResponseEntity<List<UserAccountDetailsDTO>> getElementaryGroupChatMembersByGroupId(@PathVariable("groupId") Long groupId) {
+        return ResponseEntity.ok(elementaryGroupChatMemberService.getElementaryGroupChatMembersByGroupId(groupId));
+    }
+
+    @GetMapping("{groupId}/filter/{keyword}")
+    public ResponseEntity<List<UserAccountDetailsDTO>> filterElementaryGroupChatMembersByGroupId(@PathVariable("groupId") Long groupId, @PathVariable("keyword") String keyword){
+        return ResponseEntity.ok(elementaryGroupChatMemberService.filterElementaryGroupChatMembersByGroupId(groupId, keyword));
+    }
+
     @PostMapping
     public ResponseEntity<ElementaryGroupChatMember> addElementaryGroupChatMember(@RequestBody AddElementaryGroupChatMemberDTO elementaryGroupChatMemberDTO) {
         elementaryGroupChatMemberService.addNewElementaryGroupChatMember(elementaryGroupChatMemberDTO);
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("{groupId}/{userAccountId}")
+    public ResponseEntity<Void> delete(@PathVariable("groupId")Long groupId, @PathVariable("userAccountId") Long userAccountId){
+        return elementaryGroupChatMemberService.delete(groupId, userAccountId) ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 }

@@ -1,0 +1,9 @@
+<app-base-table
+  [displayedColumns]="['firstName', 'lastName', 'email', 'actions']"
+  [service]="elementaryGroupChatMemberService"
+  [headerMap]="headerMap"
+  [actionButtons]="['delete']"
+  [retrieveDataFunction]="this.retrieveDataFunction"
+  [filterDataFunction]="this.filterDataFunction"
+  [deleteDataFunction]="this.deleteDataFunction"
+/>

@@ -23,6 +23,12 @@ const TutorSidebarComponent = ({ visible, onClose }) => {
       iconType: "Feather",
     },
     {
+      label: "Zahtjevi",
+      icon: "envelope",
+      route: "SubscriptionsScreen",
+      iconType: "FontAwesome",
+    },
+    {
       label: "Podešavanja",
       icon: "settings",
       route: "SettingsScreen",

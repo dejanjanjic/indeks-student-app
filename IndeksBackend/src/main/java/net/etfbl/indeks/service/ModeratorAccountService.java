@@ -27,7 +27,7 @@ public class ModeratorAccountService {
         return moderatorAccountRepository.findAll();
     }
 
-    public Optional<ModeratorAccount> getModeratorById(Long id) {
+    public Optional<ModeratorAccount> getModeratorAccountById(Long id) {
         return moderatorAccountRepository.findById(id);
     }
 
