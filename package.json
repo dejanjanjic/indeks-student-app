@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@react-native/gradle-plugin": "^0.79.0",
+    "expo": "^52.0.44",
+    "expo-modules-autolinking": "^2.0.8"
+  }
+}

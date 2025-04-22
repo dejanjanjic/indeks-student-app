@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import net.etfbl.indeks.dto.MaterialResponseDTO;
 import net.etfbl.indeks.dto.MaterialSummaryDTO;
+import net.etfbl.indeks.dto.MaterialWebDTO;
 import net.etfbl.indeks.model.Account;
 import net.etfbl.indeks.model.Material;
 import net.etfbl.indeks.repository.AccountRepository;
@@ -23,7 +24,8 @@ import java.util.stream.Collectors;
 @Service
 public class MaterialService {
     private final MaterialRepository materialRepository;
-
+    @Autowired
+    private MinioService minioService;
     @Autowired
     public MaterialService(MaterialRepository materialRepository){
         this.materialRepository = materialRepository;
@@ -31,6 +33,20 @@ public class MaterialService {
 
     public List<Material> getMaterials() {
         return materialRepository.findAll();
+    }
+    public List<MaterialWebDTO> getMaterialDTOs() {
+        return materialRepository.findAll().stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    private MaterialWebDTO convertToDTO(Material material) {
+        MaterialWebDTO dto = new MaterialWebDTO();
+        dto.setId(material.getId());
+        dto.setName(material.getName());
+        dto.setSubject(material.getSubject().getName());
+        dto.setOwner(material.getOwnerAccount().getFirstName()+" "+material.getOwnerAccount().getLastName());
+        return dto;
     }
     public Optional<Material> getMaterialById(Long materialId) {
         return materialRepository.findById(materialId);
@@ -81,37 +97,61 @@ public class MaterialService {
         return true;
     }
 
+//    public MaterialResponseDTO getMaterialAsDTO(Long materialId) {
+//        // Fetch the material from the database
+//        Optional<Material> materialOptional = materialRepository.findById(materialId);
+//
+//        if (materialOptional.isEmpty()) {
+//            return null; // or throw a custom exception if you prefer
+//        }
+//
+//        Material material = materialOptional.get();
+//        String filePath = material.getContent(); // Path from the 'content' column in database
+//        File file = new File(filePath);
+//
+//        if (!file.exists()) {
+//            return null; // or handle file not found scenario
+//        }
+//
+//        try {
+//            // Read file content and encode it to Base64
+//            byte[] fileBytes = new byte[(int) file.length()];
+//            try (FileInputStream fis = new FileInputStream(file)) {
+//                fis.read(fileBytes);
+//            }
+//
+//            String base64Encoded = Base64.getEncoder().encodeToString(fileBytes);
+//
+//            // Return a DTO with the name and Base64 content
+//            return new MaterialResponseDTO(material.getName(), base64Encoded);
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return null; // Handle the error, return null or custom error response
+//        }
+//    }
     public MaterialResponseDTO getMaterialAsDTO(Long materialId) {
-        // Fetch the material from the database
+
         Optional<Material> materialOptional = materialRepository.findById(materialId);
-
         if (materialOptional.isEmpty()) {
-            return null; // or throw a custom exception if you prefer
+            return null;
         }
-
         Material material = materialOptional.get();
-        String filePath = material.getContent(); // Path from the 'content' column in database
-        File file = new File(filePath);
-
-        if (!file.exists()) {
-            return null; // or handle file not found scenario
-        }
+        String objectName = material.getContent();
 
         try {
-            // Read file content and encode it to Base64
-            byte[] fileBytes = new byte[(int) file.length()];
-            try (FileInputStream fis = new FileInputStream(file)) {
-                fis.read(fileBytes);
-            }
+
+            byte[] fileBytes = minioService.downloadFile(objectName);
+
 
             String base64Encoded = Base64.getEncoder().encodeToString(fileBytes);
 
-            // Return a DTO with the name and Base64 content
+
             return new MaterialResponseDTO(material.getName(), base64Encoded);
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-            return null; // Handle the error, return null or custom error response
+            return null;
         }
     }
 
