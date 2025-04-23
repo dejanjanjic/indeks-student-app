@@ -62,25 +62,6 @@ export class LoginFormComponent {
     this.authService.login(loginData).subscribe({
       next: () => {
         this.isLoading = false;
-        const email = loginData.email;
-        this.accountService.getAccountRoleByEmail(email).subscribe({
-          next: (role: string) => {
-            this.isLoading = false;
-            if (role === 'MODERATOR') {
-              const userId = this.authService.getUserId();
-
-              if (userId) {
-                this.router.navigate(['/moderator-materials-page', userId]);
-              }
-            }
-          },
-          error: (err) => {
-            console.error('Greška pri dohvatu uloge:', err);
-            this.router.navigate(['/home']);
-          },
-        });
-
-        this.isLoading = false;
       },
       error: (error: any) => {
         this.isLoading = false;

@@ -1,0 +1,116 @@
+<div class="container">
+  <div class="loading-overlay" *ngIf="isLoading">
+    <div class="loading-spinner">
+      <svg class="spinner" viewBox="0 0 50 50">
+        <circle
+          class="path"
+          cx="25"
+          cy="25"
+          r="20"
+          fill="none"
+          stroke-width="5"
+        ></circle>
+      </svg>
+      <span>Učitavanje...</span>
+    </div>
+  </div>
+
+  <div class="content-wrapper">
+    <div *ngIf="!showingUserMaterials">
+      <!-- Removed years selection section -->
+
+      <div class="subjects-section">
+        <div class="section-title">
+          <span class="subject-icon"></span>
+          <h3>Predmeti {{ selectedYear }}. godine</h3>
+        </div>
+        <div class="subjects-carousel">
+          <div
+            *ngFor="let subject of subjects"
+            class="subject-card"
+            [class.active]="subject === selectedSubject"
+            (click)="selectSubject(subject)"
+          >
+            <h4>{{ subject.name }}</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="materials-section"
+      *ngIf="selectedSubject || showingUserMaterials"
+    >
+      <div class="section-header">
+        <div class="title-area">
+          <span class="material-icon"></span>
+          <h3 style="color: #333; font-weight: 600">
+            {{
+              showingUserMaterials ? "Moji materijali" : selectedSubject?.name
+            }}
+          </h3>
+        </div>
+        <div class="action-area">
+          <div class="search-container">
+            <input
+              type="text"
+              [(ngModel)]="searchQuery"
+              (input)="filterMaterials()"
+              placeholder="Pretraži materijale..."
+            />
+            <span class="search-icon"></span>
+          </div>
+          <!-- Removed upload button -->
+        </div>
+      </div>
+
+      <!-- Removed upload area -->
+
+      <div class="materials-list" *ngIf="filteredMaterials.length > 0">
+        <div
+          class="material-item"
+          *ngFor="let material of filteredMaterials"
+          [class.owned]="isMaterialOwner(material)"
+        >
+          <div class="file-info">
+            <span
+              class="file-badge"
+              [attr.data-type]="getFileType(material).extension"
+            >
+              {{ getFileType(material).extension }}
+            </span>
+            <span class="file-name">{{ material.name }}</span>
+            <span *ngIf="isMaterialOwner(material)" class="owner-indicator">
+              <span class="owner-dot"></span>
+            </span>
+          </div>
+          <div class="item-actions">
+            <button
+              class="delete-button"
+              (click)="deleteMaterial(material.id); $event.stopPropagation()"
+            >
+              <span class="delete-icon"></span>
+            </button>
+            <button
+              class="download-button"
+              (click)="downloadMaterial(material.id)"
+            >
+              <span class="download-icon"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="empty-state" *ngIf="filteredMaterials.length === 0">
+        <span class="empty-icon"></span>
+        <p>
+          {{
+            showingUserMaterials
+              ? "Nemate materijala"
+              : "Trenutno nema materijala za ovaj predmet"
+          }}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

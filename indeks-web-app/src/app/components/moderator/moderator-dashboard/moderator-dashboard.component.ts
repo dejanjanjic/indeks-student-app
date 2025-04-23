@@ -28,7 +28,6 @@ export class ModeratorDashboardComponent {
 
   public isOpen = false;
   public logoUrl = 'assets/indeks-logo.png';
-  public subjectId = AuthService
 
   private authService = inject(AuthService);
 

@@ -74,7 +74,6 @@ public class ModeratorAccountService {
         return moderatorAccountRepository.save(moderator);
     }
 
-
     public void deleteModerator(Long id) {
         moderatorAccountRepository.deleteById(id);
     }

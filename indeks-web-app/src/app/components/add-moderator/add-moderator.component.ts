@@ -45,7 +45,7 @@ export class AddModeratorComponent implements OnInit {
       lastName: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      materialPath: ['']
+      materialPath: [null, [Validators.required]],
     });
   }
 
@@ -56,7 +56,7 @@ export class AddModeratorComponent implements OnInit {
         lastName: this.moderatorForm.get('lastName')?.value,
         email: this.moderatorForm.get('email')?.value,
         password: this.moderatorForm.get('password')?.value,
-        materialPath: this.moderatorForm.get('materialPath')?.value || ''
+        materialPath: Number(this.moderatorForm.get('materialPath')?.value)
       };
       
       this.moderatorService.addModerator(moderatorDto)
