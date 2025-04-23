@@ -1,31 +1,42 @@
+/* Poboljšani stilovi koji se uklapaju sa admin dashboardom */
 .container {
-  max-width: 600px;
-  margin: 2rem auto;
-  padding: 0 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 0px 0;
+  height: 100%;
 }
 
 .moderator-card {
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+  border-radius: 8px !important;
+  overflow: hidden;
 }
 
 mat-card-header {
-  margin-bottom: 1rem;
-  padding: 1rem 1rem 0.5rem;
+  background: linear-gradient(135deg, #003366, #0055a4);
+  color: white;
+  padding: 16px !important;
+  margin-bottom: 0 !important;
 }
 
-.header-icon {
-  margin-right: 8px;
-  vertical-align: middle;
+mat-card-title {
+  font-size: 22px !important;
+  font-weight: 500 !important;
+  margin: 0 !important;
+  color: white !important;
 }
 
 .moderator-subtitle {
   margin-top: 0.5rem;
   font-size: 16px;
+  color: white !important;
 }
 
 mat-card-content {
-  padding: 1.5rem;
+  padding: 24px 20px !important;
 }
 
 .form-container {
@@ -34,12 +45,68 @@ mat-card-content {
 
 .form-field {
   width: 100%;
+  margin-bottom: 8px;
+}
+
+.form-field ::ng-deep .mat-mdc-form-field-flex {
+  background-color: #f5f7fb;
+}
+
+.form-field ::ng-deep .mdc-text-field {
+  background-color: #f5f7fb !important;
+}
+
+.form-field
+  ::ng-deep
+  .mdc-text-field--focused
+  .mdc-notched-outline
+  .mdc-notched-outline__leading,
+.form-field
+  ::ng-deep
+  .mdc-text-field--focused
+  .mdc-notched-outline
+  .mdc-notched-outline__trailing,
+.form-field
+  ::ng-deep
+  .mdc-text-field--focused
+  .mdc-notched-outline
+  .mdc-notched-outline__notch {
+  border-color: #003366;
 }
 
 .button-container {
   display: flex;
   justify-content: space-between;
-  margin-top: 2rem;
+  margin-top: 24px;
+}
+
+button[type="submit"],
+button[color="primary"] {
+  background: linear-gradient(135deg, #003366, #0055a4) !important;
+  color: white !important;
+  transition: all 0.2s ease;
+  height: 40px;
+  min-width: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+button[type="submit"]:hover,
+button[color="primary"]:hover {
+  background: linear-gradient(135deg, #004080, #0066cc) !important;
+  box-shadow: 0 3px 8px rgba(0, 51, 102, 0.2);
+}
+
+button[type="button"] {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  transition: all 0.2s ease;
+  height: 40px;
+  min-width: 90px;
+}
+
+button[type="button"]:hover {
+  background-color: rgba(0, 0, 0, 0.04);
 }
 
 .loading-container {
@@ -55,22 +122,34 @@ mat-card-content {
   color: #666;
 }
 
-/* CSS for success and error snackbars */
+/* CSS za success i error snackbars */
 ::ng-deep .success-snackbar {
-  background-color: #4caf50;
+  background-color: #003366;
   color: white;
 }
 
 ::ng-deep .error-snackbar {
-  background-color: #f44336;
+  background-color: #d32f2f;
   color: white;
 }
 
-/* Responsive adjustments */
-@media (max-width: 600px) {
-  .container {
-    padding: 0 1rem;
-    margin: 1rem auto;
+/* Spinner unutar dugmeta */
+.button-spinner {
+  margin-right: 8px;
+}
+
+::ng-deep button[color="primary"] .mat-mdc-progress-spinner circle {
+  stroke: white !important;
+}
+
+/* Responsivnost */
+@media (max-width: 768px) {
+  .moderator-card {
+    max-width: 100%;
+  }
+
+  mat-card-title {
+    font-size: 20px !important;
   }
   
   .button-container {
