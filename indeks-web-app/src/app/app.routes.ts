@@ -109,8 +109,7 @@ export const routes: Routes = [
     children: [
       // Add more moderator routes as needed
       { path: 'moderator-materials-page', component: ModeratorMaterialsPageComponent },
-      { path: 'moderators', component: ModeratorTableComponent },
-      { path: '', redirectTo: 'moderator-material-page', pathMatch: 'full' }
+      { path: '', redirectTo: 'moderator-materials-page', pathMatch: 'full' }
     ]
   },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
