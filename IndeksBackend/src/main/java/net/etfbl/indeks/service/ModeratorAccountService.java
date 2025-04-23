@@ -31,8 +31,19 @@ public class ModeratorAccountService {
         return moderatorAccountRepository.findById(id);
     }
 
+    public Long getModeratorMaterialPath(Long id) {
+        Optional<ModeratorAccount> moderatorAccount = moderatorAccountRepository.findById(id);
+        return moderatorAccount.map(ModeratorAccount::getMaterialPath).orElse(null);
+    }
+
     @Transactional
     public ModeratorAccount addModerator(AddModeratorDTO dto) {
+
+        Optional<Account> accountCheck = accountRepository.findByEmail(dto.getEmail());
+        if (accountCheck.isPresent()) {
+            return null;
+        }
+
         Account account = new Account();
         account.setEmail(dto.getEmail());
         account.setPassword(passwordEncoder.encode(dto.getPassword()));

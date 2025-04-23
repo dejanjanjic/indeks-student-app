@@ -29,9 +29,20 @@ public class ModeratorAccountController {
         return moderator.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/{id}/material-path")
+    public ResponseEntity<Long> getModeratorMaterialPath(@PathVariable Long id) {
+        Optional<Long> path = moderatorAccountService.getModeratorMaterialPath(id).describeConstable();
+        return path.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
     @PostMapping
     public ResponseEntity<ModeratorAccount> addModerator(@RequestBody AddModeratorDTO dto) {
-        return ResponseEntity.ok(moderatorAccountService.addModerator(dto));
+        ModeratorAccount moderatorAccount = moderatorAccountService.addModerator(dto);
+        if(moderatorAccount != null) {
+            return ResponseEntity.ok(moderatorAccount);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @DeleteMapping("/{id}")

@@ -1,34 +1,59 @@
 <div class="container">
-    <mat-card>
-      <mat-card-header>
-        <mat-card-title>Ažuriranje putanje materijala</mat-card-title>
-        <mat-card-subtitle *ngIf="!isLoading"><br>Moderator: {{ moderatorName }}</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <div *ngIf="isLoading" class="loading-container">
-          <mat-progress-spinner mode="indeterminate" diameter="40"></mat-progress-spinner>
-        </div>
-        <form *ngIf="!isLoading" [formGroup]="moderatorForm" (ngSubmit)="onSubmit()">
+  <mat-card class="moderator-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon class="header-icon">edit</mat-icon>
+        Ažuriranje godine zaduženja
+      </mat-card-title>
+      <mat-card-subtitle *ngIf="!isLoading" class="moderator-subtitle">
+        <strong>{{ moderatorName }}</strong>
+      </mat-card-subtitle>
+    </mat-card-header>
+    
+    <mat-divider></mat-divider>
+    
+    <mat-card-content>
+      <div *ngIf="isLoading" class="loading-container">
+        <mat-progress-spinner mode="indeterminate" diameter="40"></mat-progress-spinner>
+        <span class="loading-text">Učitavanje podataka...</span>
+      </div>
+      
+      <form *ngIf="!isLoading" [formGroup]="moderatorForm" (ngSubmit)="onSubmit()">
+        <div class="form-container">
           <mat-form-field appearance="outline" class="form-field">
-            <mat-label>Putanja materijala</mat-label>
-            <input matInput formControlName="materialPath">
+            <mat-label>Godina zaduženja</mat-label>
+            <mat-select formControlName="materialPath">
+              <mat-option *ngFor="let year of yearOptions" [value]="year">{{ year }}. godina</mat-option>
+            </mat-select>
+            <mat-icon matPrefix>school</mat-icon>
             <mat-error *ngIf="moderatorForm.controls['materialPath'].hasError('required')">
-              Putanja materijala je obavezna
+              Godina zaduženja je obavezna
             </mat-error>
           </mat-form-field>
+        </div>
+        
+        <div class="button-container">
+          <button 
+            mat-stroked-button 
+            type="button" 
+            routerLink="/admin/moderators"
+            [disabled]="isSubmitting"
+          >
+            <mat-icon>arrow_back</mat-icon> Nazad
+          </button>
           
-          <div class="button-container">
-            <button mat-button type="button" routerLink="/admin/moderators">Odustani</button>
-            <button 
-              mat-raised-button 
-              color="primary" 
-              type="submit" 
-              [disabled]="moderatorForm.invalid || isSubmitting"
-            >
-              <mat-icon>save</mat-icon> Sačuvaj
-            </button>
-          </div>
-        </form>
-      </mat-card-content>
-    </mat-card>
-  </div>
+          <button 
+            mat-raised-button 
+            color="primary" 
+            type="submit" 
+            [disabled]="moderatorForm.invalid || isSubmitting"
+          >
+            <mat-icon>save</mat-icon> 
+            <span *ngIf="!isSubmitting">Sačuvaj</span>
+            <span *ngIf="isSubmitting">Čuvanje...</span>
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

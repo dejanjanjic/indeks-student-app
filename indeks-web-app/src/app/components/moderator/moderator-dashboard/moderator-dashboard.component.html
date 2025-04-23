@@ -1,20 +1,20 @@
 <div class="moderator-main">
     <app-header (toggleSidebar)="sidenav.toggle()"></app-header>
-  
+
     <mat-sidenav-container class="sidenav-container">
       <mat-sidenav #sidenav mode="over" class="sidenav" [autoFocus]="false">
         <div class="sidenav-header">
           <img [src]="logoUrl" alt="INDEKS" class="sidenav-logo" />
           <h2 class="sidenav-title">Navigacija</h2>
         </div>
-  
+
         <div class="divider"></div>
-  
+
         <mat-nav-list class="nav-list">
-  
+
           <a
             mat-list-item
-            routerLink="materials-page"
+            routerLink="moderator-materials-page/{{ subjectId }}"
             routerLinkActive="active-link"
             (click)="sidenav.toggle()"
           >
@@ -23,7 +23,7 @@
               <span class="nav-label">Materijali</span>
             </div>
           </a>
-  
+
           <a
             mat-list-item
             routerLink="moderators"
@@ -35,7 +35,7 @@
               <span class="nav-label">Moderatori</span>
             </div>
           </a>
-  
+
           <a
             mat-list-item
             routerLink="report-page"
@@ -48,12 +48,12 @@
             </div>
           </a>
         </mat-nav-list>
-  
+
         <div class="sidenav-footer">
           <div class="version">INDEKS v1.0</div>
         </div>
       </mat-sidenav>
-  
+
       <mat-sidenav-content class="content-container">
         <div class="content-wrapper">
           <router-outlet />
@@ -61,4 +61,3 @@
       </mat-sidenav-content>
     </mat-sidenav-container>
   </div>
-  

@@ -44,11 +44,7 @@ public class MaterialController {
     @GetMapping(path = "{materialId}")
     public ResponseEntity<Material> getMaterialById(@PathVariable(name = "materialId") Long materialId) {
         Optional<Material> material = materialService.getMaterialById(materialId);
-        if (material.isPresent()) {
-            return ResponseEntity.ok(material.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return material.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping

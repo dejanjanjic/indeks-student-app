@@ -128,15 +128,6 @@ public class AuthenticationService {
                 tutorAccountRepository.save(tutorAccount);
                 System.out.println("New tutor registered!");
             }
-            case "MODERATOR" -> {
-
-
-
-
-
-            }
-
-
 
             default -> {
                 System.out.println("WRONG USER TYPE FLAG!");

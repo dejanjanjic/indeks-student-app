@@ -14,5 +14,5 @@ public class AddModeratorDTO {
     private String lastName;
     private String email;
     private String password;
-    private String materialPath;
+    private Long materialPath;
 }

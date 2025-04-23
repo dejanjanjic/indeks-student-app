@@ -33,6 +33,20 @@ public class AccountController {
         return account.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/email")
+    public ResponseEntity<String> getAccountRoleByEmail(@RequestParam String email) {
+        Optional<String> role = accountService.getAccountRoleByEMail(email);
+        return role.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/id-by-email")
+    public ResponseEntity<Long> getAccountIdByEmail(@RequestParam String email) {
+        Optional<Long> accountId = accountService.getAccountIdByEmail(email);
+        return accountId.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
     @DeleteMapping(path = "{accountId}")
     public ResponseEntity<Void> deleteAccount(@PathVariable("accountId") Long accountId) {
         boolean deleted = accountService.deleteAccount(accountId);

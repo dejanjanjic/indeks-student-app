@@ -7,7 +7,6 @@ import net.etfbl.indeks.model.Account;
 import net.etfbl.indeks.model.PotentialPassword;
 import net.etfbl.indeks.repository.AccountRepository;
 import net.etfbl.indeks.repository.PotentialPasswordRepository;
-import net.etfbl.indeks.util.Encryption;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -35,6 +34,10 @@ public class AccountService {
         this.potentialPasswordRepository = potentialPasswordRepository;
         this.passwordEncoder = passwordEncoder;
         this.mailSender = mailSender;
+    }
+
+    public Optional<Long> getAccountIdByEmail(String email) {
+        return accountRepository.findByEmail(email).map(Account::getId);
     }
 
     public String generateTemporaryPassword() {
@@ -137,8 +140,15 @@ public class AccountService {
     public Optional<Account> getAccountById(Long accountId) {
         return accountRepository.findById(accountId);
     }
+
+
     public Optional<Account> getAccountByEMail(String eMail) {
         return accountRepository.findByEmail(eMail);
+    }
+
+    public Optional<String> getAccountRoleByEMail(String eMail) {
+            Optional<Account> account = accountRepository.findByEmail(eMail);
+            return account.flatMap(value -> value.getRole().toString().describeConstable());
     }
 
     public Account addNewAccount(Account account) {

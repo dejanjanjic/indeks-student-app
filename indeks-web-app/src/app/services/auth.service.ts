@@ -14,6 +14,9 @@ interface AuthTokens {
   providedIn: 'root',
 })
 export class AuthService {
+  static getUserId() {
+    throw new Error('Method not implemented.');
+  }
   private BASE_URL = 'http://localhost:8080/api/v1/auth';
   private readonly ACCES_TOKEN_KEY = 'authToken';
   private readonly REFRESH_TOKEN_KEY = 'refreshToken';

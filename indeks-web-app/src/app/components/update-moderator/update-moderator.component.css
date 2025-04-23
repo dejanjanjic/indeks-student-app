@@ -1,37 +1,84 @@
 .container {
-    max-width: 600px;
-    margin: 2rem auto;
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+}
+
+.moderator-card {
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+mat-card-header {
+  margin-bottom: 1rem;
+  padding: 1rem 1rem 0.5rem;
+}
+
+.header-icon {
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.moderator-subtitle {
+  margin-top: 0.5rem;
+  font-size: 16px;
+}
+
+mat-card-content {
+  padding: 1.5rem;
+}
+
+.form-container {
+  margin: 1rem 0 1.5rem;
+}
+
+.form-field {
+  width: 100%;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 180px;
+}
+
+.loading-text {
+  margin-top: 1rem;
+  color: #666;
+}
+
+/* CSS for success and error snackbars */
+::ng-deep .success-snackbar {
+  background-color: #4caf50;
+  color: white;
+}
+
+::ng-deep .error-snackbar {
+  background-color: #f44336;
+  color: white;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .container {
     padding: 0 1rem;
-  }
-  
-  .form-field {
-    width: 100%;
-    margin-bottom: 1rem;
+    margin: 1rem auto;
   }
   
   .button-container {
-    display: flex;
-    justify-content: flex-end;
+    flex-direction: column-reverse;
     gap: 1rem;
-    margin-top: 1.5rem;
   }
   
-  .loading-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 200px;
+  .button-container button {
+    width: 100%;
   }
-  
-  /* Novi stilovi za razmak */
-  mat-card-header {
-    margin-bottom: 1rem;
-  }
-  
-  mat-card-content {
-    padding-top: 0rem;
-  }
-  
-  form {
-    margin-top: 0.7rem;
-  }
+}

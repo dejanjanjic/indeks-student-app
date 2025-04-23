@@ -7,18 +7,18 @@ export interface AddModeratorDTO {
   lastName: string;
   email: string;
   password: string;
-  materialPath: string;
+  materialPath: number;
 }
 
 export interface UpdateModeratorDTO {
-  materialPath: string;
+  materialPath: number;
 }
 
 export interface ModeratorAccount {
   id: number;
   firstName: string;
   lastName: string;
-  materialPath: string;
+  materialPath: number;
   account: {
     id: number;
     email: string;
@@ -40,6 +40,10 @@ export class ModeratorService {
 
   getModeratorById(id: number): Observable<ModeratorAccount> {
     return this.http.get<ModeratorAccount>(`${this.apiUrl}/${id}`);
+  }
+
+  getModeratorMaterialPath(id: number): Observable<string> {
+    return this.http.get<string>(`${this.apiUrl}/${id}/material-path`);
   }
 
   addModerator(dto: AddModeratorDTO): Observable<ModeratorAccount> {

@@ -19,6 +19,8 @@ import { ReportPageComponent } from './components/report-page/report-page.compon
 import { ElementaryGroupMembersTableComponent } from './components/elementary-group-members-table/elementary-group-members-table.component';
 import {TutoringOfferPageComponent} from './components/tutoring-offer/tutoring-offer.component';
 import {ReviewComponent} from './components/review/review.component';
+import { ModeratorDashboardComponent } from './components/moderator/moderator-dashboard/moderator-dashboard.component';
+import { ModeratorMaterialsPageComponent } from './components/moderator/moderator-materials-page/moderator-materials-page.component';
 
 export const routes: Routes = [
   { path: 'login', canActivate: [loginGuard], component: LoginFormComponent },
@@ -98,6 +100,18 @@ export const routes: Routes = [
       },
       { path: '', redirectTo: 'profile', pathMatch: 'full' },
     ],
+  },
+  {
+    path: 'moderator',
+    component: ModeratorDashboardComponent, // Set as direct component for the path
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['MODERATOR'] },
+    children: [
+      // Add more moderator routes as needed
+      { path: 'moderator-materials-page/:id', component: ModeratorMaterialsPageComponent },
+      { path: 'moderators', component: ModeratorTableComponent },
+      { path: '', redirectTo: 'moderator-material-page/', pathMatch: 'full' }
+    ]
   },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', redirectTo: '/login' },

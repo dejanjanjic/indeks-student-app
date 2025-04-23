@@ -10,5 +10,5 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UpdateModeratorDTO {
-    private String materialPath;
+    private Long materialPath;
 }

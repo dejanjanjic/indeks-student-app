@@ -17,7 +17,7 @@ public class ModeratorAccount {
     private Long id;
     private String firstName;
     private String lastName;
-    private String materialPath;
+    private Long materialPath;
 
     @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "id")
