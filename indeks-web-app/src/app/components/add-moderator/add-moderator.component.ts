@@ -82,6 +82,7 @@ export class AddModeratorComponent implements OnInit {
               verticalPosition: 'bottom'
             });
             this.moderatorForm.reset();
+            this.router.navigate(['/moderators']); // Navigate to moderators page after success
             // Reset materialPath to default value after form reset
             this.moderatorForm.patchValue({
               materialPath: 1
