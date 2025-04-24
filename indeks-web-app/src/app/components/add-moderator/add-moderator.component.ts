@@ -82,7 +82,7 @@ export class AddModeratorComponent implements OnInit {
               verticalPosition: 'bottom'
             });
             this.moderatorForm.reset();
-            this.router.navigate(['/moderators']); // Navigate to moderators page after success
+            this.router.navigate(['/admin/moderators']); // Navigate to moderators page after success
             // Reset materialPath to default value after form reset
             this.moderatorForm.patchValue({
               materialPath: 1
@@ -107,7 +107,7 @@ export class AddModeratorComponent implements OnInit {
 
   // Method to navigate back (similar to add-elementary-group)
   navigateBack(): void {
-    this.router.navigate(['/moderators']); // Adjust the route as needed
+    this.router.navigate(['/admin/moderators']); // Adjust the route as needed
   }
 
   // Helper method to mark all form controls as touched
