@@ -16,6 +16,7 @@ import * as FileSystem from "expo-file-system";
 import { useUser } from "../hooks/useUser";
 import HttpService from "../services/HttpService";
 import * as Sharing from "expo-sharing";
+import * as DocumentPicker from "expo-document-picker";
 
 const MyMaterialScreen = ({ route, navigation }) => {
   const [isSidebarVisible, setSidebarVisible] = useState(false);
@@ -89,6 +90,42 @@ const MyMaterialScreen = ({ route, navigation }) => {
     } catch (error) {
       console.error(error);
       Alert.alert("Error", error.message || "An unexpected error occurred.");
+    }
+  };
+
+  const handlePlusClick = async () => {
+    try {
+      const result = await DocumentPicker.getDocumentAsync({ type: "*/*" });
+
+      if (result.canceled) {
+        console.log("File selection canceled");
+        return;
+      }
+
+      const file = result.assets[0];
+      const fileUri = file.uri;
+
+      const base64 = await FileSystem.readAsStringAsync(fileUri, {
+        encoding: FileSystem.EncodingType.Base64,
+      });
+
+      const payload = {
+        base64: base64,
+        name: file.name,
+        subjectId: 163,
+        ownerAccountId: user.accountId,
+      };
+
+      const response = await HttpService.create("material/upload", payload);
+
+      if (response.error) {
+        console.error(response.message);
+      } else {
+        console.log("File uploaded successfully:", response);
+        fetchMaterials();
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -189,6 +226,15 @@ const MyMaterialScreen = ({ route, navigation }) => {
       ) : (
         <TutorSidebar visible={isSidebarVisible} onClose={toggleSidebar} />
       )}
+
+      {user.accountType !== "STUDENT" && (
+        <TouchableOpacity
+          style={styles.floatingButton}
+          onPress={handlePlusClick}
+        >
+          <Text style={styles.floatingButtonText}>+</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
@@ -271,6 +317,25 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingVertical: 10,
     paddingHorizontal: 20,
+  },
+  floatingButton: {
+    position: "absolute",
+    right: 30,
+    bottom: 60,
+    width: 60,
+    height: 60,
+    backgroundColor: "#013868",
+    borderRadius: 30,
+    justifyContent: "center",
+    alignItems: "center",
+    elevation: 8,
+  },
+  floatingButtonText: {
+    color: "#fff",
+    fontSize: 30,
+    fontWeight: "bold",
+    textAlign: "center",
+    lineHeight: 33,
   },
   modalButtonText: { color: "#fff", fontWeight: "bold" },
   cancelButton: { backgroundColor: "#999" },
