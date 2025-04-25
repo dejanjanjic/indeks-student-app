@@ -1,11 +1,11 @@
 <div class="schedule-wrapper">
   <div class="top-section">
+    <!-- Ovo će se prikazati samo u režimu editovanja -->
+    @if (isEditable) {
     <mat-form-field class="mat-label" appearance="outline">
       <mat-label>Odaberite grupu</mat-label>
-      <mat-select
-        [(ngModel)]="selectedOption"
-        (selectionChange)="loadSelectedSchedule()"
-      >
+      <mat-select [(ngModel)]="selectedOption">
+        <!-- Uklonjen (selectionChange) događaj -->
         @for (item of options; track $index) {
         <mat-option [value]="item.value">{{ item.label }}</mat-option>
         }
@@ -13,11 +13,19 @@
       <mat-icon matPrefix>group</mat-icon>
       <mat-hint>Izaberite godinu i smer za prikaz rasporeda</mat-hint>
     </mat-form-field>
+    }
     <div class="button-group">
-      <button mat-raised-button color="primary">
-        <mat-icon>search</mat-icon>
-        Odaberi
+      <!-- Dugme za preuzimanje rasporeda će se prikazati samo u režimu editovanja -->
+      @if (isEditable) {
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="loadSelectedSchedule()"
+      >
+        <mat-icon>download</mat-icon>
+        Preuzmi raspored
       </button>
+      }
       <button
         mat-raised-button
         [color]="isEditable ? 'accent' : 'primary'"

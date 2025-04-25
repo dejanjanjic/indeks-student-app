@@ -14,7 +14,6 @@ import { ScheduleItem } from '../../model/scheduleItem.model';
 import { CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormsModule } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { UpdateSchedulePayload } from '../../model/schedule.model';
 
@@ -55,6 +54,10 @@ export class SchedulePageComponent implements OnInit, AfterViewChecked {
     '16:15',
     '17:15',
     '18:15',
+    '19:15',
+    '20:15',
+    '21:15',
+    '22:15',
   ];
   options = [
     { label: 'Prva godina', value: '1' },
@@ -87,8 +90,7 @@ export class SchedulePageComponent implements OnInit, AfterViewChecked {
 
   constructor(
     private authService: AuthService,
-    private scheduleService: ScheduleService,
-    private snackBar: MatSnackBar
+    private scheduleService: ScheduleService
   ) {}
 
   ngAfterViewChecked(): void {
@@ -222,31 +224,29 @@ export class SchedulePageComponent implements OnInit, AfterViewChecked {
       const studentId = this.authService.getUserId();
       console.log('finishEdit: Studentski id', studentId);
 
-      if (!studentId) {
-        this.snackBar.open('Niste prijavljeni.', 'Zatvori', { duration: 5000 });
-        return;
-      }
-
       const payload = {
         day: this.editingDayIndex,
         time: this.times[this.editingTimeIndex],
         content: cell.content,
         studentId: studentId,
+        schedule: cell.schedule || this.selectedOption,
       } as Partial<ScheduleItem>;
+
       console.log('finishEdit: Saljemo na backend:', payload);
+
       if (cell.id && cell.id !== 0) {
         this.scheduleService.updateScheduleItem(cell.id, payload).subscribe({
           next: (response) => {
             console.log('finishEdit: Stavka uspješno ažurirana:', response);
             this.editingTimeIndex = null;
             this.editingDayIndex = null;
-            this.loadStudentSchedule(studentId);
+            this.scheduleData[this.editingTimeIndex!][this.editingDayIndex!] = {
+              ...cell,
+              content: payload.content || '',
+            };
           },
           error: (error) => {
             console.error('finishEdit: Greška pri ažuriranju stavke:', error);
-            this.snackBar.open('Greška pri ažuriranju stavke.', 'Zatvori', {
-              duration: 5000,
-            });
           },
         });
       } else {
@@ -255,16 +255,14 @@ export class SchedulePageComponent implements OnInit, AfterViewChecked {
             console.log('finishEdit: Nova stavka uspješno kreirana:', newItem);
             this.editingTimeIndex = null;
             this.editingDayIndex = null;
-            this.loadStudentSchedule(studentId);
+            this.scheduleData[this.editingTimeIndex!][this.editingDayIndex!] =
+              newItem;
           },
           error: (error) => {
             console.error(
               'finishEdit: Greška pri kreiranju nove stavke:',
               error
             );
-            this.snackBar.open('Greška pri kreiranju nove stavke.', 'Zatvori', {
-              duration: 5000,
-            });
           },
         });
       }
@@ -284,9 +282,6 @@ export class SchedulePageComponent implements OnInit, AfterViewChecked {
             'updateScheduleGroupOnBackend: Grupa uspješno ažurirana:',
             response
           );
-          this.snackBar.open('Grupa rasporeda je ažurirana.', 'Zatvori', {
-            duration: 3000,
-          });
           this.loadStudentSchedule(studentId);
         },
         error: (error: any) => {
@@ -297,15 +292,8 @@ export class SchedulePageComponent implements OnInit, AfterViewChecked {
           console.error('Status kod greške:', error.status);
           console.error('Tekst statusa greške:', error.statusText);
           console.error('Tijelo greške:', error.error);
-          this.snackBar.open(
-            'Greška pri ažuriranju grupe rasporeda.',
-            'Zatvori',
-            { duration: 5000 }
-          );
         },
       });
-    } else {
-      this.snackBar.open('Niste prijavljeni.', 'Zatvori', { duration: 5000 });
     }
   }
 }
